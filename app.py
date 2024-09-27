@@ -69,5 +69,17 @@ def post_login():
     else:
         return jsonify({'status': 0})
 
+@app.route('/insertCategory', methods=['POST'])
+def insert_category():
+    # Get the JSON data from the request
+    json_data = request.get_json()
+    
+    # Retrieve the categoryName from the JSON data
+    category = json_data.get('categoryName')
+
+    # Return a JSON response with the category
+    return jsonify({'category': category})
+
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")

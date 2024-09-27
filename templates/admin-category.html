@@ -20,7 +20,7 @@
                         <input type="text" class="form-control-sm form-control" placeholder=" Search">
                     </div>
                     <div class="col-12 col-md-6">
-                        <button class="btn btn-sm border btn-pink"><i class="bi bi-bookmark-plus"></i> Add Categories</button>
+                        <button class="btn btn-sm border btn-pink" data-bs-toggle="modal" data-bs-target="#addCategories"><i class="bi bi-bookmark-plus"></i> Add Categories</button>
                     </div>
                 </div>
                 <div class="row p-4">
@@ -70,3 +70,26 @@
     {% include 'footer_links.html' %}
 </body>
 </html>
+
+
+
+<div class="modal fade" id="addCategories" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Category</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="addCategorySuccess" class="alert alert-sm alert-success" style="display: none;" role="alert">
+          Added new category success!
+        </div>
+        <input id="addCategoryName" type="text" class="form-control-sm form-control" placeholder="Enter the name of the categories">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark btn-sm" data-bs-dismiss="modal">Close</button>
+        <button disabled id="insertCategory" onclick="insertCategory()" type="button" class="btn btn-pink btn-sm"><i class="bi bi-bookmark-plus"></i> Add</button>
+      </div>
+    </div>
+  </div>
+</div>
