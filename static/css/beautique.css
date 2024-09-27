@@ -1,0 +1,96 @@
+/* Auth html fles */
+.btn-hover:hover {
+    background-color: #ebfff1; /* Example hover background color */
+}
+
+/* .body-color{
+    background-color: rgb(246, 250, 255);
+} */
+
+.nav-color{
+    background-color: white;
+}
+
+/* Remove default background color when an item is clicked */
+.custom-dropdown-item {
+    background-color: transparent;
+    color: inherit;
+}
+
+.custom-dropdown-item:focus,
+.custom-dropdown-item:hover {
+    background-color: #f8f9fa; /* Add your hover background color */
+    color: #000; /* Add your hover text color */
+}
+
+.custom-dropdown-item:active {
+    background-color: transparent !important;
+    color: inherit !important;
+}
+
+
+.burger-menu2{
+    display: none;
+}
+
+.no-outline:focus {
+    outline: none;
+    box-shadow: none;
+    border: 1px solid gray;
+}
+
+.border-none {
+    border: none;
+    box-shadow: none; /* Remove any box-shadow that might be applied */
+}
+
+/* Add this CSS rule to style the active pagination page link */
+.pagination .page-item.active .page-link {
+    background-color: rgb(234, 253, 234);
+    color: black; /* Optional: Adjust text color for better contrast */
+    border: 1px solid lightgreen; /* Optional: Add border to match background */
+}
+
+.login_admin{
+        background-image: url('../img/regBackground.png');
+        background-size: cover; /* Ensures the image covers the entire background */
+        background-repeat: no-repeat; /* Prevents the image from repeating */
+        background-attachment: fixed; /* Keeps the image fixed while scrolling */
+        background-position: center; /* Center the image */
+}
+
+.btn-pink{
+    background-color: rgb(197, 41, 119);
+    color: white;
+}
+
+.btn-pink:hover{
+    background-color: rgb(211, 76, 144);
+    color: white;
+}
+
+.page-pink .page-link {
+    color: rgb(197, 41, 119); /* Change the text color to pink */
+}
+.page-pink .page-link:hover {
+    color: darkmagenta; /* Optional: change color on hover */
+}
+
+@media (max-width: 767px) {
+    #waste_level1 {
+        display: none;
+    }
+
+    .burger-menu1 {
+        display: none;
+    }
+
+    .burger-menu2 {
+        display: block;
+    }
+
+    .nav-admin{
+        display: none;
+    }
+
+}

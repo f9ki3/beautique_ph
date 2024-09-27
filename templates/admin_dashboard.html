@@ -1,0 +1,87 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautique PH</title>
+    {% include 'header_links.html' %}
+</head>
+<body>
+    {% include 'nav-admin.html' %}
+    <div class="container d-flex flex-row">
+        {% include 'header.html' %}
+        <div class="container body-color">
+            
+            <div id="viewStudentRecord">
+            </div>
+            <div class="row">
+                <h4 >Dashboards</h4>
+                <div class="row g-3 m-0">
+                    <div class="col-6 col-md-3">
+                        <div class="border rounded-4 p-3"  style="background: linear-gradient(135deg, #f6d0e3, #f9c4e1, #ce3d8c)">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div style="width: 70px;">
+                                        <img style="object-fit: cover; width: 100%; height: 100%" src="../static/img/admin.png" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <h1 class="fw-bolder" id="admin_count">0</h1>
+                                    <h5>Admin</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="border rounded-4 p-3"  style="background: linear-gradient(135deg, #f6d0e3, #dfc1f5, #9530c8)">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div style="width: 70px;">
+                                        <img style="object-fit: cover; width: 100%; height: 100%" src="../static/img/student.png" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <h1 class="fw-bolder" id="student_count">0</h1>
+                                    <h5>Customers</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="border rounded-4 p-3"  style="background: linear-gradient(135deg, #f6d0d0, #fccbcb, #c73434)">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div style="width: 70px;">
+                                        <img style="object-fit: cover; width: 100%; height: 100%" src="../static/img/trash.png" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <h1 class="fw-bolder" id="today_dispose">0</h1>
+                                    <h5>Today Sales</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="border rounded-4 p-3"  style="background: linear-gradient(135deg, #d0f2f6, #b9e1fc, #358dcf)">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div style="width: 90px;">
+                                        <img style="object-fit: cover; width: 100%; height: 100%" src="../static/img/rocket.png" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <h1 class="fw-bolder" id="total_dispose_count">0</h1>
+                                    <h5>Monthly Sales</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    {% include 'footer_links.html' %}
+</body>
+</html>

@@ -1,0 +1,40 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beatique PH</title>
+    {% include 'header_links.html' %}
+</head>
+<body class="login_admin">
+
+    <div class="container">
+        
+        <div class="row mt-5">
+            <div class="col-12 col-md-4"></div>
+            <div class="col-12 col-md-4">
+                <div class="p-4 bg-white rounded-3">
+                    <form id="loginForm">
+                        <h5 class="fw-bolder mb-4 mt-4">Welcome Admin</h5>
+                        <div class="alert login-admin-failed alert-danger" role="alert" style="display: none;">
+                            Please enter correct username or password
+                          </div>
+                        <input type="text" class="form-control w-100 mb-2" placeholder="Enter your username" id="email">
+                        <input type="password" class="form-control w-100 mb-2" placeholder="Enter your password" id="password">
+                        <button type="button" class="btn w-100 mb-2 btn-pink" id="loginBtn">
+                            <p class="login-text m-0">Login</p>
+                            <div class="login-load spinner-grow spinner-grow-sm m-1" style="display: none;" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </button>
+                    </form>
+                    
+                    <p>Go to beautique ph store <a href="/">click here</a></p>
+                </div>
+            </div>
+            <div class="col-12 col-md-4"></div>
+        </div>
+    </div>
+    
+    {% include 'footer_links.html' %}
+</body>
+</html>
