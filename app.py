@@ -87,12 +87,20 @@ def fetch_category():
     return jsonify(data)
 
 @app.route('/deleteCategory', methods=['POST'])
-def deleter_category():
+def delete_category():
     json = request.get_json()
     cat_id = json.get('id')
     Categories().deleteCategory(cat_id)
     return jsonify({'status': 1})
 
+@app.route('/updateCategory', methods=['POST'])
+def update_category():
+    json = request.get_json()
+    id = json.get('id')
+    name = json.get('name')
+    date = json.get('date')
+    Categories().updateCategory( id, date, name)
+    return jsonify({'status': 1})
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")

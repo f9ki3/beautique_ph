@@ -57,13 +57,30 @@ function renderTable() {
                 <button class="delete-button" style="background: transparent; border: none" data-id="${category.id}">
                     <i class="bi bi-trash3"></i>
                 </button>
-                <button style="background: transparent; border: none"><i class="bi bi-pencil"></i></button>
+                <button class="edit-button" style="background: transparent; border: none" data-id="${category.id}" data-name="${category.category_name}" data-date="${category.category_date}">
+                    <i class="bi bi-pencil"></i>
+                </button>
             </td>
         </tr>`;
         
         $('#categoryTable').append(row);
     }
+
+    // Add event listener for edit buttons
+    $('.edit-button').off('click').on('click', function() {
+        const id = $(this).data('id');
+        const name = $(this).data('name');
+        const date = $(this).data('date');
+
+        // Populate modal inputs
+        $('#editModal input[name="categoryName"]').val(name);
+        $('#editModal input[name="categoryId"]').val(id); // Assuming you have a hidden input for the ID
+
+        // Show the modal
+        $('#editModal').modal('show');
+    });
 }
+
 
 // Function to set up pagination controls
 function setupPagination() {
