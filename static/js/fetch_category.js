@@ -50,10 +50,10 @@ function renderTable() {
     for (let index = startIndex; index < endIndex; index++) {
         const category = filteredCategories[index];
         let row = `<tr>
-            <th scope="row">${startIndex + index + 1}</th>
-            <td>${category.category_date}</td>
-            <td>${category.category_name}</td>
-            <td>
+            <th class="pb-3 pt-3" scope="row">${startIndex + index + 1}</th>
+            <td class="pb-3 pt-3">${category.category_date}</td>
+            <td class="pb-3 pt-3">${category.category_name}</td>
+            <td class="pb-3 pt-3">
                 <button class="delete-button" style="background: transparent; border: none" data-id="${category.id}">
                     <i class="bi bi-trash3"></i>
                 </button>
