@@ -76,9 +76,22 @@ def insert_category():
     
     # Retrieve the categoryName from the JSON data
     category = json_data.get('categoryName')
+    Categories().insertCategory(category)
 
     # Return a JSON response with the category
     return jsonify({'category': category})
+
+@app.route('/fetchAllCategories', methods=['GET'])
+def fetch_category():
+    data = Categories().fetchAllCategories()
+    return jsonify(data)
+
+@app.route('/deleteCategory', methods=['POST'])
+def deleter_category():
+    json = request.get_json()
+    cat_id = json.get('id')
+    Categories().deleteCategory(cat_id)
+    return jsonify({'status': 1})
 
 
 if __name__ == "__main__":

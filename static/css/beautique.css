@@ -46,9 +46,9 @@
 
 /* Add this CSS rule to style the active pagination page link */
 .pagination .page-item.active .page-link {
-    background-color: rgb(234, 253, 234);
-    color: black; /* Optional: Adjust text color for better contrast */
-    border: 1px solid lightgreen; /* Optional: Add border to match background */
+    background-color: rgb(197, 41, 119);
+    color: white; /* Optional: Adjust text color for better contrast */
+    border: 1px solid rgb(197, 41, 119); /* Optional: Add border to match background */
 }
 
 .login_admin{
