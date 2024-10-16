@@ -26,6 +26,48 @@ class Product(Database):
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (product_name, category_id, stocks, price, description, status, product_image, sizes, colors))
         self.commit()
+    
+    def view_product(self, product_id):
+        self.cursor.execute('''
+        SELECT 
+            p.id AS product_id,
+            p.product_name,
+            p.stocks,
+            p.price,
+            p.description,
+            p.status,
+            p.product_image,
+            p.sizes,
+            p.colors,
+            c.id AS category_id,
+            c.category_name
+        FROM 
+            products p
+        JOIN 
+            categories c ON p.category_id = c.id
+        WHERE 
+            p.status = 'active' AND p.id = ?
+        ''', (product_id,))
+        
+        row = self.cursor.fetchone()  # Fetch a single product
+        
+        if row:
+            product = {
+                'product_id': row[0],
+                'product_name': row[1],
+                'stocks': row[2],
+                'price': row[3],
+                'description': row[4],
+                'status': row[5],
+                'product_image': row[6],
+                'sizes': row[7],
+                'colors': row[8],
+                'category_id': row[9],
+                'category_name': row[10]
+            }
+            return product
+        else:
+            return None  # Or raise an error if not found
 
 
     def updateProduct(self, product_id, product_name, category_id, stocks, price, description, status, product_image):

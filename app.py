@@ -18,7 +18,9 @@ def home():
 
 @app.route('/product_view', methods=['GET'])
 def product_view():
-    return render_template('cashier_view_product.html')
+    product_id = request.args.get('product_id')  # Get the product_id from the query string
+    # You can now use product_id to fetch product details from a database if needed
+    return render_template('customer_view_product.html', product_id=product_id)
 
 @app.route('/logout', methods=['GET'])
 def logout():
@@ -195,6 +197,15 @@ def add_product():
     # Return success response
     return jsonify({"success": True, "message": "Product added successfully."}), 201
 
-
+@app.route('/get_product')
+def view_product():
+    product_id = request.args.get('product_id')  # Retrieve the product_id from query parameters
+    if product_id:
+        product_details = Product().view_product(product_id)
+        # Process the product_id (e.g., fetch product details from a database)
+        return jsonify(product_details)
+    else:
+        return jsonify({'error': 'Product ID not provided.'}), 400
+    
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
