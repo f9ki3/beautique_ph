@@ -118,7 +118,7 @@ function insertProduct() {
                 // Hide the alert after 1 second
                 setTimeout(() => {
                     $('#addProductSuccess').hide();
-                    // location.reload();
+                    location.reload();
                 }, 1000);
 
                 // Optionally, reset the form after submission

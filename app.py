@@ -16,6 +16,10 @@ app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')  # Change this t
 def home():
     return render_template('landing_page.html')
 
+@app.route('/product_view', methods=['GET'])
+def product_view():
+    return render_template('cashier_view_product.html')
+
 @app.route('/logout', methods=['GET'])
 def logout():
     session.clear()

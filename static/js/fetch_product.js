@@ -41,9 +41,9 @@ function renderProducts(page) {
                     <th scope="row">${startIndex + index + 1}</th>
                     <td>
                         <div style="width: 50px; height: 50px">
-                            <img src="../static/uploads/${product.product_image}" 
-                                 alt="${product.product_name}" 
-                                 style="object-fit: cover; width: 100%; height: 100%;">
+                            <img src="../static/uploads/${product.product_image.split(',')[0].trim()}" 
+                                alt="${product.product_name}" 
+                                style="object-fit: cover; width: 100%; height: 100%;">
                         </div>
                     </td>
                     <td>${product.price ? `₱${product.price.toFixed(2)}` : 'N/A'}</td>
@@ -60,12 +60,13 @@ function renderProducts(page) {
                                 style="background: transparent; border: none" 
                                 data-id="${product.id}" 
                                 data-name="${product.product_name}" 
-                                data-price="${product.id}" 
+                                data-price="${product.price}" 
                                 data-status="${product.status}">
                             <i class="bi bi-pencil"></i>
                         </button>
                     </td>
                 </tr>`;
+        
 
             $('#productTable').append(row); // Append the new row to the table
         });

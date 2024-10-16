@@ -38,13 +38,13 @@ $.ajax({
                     <div class="p-3">
                         <div style="position: relative;">
                             <div style="width: 100%; height: 200px;">
-                                <img style="object-fit: cover; width: 100%; height: 100%;" src="../static/uploads/${product.product_image}" alt="">
+                                <img style="object-fit: cover; width: 100%; height: 100%;" class="rounded" src="../static/uploads/${product.product_image.split(',')[0].trim()}" alt="">
                                 <button style="position: absolute; right: 10px; bottom: 10px;" class="btn border btn-pink rounded-5">
                                     <i class="bi bi-cart-plus"></i>
                                 </button>
                             </div>
                         </div>
-                        <p class="mb-0">${product.product_name}</p>
+                        <p class="mb-0">${product.product_name.substring(0, 66)}...</p>
                         <h6 class="fw-bolder mt-0">₱ ${product.price.toFixed(2)} PHP</h6>
                     </div>
                 </div>`;
