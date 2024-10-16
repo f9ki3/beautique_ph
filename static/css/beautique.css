@@ -76,6 +76,61 @@
     color: darkmagenta; /* Optional: change color on hover */
 }
 
+.sizes-container, .colors-container {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.tag {
+    background-color: #f4f9ff;
+    color: rgb(98, 98, 98);
+    padding: 5px 10px;
+    margin: 2px;
+    border-radius: 3px;
+}
+
+/* Hover effect */
+.tag i:hover {
+    color: red; /* Change icon color on hover */
+}
+
+input {
+    border: none;
+    outline: none;
+    flex: 1;
+}
+
+.image-preview {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping of images */
+}
+.preview-image {
+    width: 100px; /* Width of individual image preview */
+    height: 100px; /* Height of individual image preview */
+    border: 1px solid #ddd; /* Border styling */
+    border-radius: 5px; /* Rounded corners */
+    overflow: hidden; /* Hide overflow */
+    position: relative; /* Positioning for the remove button */
+}
+.preview-image img {
+    width: 100%; /* Make image fill the container */
+    height: 100%; /* Maintain height */
+    object-fit: cover; /* Crop to fit */
+}
+.remove-img {
+    position: absolute; /* Position the remove button */
+    top: 5px;
+    right: 5px;
+    background: rgba(255, 255, 255, 0.7); /* Background for visibility */
+    border: none; /* No border */
+    border-radius: 50%; /* Round button */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
 @media (max-width: 767px) {
     #waste_level1 {
         display: none;

@@ -4,13 +4,13 @@ from werkzeug.utils import secure_filename
 from accounts import Accounts  
 from categories import Categories
 from products import Product
+import base64
 
 app = Flask(__name__)
 app.secret_key = "asajkshakwqujbasj"
 
-# Ensure the static/uploads directory exists
-UPLOAD_FOLDER = 'static/uploads'
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+# Set the upload folder
+app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')  # Change this to your upload folder path
 
 @app.route('/', methods=['GET'])
 def home():
@@ -114,7 +114,6 @@ def fetch_products():
     data = Product().fetchAllProducts()
     return jsonify(data)
 
-
 @app.route('/addProducts', methods=['POST'])
 def add_product():
     # Retrieve form data
@@ -123,25 +122,75 @@ def add_product():
     product_category = request.form.get('productCategory')
     product_description = request.form.get('productDescription')
     
-    # Retrieve the uploaded file
-    product_image = request.files.get('productImage')
+    # Retrieve the uploaded images (base64 strings)
+    product_images = request.form.getlist('productImage[]')  # Handle base64 image data
+    product_sizes = request.form.getlist('productSizes[]')  # Handle sizes array
+    product_colors = request.form.getlist('productColors[]')  # Handle colors array
 
     # Check if all required fields are provided
     if not product_name or not product_price or not product_category or not product_description:
         return jsonify({"success": False, "message": "All fields are required."}), 400
 
-    # Handle the image file
-    if product_image:
-        # Create a safe filename and save the file
-        safe_filename = secure_filename(product_image.filename)  # Use secure_filename to avoid security issues
-        product_image_path = os.path.join(UPLOAD_FOLDER, safe_filename)
-        product_image.save(product_image_path)
+    # Validate product price
+    try:
+        product_price = float(product_price)  # Ensure price is a float
+    except ValueError:
+        return jsonify({"success": False, "message": "Invalid price format."}), 400
 
-    # Process the product data (e.g., save to a database)
-    Product().insertProduct(product_name, product_category, 0, product_price, product_description, 0, safe_filename)
+    print(f"Product Name: {product_name}")
+    print(f"Product Price: {product_price}")
+    print(f"Product Category: {product_category}")
+    print(f"Product Description: {product_description}")
+    print(f"Number of Images: {len(product_images)}")
+    print(f"Sizes: {product_sizes}")
+    print(f"Colors: {product_colors}")
+
+    # Validate and save images
+    saved_image_paths = []
+    for index, base64_image in enumerate(product_images):
+        if base64_image:
+            # Split the base64 string to get the actual data
+            header, encoded = base64_image.split(',', 1)  # Split the header and data
+            file_extension = header.split(';')[0].split('/')[1]  # Extract file extension from the header
+            safe_filename = f"{product_name}_{index + 1}.{file_extension}"  # Create a unique filename
+            
+            product_image_path = os.path.join(app.config['UPLOAD_FOLDER'], safe_filename)
+            print(f"Saving image to: {product_image_path}")  # Log the save path
+            
+            try:
+                # Create the uploads directory if it doesn't exist
+                os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+                # Decode the base64 string and write to file
+                with open(product_image_path, 'wb') as f:
+                    f.write(base64.b64decode(encoded))
+                saved_image_paths.append(safe_filename)
+            except Exception as e:
+                print(f"Error saving image {safe_filename}: {e}")
+                return jsonify({"success": False, "message": "Error saving image."}), 500
+        else:
+            print("No image found for one of the entries.")
+
+    print(f"Saved Images: {saved_image_paths}")
+
+    # Here you would typically save the product details to the database
+    # Assuming Product is your model class
+    print(saved_image_paths)
+    Product().insertProduct(
+    product_name, 
+    product_category, 
+    0,  # stocks
+    product_price, 
+    product_description, 
+    'active',  # status
+    ','.join(saved_image_paths) if saved_image_paths else None,  # Join image paths into a string
+    ','.join(product_sizes) if product_sizes else None,  # Join sizes into a string
+    ','.join(product_colors) if product_colors else None   # Join colors into a string
+)
 
     # Return success response
     return jsonify({"success": True, "message": "Product added successfully."}), 201
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")

@@ -1,3 +1,5 @@
+
+
 // Fetch all categories
 $.ajax({
     type: "GET",
@@ -27,6 +29,8 @@ $.ajax({
     }
 });
 
+
+
 // Function to insert product
 function insertProduct() {
     // Get product elements
@@ -34,30 +38,29 @@ function insertProduct() {
     const productPriceElement = $('#addProductPrice');
     const productCategoryElement = $('#selectCategories');
     const productDescriptionElement = $('#addProductDescription');
-    const productImageElement = $('#addProductImage');
-    
+    const productImageElement = $('#addProductImage'); // Ensure this element is defined
+
     // Get product values
-    const productName = productNameElement.val();
+    const productName = productNameElement.val().trim();
     const productPrice = parseFloat(productPriceElement.val()); // Parse as float for numeric comparison
     const productCategory = productCategoryElement.val();
-    const productDescription = productDescriptionElement.val();
-    const productImage = productImageElement[0].files[0]; // Get the file
+    const productDescription = productDescriptionElement.val().trim();
+    const productImage = imageDataArray; // Array of images
+    const productSizes = sizes; // Array of sizes
+    const productColors = colors; // Array of colors
 
     // Reset validation states
-    productNameElement.removeClass('is-invalid');
-    productPriceElement.removeClass('is-invalid');
-    productCategoryElement.removeClass('is-invalid');
-    productDescriptionElement.removeClass('is-invalid');
-    productImageElement.removeClass('is-invalid');
+    const elements = [productNameElement, productPriceElement, productCategoryElement, productDescriptionElement, productImageElement];
+    elements.forEach(el => el.removeClass('is-invalid'));
 
     let isValid = true;
 
-    // Check if fields are valid
+    // Validate fields
     if (!productName) {
         productNameElement.addClass('is-invalid');
         isValid = false;
     }
-    if (!productPrice || productPrice <= 0) { // Check for negative or zero
+    if (!productPrice || productPrice <= 0) {
         productPriceElement.addClass('is-invalid');
         isValid = false;
     }
@@ -69,9 +72,7 @@ function insertProduct() {
         productDescriptionElement.addClass('is-invalid');
         isValid = false;
     }
-
-    // Image validation
-    if (!productImage) {
+    if (!productImage || productImage.length === 0) {
         productImageElement.addClass('is-invalid');
         isValid = false;
     }
@@ -88,7 +89,16 @@ function insertProduct() {
     formData.append('productPrice', productPrice);
     formData.append('productCategory', productCategory);
     formData.append('productDescription', productDescription);
-    formData.append('productImage', productImage); // Include the image file
+
+    // Append arrays to FormData
+    productImage.forEach(image => formData.append('productImage[]', image)); // Use '[]' for array
+    productSizes.forEach(size => formData.append('productSizes[]', size)); // Use '[]' for array
+    productColors.forEach(color => formData.append('productColors[]', color)); // Use '[]' for array
+
+    // Log FormData entries for debugging
+    // for (let [key, value] of formData.entries()) {
+    //     console.log(`${key}:`, value);
+    // }
 
     // Send data to the server using jQuery AJAX
     $.ajax({
@@ -105,18 +115,14 @@ function insertProduct() {
                 // Show success alert
                 $('#addProductSuccess').show();
 
-                // Hide the alert after 3 seconds
+                // Hide the alert after 1 second
                 setTimeout(() => {
                     $('#addProductSuccess').hide();
-                    location.reload();
+                    // location.reload();
                 }, 1000);
 
                 // Optionally, reset the form after submission
-                productNameElement.val('');
-                productPriceElement.val('');
-                productCategoryElement.val('');
-                productDescriptionElement.val('');
-                productImageElement.val('');
+                elements.forEach(el => el.val(''));
             } else {
                 console.error('Error adding product:', response.message);
             }

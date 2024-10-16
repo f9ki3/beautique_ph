@@ -12,17 +12,21 @@ class Product(Database):
             description TEXT,  -- Added description column
             status TEXT DEFAULT 'active',
             product_image TEXT,
+            sizes TEXT,  
+            colors TEXT, 
             FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
         )
         ''')
         self.commit()
 
-    def insertProduct(self, product_name, category_id, stocks, price, description, status, product_image):
+
+    def insertProduct(self, product_name, category_id, stocks, price, description, status, product_image, sizes=None, colors=None):
         self.cursor.execute('''
-        INSERT INTO products (product_name, category_id, stocks, price, description, status, product_image)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-        ''', (product_name, category_id, stocks, price, description, status, product_image))
+        INSERT INTO products (product_name, category_id, stocks, price, description, status, product_image, sizes, colors)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (product_name, category_id, stocks, price, description, status, product_image, sizes, colors))
         self.commit()
+
 
     def updateProduct(self, product_id, product_name, category_id, stocks, price, description, status, product_image):
         self.cursor.execute('''

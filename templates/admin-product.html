@@ -61,41 +61,235 @@
 </html>
 
 <div class="modal fade" id="addProducts" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Products</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Product</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div id="addProductSuccess" class="alert alert-sm alert-success" style="display: none; font-size: 12px; position: fixed; left: 10px; top: 10px; z-index: 1000;" role="alert">
-                    Added new product successfully!
-                </div>
-
+            <div class="modal-body pb-5">
                 <div class="row">
-                    <!-- Product Name -->
-                    <div class="col-6">
-                        <label for="addProductName" class="form-label mt-2" style="font-size: 12px;">Product Name</label>
-                        <input id="addProductName" type="text" class="form-control-sm form-control" placeholder="Enter the name of the product" required>
+                    <div class="col-12 col-md-6">
+                        <div id="addProductSuccess" class="alert alert-sm alert-success" style="display: none; font-size: 12px; position: fixed; left: 10px; top: 10px; z-index: 1000;" role="alert">
+                            Added new product successfully!
+                        </div>
+        
+                        <div class="row">
+                            <!-- Product Name -->
+                            <div class="col-6">
+                                <label for="addProductName" class="form-label mt-2" style="font-size: 12px;">Product Name</label>
+                                <input id="addProductName" type="text" class="form-control-sm form-control" placeholder="Enter the name of the product" required>
+                            </div>
+                    
+                            <!-- Product Price -->
+                            <div class="col-6">
+                                <label for="addProductPrice" class="form-label mt-2" style="font-size: 12px;">Product Price</label>
+                                <input id="addProductPrice" type="number" step="0.01" class="form-control-sm form-control" placeholder="Enter the price of the product" required>
+                            </div>
+                        </div>
+        
+                        <label for="selectCategories" class="form-label mt-2" style="font-size: 12px;">Select Category</label>
+                        <select name="" id="selectCategories" class="form-select form-select-sm mt-2"></select>
+        
+                        <label for="addProductDescription" class="form-label mt-2" style="font-size: 12px;">Product Description</label>
+                        <textarea id="addProductDescription" class="form-control-sm form-control mt-2" rows="5" placeholder="Enter the product description" required></textarea>
+        
+                        <input id="addProductStocks" type="hidden" class="form-control-sm form-control mt-2" value="0" required>
+    
                     </div>
-            
-                    <!-- Product Price -->
-                    <div class="col-6">
-                        <label for="addProductPrice" class="form-label mt-2" style="font-size: 12px;">Product Price</label>
-                        <input id="addProductPrice" type="number" step="0.01" class="form-control-sm form-control" placeholder="Enter the price of the product" required>
+                    <div class="col-12 col-md-6">
+                        <label for="addProductImage" class="form-label mt-2" style="font-size: 12px;">Product Image</label>
+                        <div>
+                            <div class="row" id="image-preview-row">
+                                <div class="col-12 mb-3">
+                                    <!-- Hidden file input for selecting images -->
+                                    <input multiple type="file" id="image-input" accept="image/*" multiple style="display: none;" onchange="previewImages()">
+                                    <!-- Clickable area to trigger file input -->
+                                    <div onclick="document.getElementById('image-input').click()" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100px; width: 100%; border: 1px solid #ddd; border-radius: 5px; cursor: pointer;">
+                                        <i class="bi bi-cloud-upload fs-5 text-muted"></i>
+                                        <p style="font-size: 12px;" class="text-muted">Add Image</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Container for displaying image previews -->
+                                <div class="image-preview" id="image-preview"></div>
+                            </div>
+                        </div>
+                        <script>
+                            const imageInput = document.getElementById('image-input');
+                            const imagePreview = document.getElementById('image-preview');
+                            const imageDataArray = [];  // Array to hold base64 image data
+                        
+                            function previewImages() {
+                                const files = imageInput.files;
+                        
+                                // Loop through each file and create a preview
+                                for (let i = 0; i < files.length; i++) {
+                                    const file = files[i];
+                                    const reader = new FileReader();
+                        
+                                    reader.onload = function (e) {
+                                        const colDiv = document.createElement('div');
+                                        colDiv.classList.add('col-12', 'col-md-4', 'mb-3'); // Add column classes
+                        
+                                        colDiv.innerHTML = `
+                                            <div class="preview-image">
+                                                <img src="${e.target.result}" alt="Image Preview" style="max-width: 100%; max-height: 100px;">
+                                                <button class="remove-img" onclick="removeImage(this)">×</button>
+                                            </div>
+                                        `;
+                        
+                                        imagePreview.appendChild(colDiv);  // Append the new image preview wrapped in a column div
+                                        
+                                        // Capture the base64 data
+                                        imageDataArray.push(e.target.result);
+                                    }
+                        
+                                    reader.readAsDataURL(file);  // Read the file as a data URL
+                                }
+                        
+                                // Clear the input after reading the files to allow the same file to be uploaded again
+                                imageInput.value = '';
+                            }
+                        
+                            function removeImage(button) {
+                                const previewDiv = button.parentElement.parentElement; // Get the column div
+                                const imgSrc = previewDiv.querySelector('img').src; // Get the image source to find it in the array
+                                previewDiv.remove();  // Remove the image preview
+                                
+                                // Remove the image data from the array
+                                const index = imageDataArray.indexOf(imgSrc);
+                                if (index !== -1) {
+                                    imageDataArray.splice(index, 1);
+                                    console.log('Updated Image Data Array:', imageDataArray);
+                                }
+                            }
+                        </script>
+                        
+                        
+                        <div>
+                            <label for="addProductSizes" class="form-label mt-2" style="font-size: 12px;">Sizes</label>
+                            <div id="sizesContainer" class="sizes-container">
+                                <input id="addProductSizes" placeholder="Add size..." onkeydown="handleSizeKeyDown(event)" />
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="addProductColors" class="form-label mt-2" style="font-size: 12px;">Colors</label>
+                            <div id="colorsContainer" class="colors-container">
+                                <input id="addProductColors" placeholder="Add color..." onkeydown="handleColorKeyDown(event)" />
+                            </div>
+                        </div>
+
+                        <script>
+                            let sizes = [];
+                            let colors = [];
+                            
+                            const sizeInput = document.getElementById('addProductSizes');
+                            const colorInput = document.getElementById('addProductColors');
+                            
+                            function handleSizeKeyDown(event) {
+                                const value = sizeInput.value.trim();
+                                
+                                if (event.key === 'Enter' && value) {
+                                    event.preventDefault();
+                                    if (!sizes.includes(value)) {
+                                        sizes.push(value);
+                                        sizeInput.value = '';
+                                        updateSizesDisplay();
+                                    } else {
+                                        alert('Size already exists!');
+                                    }
+                                }
+                            }
+                            
+                            function handleColorKeyDown(event) {
+                                const value = colorInput.value.trim();
+                                
+                                if (event.key === 'Enter' && value) {
+                                    event.preventDefault();
+                                    if (!colors.includes(value)) {
+                                        colors.push(value);
+                                        colorInput.value = '';
+                                        updateColorsDisplay();
+                                    } else {
+                                        alert('Color already exists!');
+                                    }
+                                }
+                            }
+                            
+                            function updateSizesDisplay() {
+                                const container = document.getElementById('sizesContainer');
+                                container.querySelectorAll('.tag').forEach(tag => tag.remove());
+                                
+                                sizes.forEach(size => {
+                                    const tag = document.createElement('span');
+                                    tag.className = 'tag';
+                                    tag.textContent = size;
+                        
+                                    const deleteIcon = document.createElement('i');
+                                    deleteIcon.className = 'bi bi-backspace ms-2';
+                                    deleteIcon.addEventListener('click', () => {
+                                        sizes = sizes.filter(s => s !== size);
+                                        updateSizesDisplay();
+                                    });
+                                    
+                                    tag.appendChild(deleteIcon);
+                                    container.insertBefore(tag, sizeInput);
+                                });
+                            }
+                            
+                            function updateColorsDisplay() {
+                                const container = document.getElementById('colorsContainer');
+                                container.querySelectorAll('.tag').forEach(tag => tag.remove());
+                                
+                                colors.forEach(color => {
+                                    const tag = document.createElement('span');
+                                    tag.className = 'tag';
+                                    tag.textContent = color;
+                        
+                                    const deleteIcon = document.createElement('i');
+                                    deleteIcon.className = 'bi bi-backspace ms-2';
+                                    deleteIcon.addEventListener('click', () => {
+                                        colors = colors.filter(c => c !== color);
+                                        updateColorsDisplay();
+                                    });
+                                    
+                                    tag.appendChild(deleteIcon);
+                                    container.insertBefore(tag, colorInput);
+                                });
+                            }
+                            
+                            // Show/hide placeholder independently
+                            sizeInput.addEventListener('focus', () => {
+                                sizeInput.placeholder = 'Add size...';
+                            });
+                            
+                            sizeInput.addEventListener('blur', () => {
+                                if (!sizeInput.value) {
+                                    sizeInput.placeholder = '';
+                                }
+                            });
+                        
+                            colorInput.addEventListener('focus', () => {
+                                colorInput.placeholder = 'Add color...';
+                            });
+                            
+                            colorInput.addEventListener('blur', () => {
+                                if (!colorInput.value) {
+                                    colorInput.placeholder = '';
+                                }
+                            });
+                        
+                            // Event listeners for keydown
+                            sizeInput.addEventListener('keydown', handleSizeKeyDown);
+                            colorInput.addEventListener('keydown', handleColorKeyDown);
+                        </script>
+                        
+                        
+
                     </div>
                 </div>
-
-                <label for="selectCategories" class="form-label mt-2" style="font-size: 12px;">Select Category</label>
-                <select name="" id="selectCategories" class="form-select form-select-sm mt-2"></select>
-
-                <label for="addProductDescription" class="form-label mt-2" style="font-size: 12px;">Product Description</label>
-                <textarea id="addProductDescription" class="form-control-sm form-control mt-2" rows="3" placeholder="Enter the product description" required></textarea>
-
-                <input id="addProductStocks" type="hidden" class="form-control-sm form-control mt-2" value="0" required>
-
-                <label for="addProductImage" class="form-label mt-2" style="font-size: 12px;">Product Image</label>
-                <input id="addProductImage" type="file" class="form-control-sm form-control mt-2" placeholder="Upload product image">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-dark btn-sm" data-bs-dismiss="modal">Close</button>

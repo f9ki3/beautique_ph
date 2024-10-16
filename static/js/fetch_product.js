@@ -11,7 +11,7 @@ function fetchAllProducts() {
         contentType: "application/json",
         dataType: "json",
         success: function(response) {
-            console.log("Server response:", response);
+            // console.log("Server response:", response);
             allProducts = response.products || response; // Store all products in the array
             filteredProducts = allProducts; // Initialize filtered products
             renderProducts(activePage); // Render products for the initial page
@@ -33,7 +33,7 @@ function renderProducts(page) {
 
     if (productsToDisplay.length > 0) {
         productsToDisplay.forEach((product, index) => {
-            console.log("Product:", product); // Log each product for debugging
+            // console.log("Product:", product); // Log each product for debugging
 
             // Create a new row for each product
             let row = `
