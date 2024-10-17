@@ -1,10 +1,11 @@
 // Event listener for delete buttons
-$(document).on('click', '.delete-button', function() {
+$(document).on('click', '.delete-button-product', function() {
     const categoryId = $(this).data('id'); // Get the ID from the button
     $('#confirmDelete').data('id', categoryId); // Store the ID in the confirm button
-    $('#deleteModal').modal('show'); // Show the modal
-    // console.log('Click');
+    $('#deleteModalProduct').modal('show'); // Show the modal
+    console.log('categoryId')
 });
+
 
 // Event listener for the confirm delete button
 $(document).on('click', '#confirmDelete', function() {
