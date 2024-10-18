@@ -1,22 +1,3 @@
-#search-results {
-    position: absolute;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    padding: 10px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-#search-results li {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-    cursor: pointer;
-}
-#search-results li:hover {
-    background-color: #ccc;
-}
-
 /* Auth html fles */
 .btn-hover:hover {
     background-color: #ebfff1; /* Example hover background color */

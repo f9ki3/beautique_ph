@@ -3,6 +3,7 @@ $(document).on('click', '.delete-button-product', function() {
     const categoryId = $(this).data('id'); // Get the ID from the button
     $('#confirmDelete').data('id', categoryId); // Store the ID in the confirm button
     $('#deleteModalProduct').modal('show'); // Show the modal
+    console.log('categoryId')
 });
 
 
@@ -18,7 +19,7 @@ $(document).on('click', '#confirmDelete', function() {
     // Make an AJAX call to delete the category (adjust URL as needed)
     $.ajax({
         type: "POST",
-        url: "/deleteProduct",           // Ensure the endpoint is correct
+        url: "/deleteCategory",           // Ensure the endpoint is correct
         data: JSON.stringify(data),       // Convert the data object to a JSON string
         contentType: "application/json",  // Correct content type for sending JSON
         dataType: "json",                 // Expect JSON response from the server

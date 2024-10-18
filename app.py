@@ -54,13 +54,6 @@ def admin_category():
         return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
     return render_template('admin-category.html')
 
-@app.route('/admin-inventory', methods=['GET'])
-def admin_inventory():
-    # Check if the user is logged in by verifying session data
-    if 'username' not in session:
-        return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
-    return render_template('admin-inventory.html')
-
 # API ENDPOINTS
 @app.route("/post_login", methods=['POST'])
 def post_login():
@@ -118,7 +111,7 @@ def deleteProduct():
     json = request.get_json()
     id = json.get('id')
     Product().deleteProduct(id)
-    return jsonify({'status': id})
+    return jsonify({'status': 1})
 
 @app.route('/updateCategory', methods=['POST'])
 def update_category():
