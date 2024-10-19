@@ -89,6 +89,13 @@ class Product(Database):
         self.cursor.execute('SELECT * FROM products')
         rows = self.cursor.fetchall()
         return [dict(row) for row in rows]
+    
+    def fetchAllProductsCategory(self, categoryid=None):
+        # Fetch products by categoryid if provided
+        self.cursor.execute('SELECT * FROM products WHERE category_id = ?', (categoryid,))
+        rows = self.cursor.fetchall()
+        return [dict(row) for row in rows]
+
 
     # def insertSampleData(self):
     #     sample_products = [

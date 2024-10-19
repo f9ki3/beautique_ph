@@ -3,7 +3,7 @@ function insertStock() {
     // Collecting input values
     const productId = $('#selected-id').val().trim(); // Get the selected product ID
     const productStocks = parseInt($('#product_stocks').val().trim(), 10); // Get stock input
-
+    
     // Validate input fields
     if (!productId || isNaN(productStocks) || productStocks <= 0) {
         alert("Please select a product and enter a valid number of stocks.");

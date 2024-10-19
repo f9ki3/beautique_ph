@@ -1,4 +1,5 @@
-let activePageStocks = 1; // Initial page
+// Stocks Pagination and Filtering
+let activeStockPage = 1; // Initial page for stocks
 const stocksPerPage = 10; // Set how many stocks you want per page
 let allStocks = []; // Array to hold all stocks
 let filteredStocks = []; // Array to hold filtered stocks
@@ -11,15 +12,14 @@ function fetchAllStocks() {
         contentType: "application/json",
         dataType: "json",
         success: function(response) {
-            // console.log("Server response:", response);
             allStocks = response.stocks || response; // Store all stocks in the array
             filteredStocks = allStocks; // Initialize filtered stocks
-            renderStocks(activePageStocks); // Render stocks for the initial page
-            createPaginationControls(filteredStocks.length); // Create pagination controls
+            renderStocks(activeStockPage); // Render stocks for the initial page
+            createStockPaginationControls(filteredStocks.length); // Create pagination controls
         },
         error: function(xhr, status, error) {
             console.error('Error fetching stocks:', error);
-            $('#stockTable').append('<tr><td colspan="8" class="text-center">Error loading stocks</td></tr>');
+            $('#stockTable').append('<tr><td colspan="6" class="text-center">Error loading stocks</td></tr>');
         }
     });
 }
@@ -33,17 +33,14 @@ function renderStocks(page) {
 
     if (stocksToDisplay.length > 0) {
         stocksToDisplay.forEach((stock, index) => {
-            // console.log("Stock:", stock); // Log each stock for debugging
-
-            // Create a new row for each stock
             let row = `
                 <tr>
-                    <th scope="row">${startIndex + index + 1}</th>
-                    <td>${stock.stock_date || 'N/A'}</td>
-                    <td>${stock.product_name || 'N/A'}</td>
-                    <td>${stock.stock_qty || 0}</td>
-                    <td>${stock.stock_type || 'N/A'}</td>
-                    <td>
+                    <th class="pb-3 pt-3" scope="row">${startIndex + index + 1}</th>
+                    <td class="pb-3 pt-3">${stock.stock_date || 'N/A'}</td>
+                    <td class="pb-3 pt-3">${stock.product_name || 'N/A'}</td>
+                    <td class="pb-3 pt-3">${stock.stock_qty || 0}</td>
+                    <td class="pb-3 pt-3">${stock.stock_type || 'N/A'}</td>
+                    <td class="pb-3 pt-3">
                         <button class="delete-button-stocks" 
                                 style="background: transparent; border: none" 
                                 data-id="${stock.stock_id}">
@@ -51,24 +48,19 @@ function renderStocks(page) {
                         </button>
                     </td>
                 </tr>`;
-
             $('#stockTable').append(row); // Append the new row to the table
         });
     } else {
-        $('#stockTable').append('<tr><td colspan="8" class="text-center">No stocks found</td></tr>');
+        $('#stockTable').append('<tr><td colspan="6" class="text-center">No stocks found</td></tr>');
     }
 }
 
-// Function to create pagination controls
-function createPaginationControls(totalStocks) {
+// Function to create pagination controls for stocks
+function createStockPaginationControls(totalStocks) {
     const totalPages = Math.ceil(totalStocks / stocksPerPage);
     const paginationContainer = $('#paginationStockControls');
 
-    // Clear previous page numbers
-    paginationContainer.find('li.page-number').remove();
-
-    // Clear existing pagination controls
-    paginationContainer.empty();
+    paginationContainer.empty(); // Clear existing pagination controls
 
     // Add Previous button
     const prevItem = $('<li class="page-item page-pink"><a class="page-link" href="#" id="prevStockPage">Previous</a></li>');
@@ -79,17 +71,15 @@ function createPaginationControls(totalStocks) {
         const pageItem = $('<li class="page-item page-pink page-number"></li>');
         const pageLink = $(`<a class="page-link" href="#">${page}</a>`);
 
-        // Highlight the current page
-        if (page === activePageStocks) {
+        if (page === activeStockPage) {
             pageItem.addClass('active');
         }
 
-        // Set up click event for pagination links
         pageLink.on('click', function(e) {
             e.preventDefault();
-            activePageStocks = page; // Update active page
-            renderStocks(activePageStocks); // Render stocks for the selected page
-            createPaginationControls(totalStocks); // Recreate pagination controls
+            activeStockPage = page; // Update active page
+            renderStocks(activeStockPage); // Render stocks for the selected page
+            createStockPaginationControls(totalStocks); // Recreate pagination controls
         });
 
         pageItem.append(pageLink);
@@ -100,28 +90,24 @@ function createPaginationControls(totalStocks) {
     const nextItem = $('<li class="page-item page-pink"><a class="page-link" href="#" id="nextStockPage">Next</a></li>');
     paginationContainer.append(nextItem);
 
-    // Enable/disable Previous button
-    $('#prevStockPage').parent().toggleClass('disabled', activePageStocks <= 1);
-    // Enable/disable Next button
-    $('#nextStockPage').parent().toggleClass('disabled', activePageStocks >= totalPages);
+    $('#prevStockPage').parent().toggleClass('disabled', activeStockPage <= 1);
+    $('#nextStockPage').parent().toggleClass('disabled', activeStockPage >= totalPages);
 
-    // Handle Previous button click
     $('#prevStockPage').off('click').on('click', function(e) {
         e.preventDefault();
-        if (activePageStocks > 1) {
-            activePageStocks--; // Decrease active page
-            renderStocks(activePageStocks); // Render stocks for the new page
-            createPaginationControls(totalStocks); // Update pagination controls
+        if (activeStockPage > 1) {
+            activeStockPage--; // Decrease active page
+            renderStocks(activeStockPage); // Render stocks for the new page
+            createStockPaginationControls(totalStocks); // Update pagination controls
         }
     });
 
-    // Handle Next button click
     $('#nextStockPage').off('click').on('click', function(e) {
         e.preventDefault();
-        if (activePageStocks < totalPages) {
-            activePageStocks++; // Increase active page
-            renderStocks(activePageStocks); // Render stocks for the new page
-            createPaginationControls(totalStocks); // Update pagination controls
+        if (activeStockPage < totalPages) {
+            activeStockPage++; // Increase active page
+            renderStocks(activeStockPage); // Render stocks for the new page
+            createStockPaginationControls(totalStocks); // Update pagination controls
         }
     });
 }
@@ -134,16 +120,18 @@ function filterStocks() {
         stock.product_name.toLowerCase().includes(searchQuery)
     ); // Filter stocks based on the search query
 
-    activePageStocks = 1; // Reset to the first page
-    renderStocks(activePageStocks); // Render the filtered stocks
-    createPaginationControls(filteredStocks.length); // Update pagination controls
+    activeStockPage = 1; // Reset to the first page
+    renderStocks(activeStockPage); // Render the filtered stocks
+    createStockPaginationControls(filteredStocks.length); // Update pagination controls
 }
 
-// Attach the search functionality to the input field
+// Attach the search functionality to the input field for stocks
 $('#searchStock').on('input', filterStocks);
 
 // Initial fetch of all stocks
 fetchAllStocks();
+
+
 $(document).ready(function() {
     // Fetch products from the server
     $.ajax({
@@ -184,7 +172,7 @@ $(document).ready(function() {
         const productId = $(this).data('value');
 
         $('#selected-product').text(productName);
-        $('#selected-id').val(productId); // Store the product ID in the hidden input
+        $('#selected-id').val(productId);
         $('#search-container').hide();
     });
 
@@ -203,3 +191,48 @@ $(document).ready(function() {
         }
     });
 });
+
+function insertStock() {
+    // Collecting input values
+    const productId = $('#selected-product').text().trim(); // Get selected product name
+    const productStocks = parseInt($('#product_stocks').val().trim(), 10); // Get stock input
+
+    // Validate input fields
+    if (!productName || isNaN(productStocks) || productStocks <= 0) {
+        alert("Please select a product and enter a valid number of stocks.");
+        return;
+    }
+
+    // Prepare form data for submission
+    const formData = new FormData();
+    formData.append('id', productName);
+    formData.append('stocks', productStocks); // Append stock value
+    console.log(productName)
+    // Show loading indicator
+    $('.category-load').show();
+    $('.category-text').hide();
+
+    // Submit the form data via AJAX
+    $.ajax({
+        url: '/insertStocks', // Adjust the URL for stock addition
+        method: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            $('#addCategorySuccess').show(); // Show success alert
+            setTimeout(() => {
+                location.reload(); // Reload the page after 1.5 seconds
+            }, 1500);
+        },
+        error: function(xhr) {
+            console.error("Error adding stock:", xhr.responseText);
+            alert("Error adding stock: " + (xhr.responseJSON?.error || xhr.responseText)); // Provide user feedback
+        },
+        complete: function() {
+            // Hide loading indicator
+            $('.category-load').hide();
+            $('.category-text').show();
+        }
+    });
+}

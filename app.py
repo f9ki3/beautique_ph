@@ -102,6 +102,16 @@ def insert_category():
     # Return a JSON response with the category
     return jsonify({'category': category})
 
+@app.route('/insertStocks', methods=['POST'])
+def insert_stocks():
+    # Get the JSON data from the request
+    id = request.form.get('id')
+    stock = request.form.get('stocks')
+    type = 'IN'
+    Stocks().insertStock(id,stock,type)
+    # Return a JSON response with the category
+    return jsonify({'success': 1})
+
 @app.route('/fetchAllCategories', methods=['GET'])
 def fetch_category():
     data = Categories().fetchAllCategories()
@@ -233,6 +243,12 @@ def view_product():
         return jsonify(product_details)
     else:
         return jsonify({'error': 'Product ID not provided.'}), 400
+
+@app.route('/fetchAllProductsCategory', methods=['GET'])
+def fetch_all_products():
+    category_id = request.args.get('category_id', type=int)  # Get the category_id from the query parameters
+    data = Product().fetchAllProductsCategory(category_id)
+    return jsonify(data)
     
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")

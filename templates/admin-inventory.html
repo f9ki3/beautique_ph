@@ -7,15 +7,12 @@
     {% include 'header_links.html' %}
 </head>
 <body>
-    <div>
-        <!-- Any additional content can go here -->
-    </div>
     {% include 'nav-admin.html' %}
     <div class="container d-flex flex-row">
         {% include 'header.html' %}
         <div class="container body-color">
             <div class="row">
-                <h4>Inventory</h4>
+                <h4>Inventory</h4> <!-- Updated title -->
                 <div class="row">
                     <div class="col-12 col-md-6">
                         <input type="text" class="form-control-sm form-control" placeholder="Search" id="searchStock">
@@ -43,7 +40,7 @@
                         </tbody>
                     </table>
                 </div>
-                <nav aria-label="Page navigation example">
+                <nav aria-label="Stocks pagination"> <!-- Updated aria-label -->
                     <ul class="pagination pagination-sm" id="paginationStockControls">
                         <li class="page-item page-pink"><a class="page-link" href="#" id="prevStockPage">Previous</a></li>
                         <!-- Page numbers will be dynamically inserted here -->

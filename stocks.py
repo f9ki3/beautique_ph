@@ -17,10 +17,19 @@ class Stocks(Database):
 
     def insertStock(self, stock_product_id, stock_qty, stock_type):
         stock_date = datetime.now().date()  # Get today's date
+        # Insert the new stock record
         self.cursor.execute('''
-        INSERT INTO stocks (stock_product_id, stock_date, stock_qty, stock_type)
-        VALUES (?, ?, ?, ?)
+            INSERT INTO stocks (stock_product_id, stock_date, stock_qty, stock_type)
+            VALUES (?, ?, ?, ?)
         ''', (stock_product_id, stock_date, stock_qty, stock_type))
+        
+        # Update the stock quantity of the corresponding product
+        self.cursor.execute('''
+            UPDATE products
+            SET stocks = stocks + ?
+            WHERE id = ?
+        ''', (stock_qty, stock_product_id))
+
         self.commit()
 
     def deleteStock(self, stock_id):
