@@ -7,9 +7,10 @@ let filteredProducts = []; // Array to hold filtered products
 function fetchAllProducts() {
     $.ajax({
         type: "GET",
-        url: "/fetchAllProducts", // Endpoint to fetch all products
-        contentType: "application/json",
-        dataType: "json",
+        url: "/fetchAllProducts",          // Ensure the endpoint is correct
+        contentType: "application/json",   // Correct content type for sending JSON
+        dataType: "json",                  // Expect JSON response from the server
+        data: { category_id: 'all' },
         success: function(response) {
             // console.log("Server response:", response);
             allProducts = response.products || response; // Store all products in the array

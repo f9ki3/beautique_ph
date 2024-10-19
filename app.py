@@ -147,10 +147,25 @@ def update_category():
     Categories().updateCategory( id, date, name)
     return jsonify({'status': 1})
 
+# @app.route('/fetchAllProducts', methods=['GET'])
+# def fetch_products():
+#     data = Product().fetchAllProducts()
+#     return jsonify(data)
+
 @app.route('/fetchAllProducts', methods=['GET'])
 def fetch_products():
-    data = Product().fetchAllProducts()
-    return jsonify(data)
+    category_id = request.args.get('category_id')
+
+    if category_id == 'all':
+        # Fetch all products if the category_id is 'all'
+        products = Product().fetchAllProducts()
+        
+    else:
+        # Fetch products based on the specified category_id
+        products = Product().fetchAllProductsCategory(category_id)
+
+    # Convert products to a serializable format
+    return jsonify(products)
 
 @app.route('/fetchAllStocks', methods=['GET'])
 def fetch_stocks():
