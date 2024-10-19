@@ -7,9 +7,10 @@ let filteredProducts = []; // Array to hold filtered products
 function fetchAllProducts() {
     $.ajax({
         type: "GET",
-        url: "/fetchAllProducts", // Endpoint to fetch all products
-        contentType: "application/json",
-        dataType: "json",
+        url: "/fetchAllProducts",          // Ensure the endpoint is correct
+        contentType: "application/json",   // Correct content type for sending JSON
+        dataType: "json",                  // Expect JSON response from the server
+        data: { category_id: 'all' },
         success: function(response) {
             // console.log("Server response:", response);
             allProducts = response.products || response; // Store all products in the array
@@ -51,9 +52,9 @@ function renderProducts(page) {
                     <td>${product.description || 'N/A'}</td>
                     <td>${product.stocks || 0}</td>
                     <td>
-                        <button class="delete-button" 
+                        <button class="delete-button-product" 
                                 style="background: transparent; border: none" 
-                                data-id="${product.price}">
+                                data-id="${product.id}">
                             <i class="bi bi-trash3"></i>
                         </button>
                         <button class="edit-button" 

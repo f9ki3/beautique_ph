@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from accounts import Accounts  
 from categories import Categories
 from products import Product
+from stocks import Stocks
 import base64
 
 app = Flask(__name__)
@@ -30,7 +31,7 @@ def logout():
 @app.route('/admin-login', methods=['GET'])
 def admin_login():
     if 'username' in session:
-        return redirect('/dashboard')  # Redirect to the admin login page if not logged in
+        return redirect('/admin-dashboard')  # Redirect to the admin login page if not logged in
     return render_template('admin-login.html')
 
 @app.route('/admin-dashboard', methods=['GET'])
@@ -53,6 +54,13 @@ def admin_category():
     if 'username' not in session:
         return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
     return render_template('admin-category.html')
+
+@app.route('/admin-inventory', methods=['GET'])
+def admin_inventory():
+    # Check if the user is logged in by verifying session data
+    if 'username' not in session:
+        return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
+    return render_template('admin-inventory.html')
 
 # API ENDPOINTS
 @app.route("/post_login", methods=['POST'])
@@ -94,6 +102,16 @@ def insert_category():
     # Return a JSON response with the category
     return jsonify({'category': category})
 
+@app.route('/insertStocks', methods=['POST'])
+def insert_stocks():
+    # Get the JSON data from the request
+    id = request.form.get('id')
+    stock = request.form.get('stocks')
+    type = 'IN'
+    Stocks().insertStock(id,stock,type)
+    # Return a JSON response with the category
+    return jsonify({'success': 1})
+
 @app.route('/fetchAllCategories', methods=['GET'])
 def fetch_category():
     data = Categories().fetchAllCategories()
@@ -106,6 +124,20 @@ def delete_category():
     Categories().deleteCategory(cat_id)
     return jsonify({'status': 1})
 
+@app.route('/deleteStock', methods=['POST'])
+def delete_stock():
+    json = request.get_json()
+    id = json.get('id')
+    Stocks().deleteStock(id)
+    return jsonify({'status': 1})
+
+@app.route('/deleteProduct', methods=['POST'])
+def delete_product():
+    json = request.get_json()
+    id = json.get('id')
+    Product().deleteProduct(id)
+    return jsonify({'status': 1})
+
 @app.route('/updateCategory', methods=['POST'])
 def update_category():
     json = request.get_json()
@@ -115,9 +147,29 @@ def update_category():
     Categories().updateCategory( id, date, name)
     return jsonify({'status': 1})
 
+# @app.route('/fetchAllProducts', methods=['GET'])
+# def fetch_products():
+#     data = Product().fetchAllProducts()
+#     return jsonify(data)
+
 @app.route('/fetchAllProducts', methods=['GET'])
 def fetch_products():
-    data = Product().fetchAllProducts()
+    category_id = request.args.get('category_id')
+
+    if category_id == 'all':
+        # Fetch all products if the category_id is 'all'
+        products = Product().fetchAllProducts()
+        
+    else:
+        # Fetch products based on the specified category_id
+        products = Product().fetchAllProductsCategory(category_id)
+
+    # Convert products to a serializable format
+    return jsonify(products)
+
+@app.route('/fetchAllStocks', methods=['GET'])
+def fetch_stocks():
+    data = Stocks().fetchAllStocks()
     return jsonify(data)
 
 @app.route('/addProducts', methods=['POST'])
@@ -206,6 +258,12 @@ def view_product():
         return jsonify(product_details)
     else:
         return jsonify({'error': 'Product ID not provided.'}), 400
+
+@app.route('/fetchAllProductsCategory', methods=['GET'])
+def fetch_all_products():
+    category_id = request.args.get('category_id', type=int)  # Get the category_id from the query parameters
+    data = Product().fetchAllProductsCategory(category_id)
+    return jsonify(data)
     
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")

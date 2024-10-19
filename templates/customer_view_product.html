@@ -41,17 +41,22 @@
                     <p class="text-muted mt-3">Colors:</p>
                     <div id="btn_colors">
                     </div>        
-                    <div class="row">
+                    <div class="d-flex justify-content-between">
+                        <p class="text-muted mt-3">Qty:</p>
+                        <p id="product_stocks" class="mt-3 text-muted">Stocks: </p>
+                    </div>
+                    <div class="row g-2">
                         <div class="col-12 col-md-6">
                             <div>
-                                <p class="text-muted mt-3">Qty:</p>
                                 <div class="btn-group border" role="group" aria-label="Basic example" style="width: 100%;"> <!-- Set your desired width -->
                                     <button type="button" class="btn">-</button>
                                     <input type="text" class="text-center" style="width: 50px; text-align: center;" value="1"> <!-- Set the input width -->
                                     <button type="button" class="btn">+</button>
                                 </div>                        
                             </div>
-                            <div class="mt-3">
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div>
                                 <button class="btn btn-pink" style="width: 100%;">+ Add to Cart</button>
                             </div>
                         </div>
@@ -64,7 +69,7 @@
         <div class="row mt-5">
             <h3 class="mt-2">Related Product</h3>
             <div class="col-12">
-                <div class="row g-2" id="productList">
+                <div class="row g-2" id="productListCategory">
                     
                 </div>
             </div>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautique PH</title>
+    {% include 'header_links.html' %}
+</head>
+<body>
+    {% include 'nav-admin.html' %}
+    <div class="container d-flex flex-row">
+        {% include 'header.html' %}
+        <div class="container body-color">
+            <div class="row">
+                <h4>Inventory</h4> <!-- Updated title -->
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <input type="text" class="form-control-sm form-control" placeholder="Search" id="searchStock">
+                    </div>
+                    <div class="col-12 col-md-6 d-flex flex-row justify-content-end">
+                        <button class="btn btn-sm border btn-pink" data-bs-toggle="modal" data-bs-target="#addStocks">
+                            <i class="bi bi-bookmark-plus"></i> Add Stocks
+                        </button>
+                    </div>
+                </div>
+                <div class="row p-4">
+                    <table class="table" style="font-size: 12px;">
+                        <thead>
+                            <tr>
+                                <th scope="col" width="5%">ID</th>
+                                <th scope="col" width="10%">Stock Date</th>
+                                <th scope="col" width="35%">Product Name</th>
+                                <th scope="col" width="10%">Stock Qty</th>
+                                <th scope="col" width="10%">Type</th>
+                                <th scope="col" width="5%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stockTable">
+                            <!-- Stock rows will be dynamically inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+                <nav aria-label="Stocks pagination"> <!-- Updated aria-label -->
+                    <ul class="pagination pagination-sm" id="paginationStockControls">
+                        <li class="page-item page-pink"><a class="page-link" href="#" id="prevStockPage">Previous</a></li>
+                        <!-- Page numbers will be dynamically inserted here -->
+                        <li class="page-item page-pink"><a class="page-link" href="#" id="nextStockPage">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    {% include 'footer_links.html' %}
+</body>
+</html>
+
+
+
+<div class="modal fade" id="addStocks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Stocks</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="addCategorySuccess" class="alert alert-sm alert-success" style="display: none; font-size: 12px; position: fixed; left: 10px; top: 10px; z-index: 1000;" role="alert">
+            Added stocks successfully!
+        </div>
+        <div class="custom-select">
+            <div class="selected rounded" id="selected-product">Select a product</div>
+            <div class="search-container" id="search-container" style="display: none;">
+                <input type="text" id="search-input" placeholder="Search...">
+                <div id="product-list"></div>
+            </div>
+            <input type="hidden" id="selected-id" value=""> <!-- Hidden input for product ID -->
+            <p class="m-0 mb-2 mt-3" style="font-size: 12px;">Stocks</p>
+            <input style="font-size: 14px;" type="number" id="product_stocks" class="form-control mb-5" placeholder="Number of Stocks" min="1">
+        </div>
+        
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-dark btn-sm" data-bs-dismiss="modal">Close</button>
+        <button id="insertCategory" onclick="insertStock()" type="button" class="btn w-25 btn-pink btn-sm"> 
+            <p class="category-text m-0"><i class="bi bi-bookmark-plus"></i> Submit</p>
+            <div class="category-load spinner-grow spinner-grow-sm m-1" style="display: none;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </button>
+    </div>
+    
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Delete Confirmation -->
+<div class="modal fade" id="deleteModalStock" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Delete Confirmation</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div id="deleteCategorySuccess" class="alert alert-sm alert-danger" style="display: none; font-size: 12px; position: fixed; left: 10px; top: 10px; z-index: 1000;" role="alert">
+                Delete stocks!
+              </div>
+              <p class="text-center">Are you sure you want to delete this stock?</p>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-sm btn-dark" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-sm btn-danger" id="confirmDelete">
+                <p class="del-category-text m-0"><i class="bi bi-trash3"></i> Delete</p>
+                <div class="del-category-load spinner-grow spinner-grow-sm m-1" style="display: none;" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+              </button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Delete Confirmation</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div id="updateCategorySuccess" class="alert alert-sm alert-success" style="display: none; font-size: 12px; position: fixed; left: 10px; top: 10px; z-index: 1000;" role="alert">
+                Update category success!
+              </div>
+              <form>
+                  <div class="form-group">
+                      <label for="categoryName">Category Name</label>
+                      <input type="text" class="form-control form-control-sm" id="categoryName" name="categoryName">
+                  </div>
+                  <div class="form-group mt-3">
+                      <label for="categoryDate">Category Date</label>
+                      <input disabled type="date" class="form-control form-control-sm" name="categoryDate" id="categoryDate">
+                    <script>
+                        // Get today's date
+                        const today = new Date().toISOString().split('T')[0];
+
+                        // Set the value of the date input to today's date
+                        document.getElementById('categoryDate').value = today;
+                    </script>
+                  </div>
+                  <input id="categoryId" type="hidden" name="categoryId">
+              </form>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-sm btn-dark" data-bs-dismiss="modal">Cancel</button>
+              <button onclick="updateCategory()" type="button" class="btn w-25 btn-pink btn-sm">
+                <p class="up-category-text m-0"><i class="bi  bi-file-earmark-break"></i> Save</p>
+                <div class="up-category-load spinner-grow spinner-grow-sm m-1" style="display: none;" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+              </button>
+          </div>
+      </div>
+  </div>
+</div>
+
