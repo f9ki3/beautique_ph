@@ -51,9 +51,9 @@ function renderProducts(page) {
                     <td>${product.description || 'N/A'}</td>
                     <td>${product.stocks || 0}</td>
                     <td>
-                        <button class="delete-button" 
+                        <button class="delete-button-product" 
                                 style="background: transparent; border: none" 
-                                data-id="${product.price}">
+                                data-id="${product.id}">
                             <i class="bi bi-trash3"></i>
                         </button>
                         <button class="edit-button" 

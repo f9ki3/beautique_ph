@@ -106,6 +106,13 @@ def delete_category():
     Categories().deleteCategory(cat_id)
     return jsonify({'status': 1})
 
+@app.route('/deleteProduct', methods=['POST'])
+def delete_product():
+    json = request.get_json()
+    id = json.get('id')
+    Product().deleteProduct(id)
+    return jsonify({'status': 1})
+
 @app.route('/updateCategory', methods=['POST'])
 def update_category():
     json = request.get_json()
