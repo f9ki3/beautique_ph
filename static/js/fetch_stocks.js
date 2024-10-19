@@ -137,6 +137,9 @@ $(document).ready(function() {
     $.ajax({
         url: '/fetchAllProducts',
         method: 'GET',
+        contentType: "application/json",   // Correct content type for sending JSON
+        dataType: "json",                  // Expect JSON response from the server
+        data: { category_id: 'all' },
         success: function(products) {
             products.forEach(function(product) {
                 $('#product-list').append(
