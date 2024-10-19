@@ -1,84 +1,68 @@
-let activePage = 1; // Initial page
-const productsPerPage = 10; // Set how many products you want per page
-let allProducts = []; // Array to hold all products
-let filteredProducts = []; // Array to hold filtered products
+let activePageStocks = 1; // Initial page
+const stocksPerPage = 10; // Set how many stocks you want per page
+let allStocks = []; // Array to hold all stocks
+let filteredStocks = []; // Array to hold filtered stocks
 
-// Function to fetch all products from the server
-function fetchAllProducts() {
+// Function to fetch all stocks from the server
+function fetchAllStocks() {
     $.ajax({
         type: "GET",
-        url: "/fetchAllProducts", // Endpoint to fetch all products
+        url: "/fetchAllStocks", // Endpoint to fetch all stocks
         contentType: "application/json",
         dataType: "json",
         success: function(response) {
             // console.log("Server response:", response);
-            allProducts = response.products || response; // Store all products in the array
-            filteredProducts = allProducts; // Initialize filtered products
-            renderProducts(activePage); // Render products for the initial page
-            createPaginationControls(filteredProducts.length); // Create pagination controls
+            allStocks = response.stocks || response; // Store all stocks in the array
+            filteredStocks = allStocks; // Initialize filtered stocks
+            renderStocks(activePageStocks); // Render stocks for the initial page
+            createPaginationControls(filteredStocks.length); // Create pagination controls
         },
         error: function(xhr, status, error) {
-            console.error('Error fetching products:', error);
-            $('#productTable').append('<tr><td colspan="8" class="text-center">Error loading products</td></tr>');
+            console.error('Error fetching stocks:', error);
+            $('#stockTable').append('<tr><td colspan="8" class="text-center">Error loading stocks</td></tr>');
         }
     });
 }
 
-// Function to render products for the current page
-function renderProducts(page) {
-    $('#productTable').empty(); // Clear existing rows in the table
-    const startIndex = (page - 1) * productsPerPage; // Calculate starting index
-    const endIndex = startIndex + productsPerPage; // Calculate ending index
-    const productsToDisplay = filteredProducts.slice(startIndex, endIndex); // Slice the array for the current page
+// Function to render stocks for the current page
+function renderStocks(page) {
+    $('#stockTable').empty(); // Clear existing rows in the table
+    const startIndex = (page - 1) * stocksPerPage; // Calculate starting index
+    const endIndex = startIndex + stocksPerPage; // Calculate ending index
+    const stocksToDisplay = filteredStocks.slice(startIndex, endIndex); // Slice the array for the current page
 
-    if (productsToDisplay.length > 0) {
-        productsToDisplay.forEach((product, index) => {
-            // console.log("Product:", product); // Log each product for debugging
+    if (stocksToDisplay.length > 0) {
+        stocksToDisplay.forEach((stock, index) => {
+            // console.log("Stock:", stock); // Log each stock for debugging
 
-            // Create a new row for each product
+            // Create a new row for each stock
             let row = `
                 <tr>
                     <th scope="row">${startIndex + index + 1}</th>
+                    <td>${stock.stock_date || 'N/A'}</td>
+                    <td>${stock.product_name || 'N/A'}</td>
+                    <td>${stock.stock_qty || 0}</td>
+                    <td>${stock.stock_type || 'N/A'}</td>
                     <td>
-                        <div style="width: 50px; height: 50px">
-                            <img src="../static/uploads/${product.product_image.split(',')[0].trim()}" 
-                                alt="${product.product_name}" 
-                                style="object-fit: cover; width: 100%; height: 100%;">
-                        </div>
-                    </td>
-                    <td>${product.price ? `₱${product.price.toFixed(2)}` : 'N/A'}</td>
-                    <td>${product.product_name || 'N/A'}</td>
-                    <td>${product.description || 'N/A'}</td>
-                    <td>${product.stocks || 0}</td>
-                    <td>
-                        <button class="delete-button-product" 
+                        <button class="delete-button-stocks" 
                                 style="background: transparent; border: none" 
-                                data-id="${product.id}">
+                                data-id="${stock.stock_id}">
                             <i class="bi bi-trash3"></i>
-                        </button>
-                        <button class="edit-button" 
-                                style="background: transparent; border: none" 
-                                data-id="${product.id}" 
-                                data-name="${product.product_name}" 
-                                data-price="${product.price}" 
-                                data-status="${product.status}">
-                            <i class="bi bi-pencil"></i>
                         </button>
                     </td>
                 </tr>`;
-        
 
-            $('#productTable').append(row); // Append the new row to the table
+            $('#stockTable').append(row); // Append the new row to the table
         });
     } else {
-        $('#productTable').append('<tr><td colspan="8" class="text-center">No products found</td></tr>');
+        $('#stockTable').append('<tr><td colspan="8" class="text-center">No stocks found</td></tr>');
     }
 }
 
 // Function to create pagination controls
-function createPaginationControls(totalProducts) {
-    const totalPages = Math.ceil(totalProducts / productsPerPage);
-    const paginationContainer = $('#paginationProductControls');
+function createPaginationControls(totalStocks) {
+    const totalPages = Math.ceil(totalStocks / stocksPerPage);
+    const paginationContainer = $('#paginationStockControls');
 
     // Clear previous page numbers
     paginationContainer.find('li.page-number').remove();
@@ -87,7 +71,7 @@ function createPaginationControls(totalProducts) {
     paginationContainer.empty();
 
     // Add Previous button
-    const prevItem = $('<li class="page-item page-pink"><a class="page-link" href="#" id="prevProductPage">Previous</a></li>');
+    const prevItem = $('<li class="page-item page-pink"><a class="page-link" href="#" id="prevStockPage">Previous</a></li>');
     paginationContainer.append(prevItem);
 
     // Add page number buttons dynamically
@@ -96,16 +80,16 @@ function createPaginationControls(totalProducts) {
         const pageLink = $(`<a class="page-link" href="#">${page}</a>`);
 
         // Highlight the current page
-        if (page === activePage) {
+        if (page === activePageStocks) {
             pageItem.addClass('active');
         }
 
         // Set up click event for pagination links
         pageLink.on('click', function(e) {
             e.preventDefault();
-            activePage = page; // Update active page
-            renderProducts(activePage); // Render products for the selected page
-            createPaginationControls(totalProducts); // Recreate pagination controls
+            activePageStocks = page; // Update active page
+            renderStocks(activePageStocks); // Render stocks for the selected page
+            createPaginationControls(totalStocks); // Recreate pagination controls
         });
 
         pageItem.append(pageLink);
@@ -113,50 +97,109 @@ function createPaginationControls(totalProducts) {
     }
 
     // Add Next button
-    const nextItem = $('<li class="page-item page-pink"><a class="page-link" href="#" id="nextProductPage">Next</a></li>');
+    const nextItem = $('<li class="page-item page-pink"><a class="page-link" href="#" id="nextStockPage">Next</a></li>');
     paginationContainer.append(nextItem);
 
     // Enable/disable Previous button
-    $('#prevProductPage').parent().toggleClass('disabled', activePage <= 1);
+    $('#prevStockPage').parent().toggleClass('disabled', activePageStocks <= 1);
     // Enable/disable Next button
-    $('#nextProductPage').parent().toggleClass('disabled', activePage >= totalPages);
+    $('#nextStockPage').parent().toggleClass('disabled', activePageStocks >= totalPages);
 
     // Handle Previous button click
-    $('#prevProductPage').off('click').on('click', function(e) {
+    $('#prevStockPage').off('click').on('click', function(e) {
         e.preventDefault();
-        if (activePage > 1) {
-            activePage--; // Decrease active page
-            renderProducts(activePage); // Render products for the new page
-            createPaginationControls(totalProducts); // Update pagination controls
+        if (activePageStocks > 1) {
+            activePageStocks--; // Decrease active page
+            renderStocks(activePageStocks); // Render stocks for the new page
+            createPaginationControls(totalStocks); // Update pagination controls
         }
     });
 
     // Handle Next button click
-    $('#nextProductPage').off('click').on('click', function(e) {
+    $('#nextStockPage').off('click').on('click', function(e) {
         e.preventDefault();
-        if (activePage < totalPages) {
-            activePage++; // Increase active page
-            renderProducts(activePage); // Render products for the new page
-            createPaginationControls(totalProducts); // Update pagination controls
+        if (activePageStocks < totalPages) {
+            activePageStocks++; // Increase active page
+            renderStocks(activePageStocks); // Render stocks for the new page
+            createPaginationControls(totalStocks); // Update pagination controls
         }
     });
 }
 
-// Function to filter products based on search input
-function filterProducts() {
-    const searchQuery = $('#searchProduct').val().toLowerCase(); // Get the search query
-    filteredProducts = allProducts.filter(product => 
-        product.product_name.toLowerCase().includes(searchQuery) || 
-        product.description.toLowerCase().includes(searchQuery)
-    ); // Filter products based on the search query
+// Function to filter stocks based on search input
+function filterStocks() {
+    const searchQuery = $('#searchStock').val().toLowerCase(); // Get the search query
+    filteredStocks = allStocks.filter(stock => 
+        stock.stock_date.toLowerCase().includes(searchQuery) ||
+        stock.product_name.toLowerCase().includes(searchQuery)
+    ); // Filter stocks based on the search query
 
-    activePage = 1; // Reset to the first page
-    renderProducts(activePage); // Render the filtered products
-    createPaginationControls(filteredProducts.length); // Update pagination controls
+    activePageStocks = 1; // Reset to the first page
+    renderStocks(activePageStocks); // Render the filtered stocks
+    createPaginationControls(filteredStocks.length); // Update pagination controls
 }
 
 // Attach the search functionality to the input field
-$('#searchProduct').on('input', filterProducts);
+$('#searchStock').on('input', filterStocks);
 
-// Initial fetch of all products
-fetchAllProducts();
+// Initial fetch of all stocks
+fetchAllStocks();
+$(document).ready(function() {
+    // Fetch products from the server
+    $.ajax({
+        url: '/fetchAllProducts',
+        method: 'GET',
+        success: function(products) {
+            products.forEach(function(product) {
+                $('#product-list').append(
+                    $('<div>', {
+                        class: 'product-option',
+                        text: product.product_name,
+                        'data-value': product.id
+                    })
+                );
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching products:', error);
+        }
+    });
+
+    // Toggle the search container
+    $('#selected-product').on('click', function() {
+        $('#search-container').toggle();
+        $('#search-input').val('').focus(); // Clear and focus the input
+        filterProducts(''); // Show all products
+    });
+
+    // Filter products based on search input
+    $('#search-input').on('input', function() {
+        const searchTerm = $(this).val().toLowerCase();
+        filterProducts(searchTerm);
+    });
+
+    // Select a product
+    $(document).on('click', '.product-option', function() {
+        const productName = $(this).text();
+        const productId = $(this).data('value');
+
+        $('#selected-product').text(productName);
+        $('#selected-id').val(productId); // Store the product ID in the hidden input
+        $('#search-container').hide();
+    });
+
+    // Function to filter products
+    function filterProducts(searchTerm) {
+        $('.product-option').each(function() {
+            const productName = $(this).text().toLowerCase();
+            $(this).toggle(productName.includes(searchTerm));
+        });
+    }
+
+    // Hide search container when clicking outside
+    $(document).on('click', function(event) {
+        if (!$(event.target).closest('.custom-select').length) {
+            $('#search-container').hide();
+        }
+    });
+});

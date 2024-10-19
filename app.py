@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from accounts import Accounts  
 from categories import Categories
 from products import Product
+from stocks import Stocks
 import base64
 
 app = Flask(__name__)
@@ -113,6 +114,13 @@ def delete_category():
     Categories().deleteCategory(cat_id)
     return jsonify({'status': 1})
 
+@app.route('/deleteStock', methods=['POST'])
+def delete_stock():
+    json = request.get_json()
+    id = json.get('id')
+    Stocks().deleteStock(id)
+    return jsonify({'status': 1})
+
 @app.route('/deleteProduct', methods=['POST'])
 def delete_product():
     json = request.get_json()
@@ -132,6 +140,11 @@ def update_category():
 @app.route('/fetchAllProducts', methods=['GET'])
 def fetch_products():
     data = Product().fetchAllProducts()
+    return jsonify(data)
+
+@app.route('/fetchAllStocks', methods=['GET'])
+def fetch_stocks():
+    data = Stocks().fetchAllStocks()
     return jsonify(data)
 
 @app.route('/addProducts', methods=['POST'])

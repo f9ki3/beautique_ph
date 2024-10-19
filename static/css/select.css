@@ -1,0 +1,42 @@
+.custom-select {
+    position: relative;
+    width: 100%;;
+}
+
+.selected {
+    padding: 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.search-container {
+    position: absolute;
+    width: 100%;
+    border: 1px solid #ccc;
+    background-color: white;
+    z-index: 1000;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    font-size: 12px;
+}
+
+#search-input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#product-list {
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+.product-option {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.product-option:hover {
+    background-color: #f0f0f0;
+}
