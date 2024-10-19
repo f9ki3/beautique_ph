@@ -30,7 +30,7 @@ def logout():
 @app.route('/admin-login', methods=['GET'])
 def admin_login():
     if 'username' in session:
-        return redirect('/dashboard')  # Redirect to the admin login page if not logged in
+        return redirect('/admin-dashboard')  # Redirect to the admin login page if not logged in
     return render_template('admin-login.html')
 
 @app.route('/admin-dashboard', methods=['GET'])
@@ -53,6 +53,13 @@ def admin_category():
     if 'username' not in session:
         return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
     return render_template('admin-category.html')
+
+@app.route('/admin-inventory', methods=['GET'])
+def admin_inventory():
+    # Check if the user is logged in by verifying session data
+    if 'username' not in session:
+        return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
+    return render_template('admin-inventory.html')
 
 # API ENDPOINTS
 @app.route("/post_login", methods=['POST'])
