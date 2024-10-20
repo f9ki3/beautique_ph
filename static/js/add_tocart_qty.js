@@ -175,7 +175,10 @@ function populateTable() {
         tbody.innerHTML = `
             <tr>
                 <td colspan="3" class="text-center pt-5">
-                    <h5>Your cart is empty.</h5>
+                    <div>
+                        <img style="width: 25%;" src="../static/img/empty_cart.svg">
+                    </div>
+                    <h5 class="mt-5">Your cart is empty.</h5>
                 </td>
             </tr>
         `;
