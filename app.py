@@ -30,6 +30,12 @@ def customer_landing():
         return render_template('landing_page.html')
     return redirect('/customer_login')  
 
+@app.route('/customer_cart', methods=['GET'])
+def customer_cart():
+    if 'username' in session and session['user_type'] == 'customer':
+        return render_template('customer_cart.html')
+    return redirect('/customer_login')  
+
 @app.route('/product_view', methods=['GET'])
 def product_view():
     product_id = request.args.get('product_id')  # Get the product_id from the query string
