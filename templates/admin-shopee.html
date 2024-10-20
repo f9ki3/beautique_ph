@@ -19,7 +19,7 @@
                     </div>
                     <div class="col-12 col-md-6 d-flex flex-row justify-content-end">
                         <button class="btn btn-sm border btn-pink" data-bs-toggle="modal" data-bs-target="#addStocks">
-                            <i class="bi bi-bookmark-plus"></i> Import Excell
+                            <i class="bi bi-bookmark-plus"></i> Import CSV
                         </button>
                     </div>
                 </div>
@@ -60,29 +60,17 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Stocks</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Import CSV</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div id="addCategorySuccess" class="alert alert-sm alert-success" style="display: none; font-size: 12px; position: fixed; left: 10px; top: 10px; z-index: 1000;" role="alert">
-            Added stocks successfully!
-        </div>
-        <div class="custom-select">
-            <div class="selected rounded" id="selected-product">Select a product</div>
-            <div class="search-container" id="search-container" style="display: none;">
-                <input type="text" id="search-input" placeholder="Search...">
-                <div id="product-list"></div>
-            </div>
-            <input type="hidden" id="selected-id" value=""> <!-- Hidden input for product ID -->
-            <p class="m-0 mb-2 mt-3" style="font-size: 12px;">Stocks</p>
-            <input style="font-size: 14px;" type="number" id="product_stocks" class="form-control mb-5" placeholder="Number of Stocks" min="1">
-        </div>
+        <input type="file" class="form-control">
         
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-dark btn-sm" data-bs-dismiss="modal">Close</button>
         <button id="insertCategory" onclick="insertStock()" type="button" class="btn w-25 btn-pink btn-sm"> 
-            <p class="category-text m-0"><i class="bi bi-bookmark-plus"></i> Submit</p>
+            <p class="category-text m-0"><i class="bi bi-bookmark-plus"></i> Import</p>
             <div class="category-load spinner-grow spinner-grow-sm m-1" style="display: none;" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
