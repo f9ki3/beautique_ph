@@ -54,7 +54,7 @@ function renderTable() {
             <td class="pb-3 pt-3">${category.category_date}</td>
             <td class="pb-3 pt-3">${category.category_name}</td>
             <td class="pb-3 pt-3">
-                <button class="delete-button" style="background: transparent; border: none" data-id="${category.id}">
+                <button class="delete-button-category" style="background: transparent; border: none" data-id="${category.id}">
                     <i class="bi bi-trash3"></i>
                 </button>
                 <button class="edit-button" style="background: transparent; border: none" data-id="${category.id}" data-name="${category.category_name}" data-date="${category.category_date}">

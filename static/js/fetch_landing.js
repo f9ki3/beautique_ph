@@ -9,7 +9,7 @@ $.ajax({
         categoryLanding.empty(); // Clear any existing content
 
         // Create a default 'Show All' button
-        var allButton = $('<button class="btn btn-sm active" data-category-id="all">Show All</button>');
+        var allButton = $('<button class="btn btn-sm active" data-category-id="all">All</button>');
         categoryLanding.append(allButton); // Append the 'Show All' button to the categoryLanding div
 
         // Iterate through the response and create buttons
@@ -24,7 +24,18 @@ $.ajax({
         // Attach click event to category buttons
         categoryLanding.on('click', 'button', function() {
             var categoryId = $(this).data('category-id');
-            fetchProducts(categoryId);
+            var categoryName = $(this).text(); // Get the text of the clicked button (category name)
+
+            fetchProducts(categoryId); // Fetch products based on the category
+
+            // Update the category header text
+            if (categoryId === 'all') {
+                $('#categoryHeader').text('All Category');
+            } else {
+                $('#categoryHeader').text(categoryName);
+            }
+
+            // Manage active class for buttons
             categoryLanding.find('button').removeClass('active'); // Remove active class from all buttons
             $(this).addClass('active'); // Add active class to the clicked button
         });

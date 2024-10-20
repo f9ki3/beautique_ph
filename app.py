@@ -23,6 +23,12 @@ def product_view():
     # You can now use product_id to fetch product details from a database if needed
     return render_template('customer_view_product.html', product_id=product_id)
 
+@app.route('/search_product', methods=['GET'])
+def search_product():
+    product_id = request.args.get('product_id')  # Get the product_id from the query string
+    # You can now use product_id to fetch product details from a database if needed
+    return render_template('customer_search_product.html', product_id=product_id)
+
 @app.route('/logout', methods=['GET'])
 def logout():
     session.clear()
@@ -61,6 +67,13 @@ def admin_inventory():
     if 'username' not in session:
         return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
     return render_template('admin-inventory.html')
+
+@app.route('/admin-shopee', methods=['GET'])
+def admin_shopee():
+    # Check if the user is logged in by verifying session data
+    if 'username' not in session:
+        return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
+    return render_template('admin-shopee.html')
 
 # API ENDPOINTS
 @app.route("/post_login", methods=['POST'])
@@ -122,7 +135,7 @@ def delete_category():
     json = request.get_json()
     cat_id = json.get('id')
     Categories().deleteCategory(cat_id)
-    return jsonify({'status': 1})
+    return jsonify({'status': cat_id})
 
 @app.route('/deleteStock', methods=['POST'])
 def delete_stock():
@@ -166,6 +179,20 @@ def fetch_products():
 
     # Convert products to a serializable format
     return jsonify(products)
+
+@app.route('/fetchAllProductsSearch', methods=['GET'])
+def fetch_products_search():
+    search_item = request.args.get('product_name')
+    # Check if search_item is None or empty
+    if search_item:
+        # Fetch specific products matching the search item
+        search_data = Product().fetchAllProductsSearch(search_item)
+    else:
+        # Fetch all products if no search item is provided
+        search_data = Product().fetchAllProducts()
+
+    return jsonify(search_data)
+
 
 @app.route('/fetchAllStocks', methods=['GET'])
 def fetch_stocks():

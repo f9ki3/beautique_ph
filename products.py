@@ -95,6 +95,12 @@ class Product(Database):
         self.cursor.execute('SELECT * FROM products WHERE category_id = ?', (categoryid,))
         rows = self.cursor.fetchall()
         return [dict(row) for row in rows]
+    
+    def fetchAllProductsSearch(self, search):
+        # Use LIKE to search for products with names containing the search term
+        self.cursor.execute('SELECT * FROM products WHERE product_name LIKE ?', ('%' + search + '%',))
+        rows = self.cursor.fetchall()
+        return [dict(row) for row in rows]
 
 
     # def insertSampleData(self):
