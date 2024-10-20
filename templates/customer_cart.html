@@ -24,38 +24,13 @@
                             <td width="20%">
                                 <p style="font-size: 12px;" class="text-muted">QUANTITY</p>
                             </td>
-                            <td width="20%">
+                            <td width="10%">
                                 <p style="font-size: 12px;" class="text-muted text-end">TOTAL</p>
                             </td>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- Example product row -->
-                        <tr>
-                            <td class="pt-5 align-top"> <!-- Aligns content to the top -->
-                                <div class="d-flex flex-row">
-                                    <div style="width: 150px; height: 150px;">
-                                        <img style="object-fit: cover; width: 100%; height: 100%;" class="rounded-3" src="../static/img/product-1.jpg" alt="">
-                                    </div>
-                                    <div class="ms-3">
-                                        <p class="p-0 m-0 mt-2 text-muted" style="font-size: 14px;">SKU BEAUTIQUE0012</p>
-                                        <h5 class="mt-2 fw-bolder">Product1</h5>
-                                        <p class="p-0 m-0 mt-2 text-muted" style="font-size: 14px;">PHP 100.00</p>
-                                        <p class="p-0 m-0 mt-2 text-muted" style="font-size: 14px;">Tops, Large, Green</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="pt-5 align-top">
-                                <div class="btn-group border" role="group" aria-label="Basic example" style="width: 100%;"> <!-- Set your desired width -->
-                                    <button type="button" class="btn">-</button>
-                                    <input type="text" class="text-center" style="width: 50px; text-align: center;" value="1"> <!-- Set the input width -->
-                                    <button type="button" class="btn">+</button>
-                                    <button type="button" class="btn"><i class="bi bi-trash3"></i></button>
-                                </div> 
-                            </td> <!-- Aligns content to the top -->
-                            <td class="pt-5 text-end align-top">₱ 10.00</td> <!-- Aligns content to the top -->
-                        </tr>
-                        
+                    <tbody id="product-body">
+                        <!-- Product rows will be populated here -->
                     </tbody>
                 </table>
                 

@@ -1,6 +1,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const productId = urlParams.get('product_id');
-
+let selectedSize = null; // Track the selected size
+let selectedColor = null; // Track the selected color
 // Check if productId is not valid
 if (!productId) {
     // console.log('No valid product_id found in the URL.'); // Optional: log or handle as needed
@@ -20,7 +21,7 @@ if (!productId) {
                 currency: 'PHP'
             }).format(price);
 
-            console.log('Success:', response); // Handle successful response
+            // console.log('Success:', response); // Handle successful response
             $('#product_name').text(response.product_name);
             $('#product_price').text(formattedPrice);
             $('#product_category').text("Category: " + response.category_name);
@@ -35,7 +36,6 @@ if (!productId) {
 
             // Create a container for the size buttons
             const sizeButtonContainer = document.createElement('div');
-            let selectedSize = null; // Track the selected size
 
             // Populate buttons for each size
             sizesArray.forEach(size => {
@@ -70,7 +70,6 @@ if (!productId) {
 
             // Create a container for the color buttons
             const colorButtonContainer = document.createElement('div');
-            let selectedColor = null; // Track the selected color
 
             // Populate buttons for each color
             colorsArray.forEach(color => {
