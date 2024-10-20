@@ -41,11 +41,18 @@ $(document).ready(function() {
         success: function(response) {
             var productList = $('#productListSearch'); // Get the element where you want to add products
             productList.empty(); // Clear any existing content
-    
-            // Check if the response is empty
+
+            // Set the search results header
+            const searchResultHeader = $('#saearchResult'); // Adjusted the ID name to match your HTML
             if (response.length === 0) {
-                productList.append('<p>No results found.</p>'); // Show no results message
+                searchResultHeader.text(`No Results Found`); // Set header for no results
+                productList.append(`
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center;">
+                        <img style="opacity: 0.5; max-width: 100%; height: auto;" src="../static/img/no_search.svg" alt="No results found">
+                    </div>
+                `); // Show no results message
             } else {
+                searchResultHeader.text(`Search Results for "${productName}"`); // Set header for search results
                 // Iterate through the response and create product cards
                 response.forEach(function(product) {
                     var productHTML = `
@@ -65,7 +72,7 @@ $(document).ready(function() {
                                 </div>
                             </a>
                         </div>`;
-    
+
                     productList.append(productHTML); // Append each product card to the productList div
                 });
             }

@@ -2,6 +2,7 @@ from flask import Flask, redirect, render_template, request, jsonify, session, u
 import os
 from werkzeug.utils import secure_filename
 from accounts import Accounts  
+from customer_account import Customer
 from categories import Categories
 from products import Product
 from stocks import Stocks
@@ -15,7 +16,19 @@ app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')  # Change this t
 
 @app.route('/', methods=['GET'])
 def home():
-    return render_template('landing_page.html')
+    return redirect('/customer_login')
+
+@app.route('/customer_login', methods=['GET'])
+def customer_login():
+    if 'username' in session and session['user_type'] == 'customer':
+        return redirect('/customer_landing')  # Redirect to the admin login page if not logged in
+    return render_template('customer_login.html')
+
+@app.route('/customer_landing', methods=['GET'])
+def customer_landing():
+    if 'username' in session and session['user_type'] == 'customer':
+        return render_template('landing_page.html')
+    return redirect('/customer_login')  
 
 @app.route('/product_view', methods=['GET'])
 def product_view():
@@ -34,44 +47,49 @@ def logout():
     session.clear()
     return redirect('/admin-login')
 
+@app.route('/logout_customer', methods=['GET'])
+def logout_customer():
+    session.clear()
+    return redirect('/customer_login')
+
 @app.route('/admin-login', methods=['GET'])
 def admin_login():
-    if 'username' in session:
+    if 'username' in session and session['user_type'] == 'admin':
         return redirect('/admin-dashboard')  # Redirect to the admin login page if not logged in
     return render_template('admin-login.html')
 
 @app.route('/admin-dashboard', methods=['GET'])
 def admin_dashboard():
     # Check if the user is logged in by verifying session data
-    if 'username' not in session:
+    if 'username' not in session or session.get('user_type') != 'admin':
         return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
     return render_template('admin_dashboard.html')
 
 @app.route('/admin-product', methods=['GET'])
 def admin_product():
     # Check if the user is logged in by verifying session data
-    if 'username' not in session:
+    if 'username' not in session or session.get('user_type') != 'admin':
         return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
     return render_template('admin-product.html')
 
 @app.route('/admin-category', methods=['GET'])
 def admin_category():
     # Check if the user is logged in by verifying session data
-    if 'username' not in session:
+    if 'username' not in session or session.get('user_type') != 'admin':
         return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
     return render_template('admin-category.html')
 
 @app.route('/admin-inventory', methods=['GET'])
 def admin_inventory():
     # Check if the user is logged in by verifying session data
-    if 'username' not in session:
+    if 'username' not in session or session.get('user_type') != 'admin':
         return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
     return render_template('admin-inventory.html')
 
 @app.route('/admin-shopee', methods=['GET'])
 def admin_shopee():
     # Check if the user is logged in by verifying session data
-    if 'username' not in session:
+    if 'username' not in session or session.get('user_type') != 'admin':
         return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
     return render_template('admin-shopee.html')
 
@@ -94,6 +112,34 @@ def post_login():
             session['username'] = session_info['account']['username']
             session['email'] = session_info['account']['email']
             session['full_name'] = session_info['account']['full_name']
+            session['user_type'] = 'admin'  
+
+            print(session_info)  # Optional: Print session information for debugging
+
+            return jsonify({'status': 1})  # Successful login response
+        else:
+            return jsonify({'status': 0, 'message': session_info['message']})
+    else:
+        return jsonify({'status': 0})
+
+@app.route("/post_login_customer", methods=['POST'])
+def post_login_customer():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+
+    # Example login
+    login_result = Customer().login_customer_account(email, password)
+    if login_result:
+        session_data = Customer().searchAccountSession(email, password)
+        session_info = json.loads(session_data)
+
+        # Store relevant information in the session
+        if session_info['success']:
+            session['customer_id'] = session_info['account']['customer_id']
+            session['username'] = session_info['account']['username']
+            session['email'] = session_info['account']['email']
+            session['user_type'] = 'customer'  
 
             print(session_info)  # Optional: Print session information for debugging
 
