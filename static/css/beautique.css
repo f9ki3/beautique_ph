@@ -3,6 +3,23 @@
     background-color: #ebfff1; /* Example hover background color */
 }
 
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+}
+
+.bounce {
+    animation: bounce 1s;
+}
+
+
 /* .body-color{
     background-color: rgb(246, 250, 255);
 } */
@@ -60,7 +77,7 @@
 }
 
 .btn-pink{
-    background-color: rgb(197, 41, 119);
+    background-color: #c52977;
     color: white;
 }
 

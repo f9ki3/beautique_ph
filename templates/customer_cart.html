@@ -1,0 +1,88 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beatique PH</title>
+    {% include 'header_links.html' %}
+</head>
+<body>
+
+    {% include 'nav.html' %}
+    <div class="container">
+        <div class="mt-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="fw-bolder">Your Cart</h3>
+                <a href="/customer_landing" class="text-dark fw-bolder">Continue Shopping</a>
+            </div>
+            <div style="width: 100%;">
+                <table style="width: 100%;">
+                    <thead>
+                        <tr class="border-bottom">
+                            <td width="50%">
+                                <p style="font-size: 12px;" class="text-muted">PRODUCT</p>
+                            </td>
+                            <td width="20%">
+                                <p style="font-size: 12px;" class="text-muted">QUANTITY</p>
+                            </td>
+                            <td width="10%">
+                                <p style="font-size: 12px;" class="text-muted text-end">TOTAL</p>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody id="product-body">
+                        <!-- Product rows will be populated here -->
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+    </div>
+    <div id="check_out_div" class="container mt-5" style="display: none; margin-bottom: 500px">
+        <div class="row mt-3">
+            <div class="col-12 col-md-7">
+                <input id="customer_id" type="hidden" value="{{ session['customer_id'] }}">
+                <h3 class="fw-bolder mb-4">Check Out</h3>
+                <div class="row g-3">   
+                    <div class="col-12 col-md-5">
+                        <label class="mb-2" for="">First Name</label>
+                        <input id="cart_fname" type="text" class="form-control" placeholder="First Name">
+                    </div>
+                    <div class="col-12 col-md-5">
+                        <label class="mb-2" for="">Last Name</label>
+                        <input id="cart_lname" type="text" class="form-control" placeholder="Lastname">
+                    </div>
+                    <div class="col-12 col-md-10">
+                        <label class="mb-2" for="">Email</label>
+                        <input id="cart_email" type="email" class="form-control" placeholder="Email">
+                    </div>
+                    <div class="col-12 col-md-10">
+                        <label class="mb-2" for="">Address</label>
+                        <textarea id="cart_address" name="" id="" class="form-control" style="height: 80px; resize: none;"></textarea> <!-- Fixed height and no resize -->
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="col-12 mt-5 col-md-5 border rounded-4 shadow p-5">
+                <h4>Summary</h4>
+                <div class="mt-3 d-flex justify-content-between">
+                    <h6>Subtotal</h6>
+                    <h6 id="subtotal">₱ 574.00</h6>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <h6>VAT Included</h6>
+                    <h6 id="vat">12%</h6>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <h6 class="fw-bolder" style="font-size: 20px;">Total</h6>
+                    <h6 id="total" class="fw-bolder" style="font-size: 20px;">₱ 574.00</h6>
+                </div>
+                <button onclick="placeorder()" class="btn mt-3 w-100 btn-pink">Place Order</button>
+            </div>
+        </div>
+        
+    </div>
+    
+    {% include 'footer_links.html' %}
+</body>
+</html>

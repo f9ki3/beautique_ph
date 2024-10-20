@@ -6,6 +6,7 @@ from customer_account import Customer
 from categories import Categories
 from products import Product
 from stocks import Stocks
+from sales import Sales
 import base64
 
 app = Flask(__name__)
@@ -30,11 +31,25 @@ def customer_landing():
         return render_template('landing_page.html')
     return redirect('/customer_login')  
 
+@app.route('/order_success', methods=['GET'])
+def order_success():
+    if 'username' in session and session['user_type'] == 'customer':
+        return render_template('order_success.html')
+    return redirect('/customer_login')  
+
+@app.route('/customer_cart', methods=['GET'])
+def customer_cart():
+    if 'username' in session and session['user_type'] == 'customer':
+        return render_template('customer_cart.html')
+    return redirect('/customer_login')  
+
 @app.route('/product_view', methods=['GET'])
 def product_view():
-    product_id = request.args.get('product_id')  # Get the product_id from the query string
-    # You can now use product_id to fetch product details from a database if needed
-    return render_template('customer_view_product.html', product_id=product_id)
+    if 'username' in session and session['user_type'] == 'customer':
+        product_id = request.args.get('product_id')  # Get the product_id from the query string
+        # You can now use product_id to fetch product details from a database if needed
+        return render_template('customer_view_product.html', product_id=product_id, user_id=session['customer_id'])
+    return redirect('/customer_login') 
 
 @app.route('/search_product', methods=['GET'])
 def search_product():
@@ -337,6 +352,42 @@ def fetch_all_products():
     category_id = request.args.get('category_id', type=int)  # Get the category_id from the query parameters
     data = Product().fetchAllProductsCategory(category_id)
     return jsonify(data)
+
+@app.route('/customer_information', methods=['POST'])
+def customer_information():
+    customer_id = request.form.get('customer_id')
+    data = Customer().fetchCustomerOne(customer_id)
+    return jsonify(data)
+
+@app.route('/sales', methods=['POST'])
+def place_order():
+    data = request.get_json()  # Get the JSON data sent from the client
+    # You can validate the data here if needed
+
+    # Now update the product stock based on cart items
+    cart_items = data['cart_items']
+    for item in cart_items:
+        product_id = item['product_id']
+        qty = item['qty']
+
+        # Update stock in the products table
+        Stocks().stockout(product_id, qty)
+    # Assuming you have an instance of Sales
+    sales = Sales()
+    sales.insertSale(
+        data['subtotal'],
+        data['vat'],
+        data['total'],
+        data['customer_id'],
+        data['first_name'],
+        data['last_name'],
+        data['email'],
+        data['address'],
+        json.dumps(data['cart_items'])  # Convert cart items to JSON string
+    )
+
+    return jsonify({"message": "Order placed successfully!"}), 201
+    
     
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
