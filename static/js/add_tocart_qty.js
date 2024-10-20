@@ -1,4 +1,29 @@
+// Customer Information
+var customerId = $('#customer_id').val(); // Get the customer_id value
 
+$.ajax({
+    url: '/customer_information', // Replace with your server endpoint
+    type: 'POST', // Or 'GET' depending on your server setup
+    data: {
+        customer_id: customerId
+    },
+    success: function(response) {
+        // Handle the response from the server
+        const cart_fname = response.customer.first_name
+        const cart_lname = response.customer.last_name
+        const cart_email = response.customer.email
+        const cart_address = response.customer.contact_address
+
+        $('#cart_fname').val(cart_fname)
+        $('#cart_lname').val(cart_lname)
+        $('#cart_email').val(cart_email)
+        $('#cart_address').val(cart_address)
+    },
+    error: function(xhr, status, error) {
+        // Handle any errors that occur
+        console.error(error);
+    }
+});
 
 $(document).ready(function() {
     const maxStocks = parseInt($('#product_stocks').text().split(': ')[1]); // Extract stocks from the text
@@ -154,11 +179,19 @@ function populateTable() {
                 </td>
             </tr>
         `;
+
+        $('#check_out_div').hide();
+        updateTotals(0, 0, 0); // Update totals when cart is empty
         return; // Exit the function if the cart is empty
     }
 
+    $('#check_out_div').show();
+
+    let subtotal = 0; // Initialize subtotal
+
     cart.forEach(product => {
         const total = product.price * product.qty; // Use qty from the product object
+        subtotal += total; // Accumulate subtotal
         const formattedPrice = product.price.toLocaleString('en-PH', { style: 'currency', currency: 'PHP' });
         const formattedTotal = total.toLocaleString('en-PH', { style: 'currency', currency: 'PHP' });
         
@@ -191,7 +224,19 @@ function populateTable() {
         `;
         tbody.innerHTML += row; // Append the new row to the tbody
     });
-    
+
+    const vat = subtotal * 0.12; // Calculate VAT (12%)
+    const total = subtotal + vat; // Calculate total
+
+    // Update the displayed totals
+    updateTotals(subtotal, vat, total);
+}
+
+// Function to update the totals in the DOM
+function updateTotals(subtotal, vat, total) {
+    document.getElementById('subtotal').innerText = subtotal.toLocaleString('en-PH', { style: 'currency', currency: 'PHP' });
+    document.getElementById('vat').innerText = vat.toLocaleString('en-PH', { style: 'currency', currency: 'PHP' });
+    document.getElementById('total').innerText = subtotal.toLocaleString('en-PH', { style: 'currency', currency: 'PHP' });
 }
 
 // Call the function to populate the table on page load

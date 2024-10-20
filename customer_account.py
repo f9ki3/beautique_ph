@@ -76,6 +76,36 @@ class Customer(Database):
         
         # Return the response as JSON
         return json.dumps(response_data)
+    
+    def fetchCustomerOne(self, customer_id):
+        # Fetch a single customer based on customer_id
+        self.cursor.execute('''
+            SELECT * FROM customer_account WHERE customer_id = ?
+        ''', (customer_id,))
+        
+        result = self.cursor.fetchone()
+
+        if result:
+            response_data = {
+                'success': True,
+                'customer': {
+                    'customer_id': result[0],
+                    'username': result[1],
+                    'email': result[3],
+                    'first_name': result[4],
+                    'last_name': result[5],
+                    'contact_address': result[6],
+                    'created_at': result[7]
+                }
+            }
+        else:
+            response_data = {
+                'success': False,
+                'message': 'Customer not found'
+            }
+
+        # Return the response data as a dictionary
+        return response_data
 
 if __name__ == "__main__":
     customer = Customer()
