@@ -133,6 +133,13 @@ def admin_shopee():
         return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
     return render_template('admin-shopee.html')
 
+@app.route('/admin-sales', methods=['GET'])
+def admin_sales():
+    # Check if the user is logged in by verifying session data
+    if 'username' not in session or session.get('user_type') != 'admin':
+        return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
+    return render_template('admin-sales.html')
+
 # API ENDPOINTS
 @app.route("/post_login", methods=['POST'])
 def post_login():
