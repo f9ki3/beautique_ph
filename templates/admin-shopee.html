@@ -15,46 +15,59 @@
                 <h4>Sales Shopee</h4> <!-- Updated title -->
                 <div class="row">
                     <div class="col-12 col-md-6">
-                        <input type="text" class="form-control-sm form-control" placeholder="Search" id="searchStock">
+                        <input type="text" class="form-control-sm form-control" id="searchShopeeStock" placeholder="Search stocks...">
                     </div>
                     <div class="col-12 col-md-6 d-flex flex-row justify-content-end">
-                        <button class="btn btn-sm border btn-pink" data-bs-toggle="modal" data-bs-target="#addCSV">
-                            <i class="bi bi-bookmark-plus"></i> Import CSV
+                        <button class="btn btn-sm border btn-pink" data-bs-toggle="modal" data-bs-target="#addShopeeCSV">
+                            <i class="bi bi-bookmark-plus"></i> Import Shopee CSV
                         </button>
                     </div>
                 </div>
-                <div class="row p-4">
-                    <table class="table" style="font-size: 12px;">
-                        <thead>
-                            <tr>
-                                <th scope="col" width="5%">ID</th>
-                                <th scope="col" width="10%">Stock Date</th>
-                                <th scope="col" width="35%">Product Name</th>
-                                <th scope="col" width="10%">Stock Qty</th>
-                                <th scope="col" width="10%">Type</th>
-                                <th scope="col" width="5%">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="stockTable">
-                            <!-- Stock rows will be dynamically inserted here -->
-                        </tbody>
-                    </table>
+                <div class="container-fluid">
+                    <div class="row p-4">
+                        <div class="table-responsive" style="overflow: auto;">
+                            <table class="table" style="font-size: 12px;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"> Order ID</th>
+                                        <th scope="col"> Order Status</th>
+                                        <th scope="col"> Tracking Number</th>
+                                        <th scope="col"> Shipping Option</th>
+                                        <th scope="col"> Shipment Method</th>
+                                        <th scope="col">Estimated Ship Out Date</th>
+                                        <th scope="col"> Ship Time</th>
+                                        <th scope="col"> Order Creation Date</th>
+                                        <th scope="col"> Order Paid Time</th>
+                                        <th scope="col"> Product Name</th>
+                                        <th scope="col"> Variation Name</th>
+                                        <th scope="col"> Original Price</th>
+                                        <th scope="col"> Deal Price</th>
+                                        <th scope="col"> Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="shopeeTable">
+                                    <!-- Shopee stock rows will be dynamically inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <nav aria-label="Stocks pagination"> <!-- Updated aria-label -->
-                    <ul class="pagination pagination-sm" id="paginationStockControls">
-                        <li class="page-item page-pink"><a class="page-link" href="#" id="prevStockPage">Previous</a></li>
+            
+                <nav aria-label="Shopee Stocks pagination"> <!-- Updated aria-label -->
+                    <ul class="pagination pagination-sm" id="paginationShopeeStockControls">
+                        <li class="page-item page-pink"><a class="page-link" href="#" id="prevShopeeStockPage">Previous</a></li>
                         <!-- Page numbers will be dynamically inserted here -->
-                        <li class="page-item page-pink"><a class="page-link" href="#" id="nextStockPage">Next</a></li>
+                        <li class="page-item page-pink"><a class="page-link" href="#" id="nextShopeeStockPage">Next</a></li>
                     </ul>
                 </nav>
-            </div>
+            </div>            
         </div>
     </div>
     {% include 'footer_links.html' %}
 </body>
 </html>
 
-<div class="modal fade" id="addCSV" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addShopeeCSV" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">

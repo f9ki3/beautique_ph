@@ -283,7 +283,13 @@ def fetch_products_search():
 @app.route('/fetchAllStocks', methods=['GET'])
 def fetch_stocks():
     data = Stocks().fetchAllStocks()
+    # print(data)
     return jsonify(data)
+
+@app.route('/fetchShopee', methods=['GET'])
+def fetchShopee():
+    data = ShopeeSales().fetchShopeeSales()
+    return jsonify({'stocks': data})
 
 @app.route('/addProducts', methods=['POST'])
 def add_product():

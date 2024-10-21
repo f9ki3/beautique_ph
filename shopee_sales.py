@@ -52,6 +52,20 @@ class ShopeeSales(Database):
             # Commit the transaction
             self.commit()
 
+    def fetchShopeeSales(self):
+        # Query to fetch all sales data
+        self.cursor.execute("SELECT * FROM shopee_sales")
+        rows = self.cursor.fetchall()
+
+        # Convert rows to a list of dictionaries
+        sales_data = []
+        columns = [column[0] for column in self.cursor.description]  # Get column names
+
+        for row in rows:
+            sales_data.append(dict(zip(columns, row)))  # Create a dict for each row
+
+        return sales_data  # Return the list of dictionaries
+
 if __name__ == "__main__":
     db = ShopeeSales()
     db.createProductTable()
