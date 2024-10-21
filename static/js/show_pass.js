@@ -25,3 +25,17 @@ function togglePasswordVisibilitys() {
         button.textContent = 'Show'; // Change button text back to 'Show'
     }
 }
+
+$(document).ready(function() {
+    $('#button-addon3').on('click', function() {
+        const passwordInput = $('#password');
+        const isPasswordVisible = passwordInput.attr('type') === 'text';
+
+        // Toggle the input type
+        passwordInput.attr('type', isPasswordVisible ? 'password' : 'text');
+
+        // Toggle button text
+        $(this).text(isPasswordVisible ? 'Show' : 'Hide');
+    });
+});
+
