@@ -1,0 +1,81 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beatique PH</title>
+    {% include 'header_links.html' %}
+</head>
+<body>
+
+    {% include 'nav.html' %}
+    <div class="container">
+        <div class="d-flex flex-column justify-content-center mt-3">
+            <div class="col-12 col-md-12">
+                <input id="customer_id" type="hidden" value="{{ session['customer_id'] }}">
+                <div class="d-flex flex-row m-0 align-items-center p-0 justify-content-between">
+                    <h3 class="fw-bolder mb-4">My Profile</h3>
+                    <a id="update_profile_btn" class="btn text-decoration-none text-muted border"><i class="bi bi-pencil me-2"></i>Update Profile</a>
+                </div>
+                <hr class="m-0 p-0 pb-3">
+                <div id="update_profile" class="mb-3" style="display: none;">
+                    <a class="btn text-decoration-none text-muted border me-3"><i class="bi bi-trash me-2"></i>Cancel</a>
+                    <a id="submit_update" class="btn btn-pink text-decoration-none border"><i class="bi bi-file-earmark me-2"></i>Update</a>
+                </div>
+                <div class="row g-3">   
+                    <div class="col-12 col-md-5">
+                        <label class="mb-2" for="">First Name</label>
+                        <input id="cart_fname" type="text" class="form-control text-muted placeholder="First Name" disabled>
+                    </div>
+                    <div class="col-12 col-md-5">
+                        <label class="mb-2" for="">Last Name</label>
+                        <input id="cart_lname" type="text" class="form-control text-muted" placeholder="Lastname" disabled>
+                    </div>
+                    <div class="col-12 col-md-10">
+                        <label class="mb-2" for="">Email</label>
+                        <input id="cart_email" type="email" class="form-control text-muted" placeholder="Email" disabled>
+                    </div>
+                    <div class="col-12 col-md-10">
+                        <label class="mb-2" for="">Address</label>
+                        <textarea id="cart_address" name="" id="" class="form-control text-muted" style="height: 80px; resize: none;" disabled></textarea> <!-- Fixed height and no resize -->
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="col-12 col-md-12 mt-5">
+                <input id="customer_id" type="hidden" value="{{ session['customer_id'] }}">
+                <h3 class="fw-bolder mb-4">Order History</h3>
+                <hr>
+                <div class="row g-3">   
+                    <table class="table" style="font-size: 12px;">
+                        <thead>
+                            <tr>
+                                <th class="pb-4" scope="col" width="20%">Order ID</th>
+                                <th class="pb-4" scope="col" width="20%">Order Date</th>
+                                <th class="pb-4" scope="col" width="20%">Subtotal</th>
+                                <th class="pb-4" scope="col" width="20%">VAT</th>
+                                <th class="pb-4" scope="col" width="20%">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="my_orders">
+                            <!-- Order rows will be dynamically inserted here -->
+                        </tbody>
+                    </table>
+                    <!-- Pagination controls -->
+                    <div class="pagination-controls mb-5 d-flex justify-content-between">
+                        
+                        <div>
+                            <button id="previous-page" class="btn">&laquo;</button>
+                            <button id="next-page" class="btn">&raquo;</button>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        
+        </div>
+    </div>
+    {% include 'footer_links.html' %}
+</body>
+</html>

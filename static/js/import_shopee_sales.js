@@ -1,4 +1,4 @@
-function insertStock() {
+function insertCSV() {
     var fileInput = document.getElementById('csvFile');
     var file = fileInput.files[0]; // Get the file
 
@@ -26,14 +26,14 @@ function insertStock() {
             $('.category-load').hide();
             $('.category-text').show();
             // Close the modal after success
-            location.reload()
+            location.reload();
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            alert('File Already uploaded!');
+            alert('File already uploaded!');
             // Hide loading spinner
             $('.category-load').hide();
             $('.category-text').show();
-            location.reload()
+            location.reload();
         }
     });
 }

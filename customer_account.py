@@ -17,6 +17,40 @@ class Customer(Database):
             );
         ''')
         self.conn.commit()  # Commit table creation
+    
+    def update_customer_account(self, customer_id, username=None, password=None, email=None, first_name=None, last_name=None, contact_address=None):
+        # Start building the SQL UPDATE statement
+        sql = 'UPDATE customer_account SET'
+        params = []
+
+        # Append updates to the SQL query and parameters list
+        if username is not None:
+            sql += ' username = ?,'
+            params.append(username)
+        if password is not None:
+            sql += ' password = ?,'
+            params.append(password)
+        if email is not None:
+            sql += ' email = ?,'
+            params.append(email)
+        if first_name is not None:
+            sql += ' first_name = ?,'
+            params.append(first_name)
+        if last_name is not None:
+            sql += ' last_name = ?,'
+            params.append(last_name)
+        if contact_address is not None:
+            sql += ' contact_address = ?,'
+            params.append(contact_address)
+
+        # Remove the last comma and add the WHERE clause
+        sql = sql.rstrip(',') + ' WHERE customer_id = ?'
+        params.append(customer_id)
+
+        # Execute the SQL statement
+        self.cursor.execute(sql, params)
+        self.conn.commit()  # Commit the changes
+
 
     def create_customer_account(self, username, password, email, first_name, last_name, contact_address):
         hashed_password = hashlib.sha256(password.encode()).hexdigest()

@@ -62,6 +62,12 @@ def customer_cart():
         return render_template('customer_cart.html')
     return redirect('/customer_login')  
 
+@app.route('/customer_profile', methods=['GET'])
+def customer_profile():
+    if 'username' in session and session['user_type'] == 'customer':
+        return render_template('customer_profile.html')
+    return redirect('/customer_login') 
+
 @app.route('/product_view', methods=['GET'])
 def product_view():
     if 'username' in session and session['user_type'] == 'customer':
@@ -404,6 +410,7 @@ def place_order():
         data['address'],
         json.dumps(data['cart_items'])  # Convert cart items to JSON string
     )
+    print(data)
 
     return jsonify({"message": "Order placed successfully!"}), 201
 
@@ -459,7 +466,36 @@ def post_customer_register():
     # Example response
     return jsonify({'message': 'User registered successfully!'})
 
+@app.route('/get_orders', methods=['GET'])
+def get_orders():
+    id = session['customer_id']
+    orders_data = Sales().get_all_orders(id)
+    print(orders_data)
+    return jsonify({"orders": orders_data})
 
-        
+@app.route('/update_profile', methods=['POST'])
+def update_profile():
+    # Retrieve the JSON data sent from the AJAX request
+    data = request.json
+    customer_id = session['customer_id']
+    # Access the individual fields from the data
+    first_name = data.get('first_name')
+    last_name = data.get('last_name')
+    email = data.get('email')
+    contact_address = data.get('address')
+
+    # Process the data as needed (e.g., save to a database)
+    Customer().update_customer_account(
+    customer_id=customer_id,
+    username=None,               # No change to the username
+    password=None,               # No change to the password
+    email=email,                 # New email
+    first_name=first_name,       # New first name
+    last_name=last_name,         # New last name
+    contact_address=contact_address  # New contact address
+)
+    # Return a JSON response to the client
+    return jsonify({'message': 'Profile updated successfully!'}), 200
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")

@@ -18,7 +18,7 @@
                         <input type="text" class="form-control-sm form-control" placeholder="Search" id="searchStock">
                     </div>
                     <div class="col-12 col-md-6 d-flex flex-row justify-content-end">
-                        <button class="btn btn-sm border btn-pink" data-bs-toggle="modal" data-bs-target="#addStocks">
+                        <button class="btn btn-sm border btn-pink" data-bs-toggle="modal" data-bs-target="#addCSV">
                             <i class="bi bi-bookmark-plus"></i> Import CSV
                         </button>
                     </div>
@@ -54,9 +54,7 @@
 </body>
 </html>
 
-
-
-<div class="modal fade" id="addStocks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addCSV" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -71,7 +69,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-dark btn-sm" data-bs-dismiss="modal">Close</button>
-          <button id="importCSV" onclick="insertStock()" type="button" class="btn w-25 btn-pink btn-sm"> 
+          <button id="importCSV" onclick="insertCSV()" type="button" class="btn w-25 btn-pink btn-sm"> 
               <p class="category-text m-0"><i class="bi bi-bookmark-plus"></i> Import</p>
               <div class="category-load spinner-grow spinner-grow-sm m-1" style="display: none;" role="status">
                   <span class="visually-hidden">Loading...</span>
@@ -81,7 +79,6 @@
       </div>
     </div>
   </div>
-  
 
 <!-- Modal for Delete Confirmation -->
 <div class="modal fade" id="deleteModalStock" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
