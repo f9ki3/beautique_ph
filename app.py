@@ -18,13 +18,31 @@ app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')  # Change this t
 
 @app.route('/', methods=['GET'])
 def home():
-    return redirect('/customer_login')
+    return redirect('/home_landing')
+
+@app.route('/home_landing', methods=['GET'])
+def home_landing():
+    if 'username' in session and session['user_type'] == 'customer':
+        return redirect('/customer_landing')  # Redirect to the admin login page if not logged in
+    return render_template('home_landing_page.html')
 
 @app.route('/customer_login', methods=['GET'])
 def customer_login():
     if 'username' in session and session['user_type'] == 'customer':
         return redirect('/customer_landing')  # Redirect to the admin login page if not logged in
     return render_template('customer_login.html')
+
+@app.route('/customer_register', methods=['GET'])
+def customer_register():
+    if 'username' in session and session['user_type'] == 'customer':
+        return redirect('/customer_landing')  # Redirect to the admin login page if not logged in
+    return render_template('customer_register.html')
+
+@app.route('/register_completed', methods=['GET'])
+def customer_register_completed():
+    if 'username' in session and session['user_type'] == 'customer':
+        return redirect('/customer_landing')  # Redirect to the admin login page if not logged in
+    return render_template('customer_register_completed.html')
 
 @app.route('/customer_landing', methods=['GET'])
 def customer_landing():
@@ -403,9 +421,15 @@ def upload_csv():
 
     # Validate if it's a CSV file
     if file and file.filename.endswith('.csv'):
-        # Secure the filename and save it to the upload folder
+        # Secure the filename and define the file path
         filename = secure_filename(file.filename)
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+        # Check if the file already exists
+        if os.path.exists(file_path):
+            return jsonify({'error': 'File already uploaded'}), 400
+
+        # Save the file
         file.save(file_path)
 
         try:
@@ -419,6 +443,22 @@ def upload_csv():
             return jsonify({'error': str(e)}), 500
     else:
         return jsonify({'error': 'Invalid file format, please upload a CSV file.'}), 400
+
+@app.route('/post_customer_register', methods=['POST'])
+def post_customer_register():
+    data = request.get_json()
+    firstname = data.get('firstname')
+    lastname = data.get('lastname')
+    email = data.get('email')
+    username = data.get('username')
+    address = data.get('address')
+    password = data.get('password')
+
+    # Add your logic to process the registration here (e.g., saving to database)
+    Customer().create_customer_account(username, password, email, firstname, lastname, address)
+    # Example response
+    return jsonify({'message': 'User registered successfully!'})
+
 
         
 if __name__ == "__main__":

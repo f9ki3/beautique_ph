@@ -9,8 +9,8 @@ function updateCategory() {
         'date': date
     }
 
-    $('.up-category-text').hide()
-    $('.up-category-load').show()
+    $('.category-text').hide()
+    $('.category-load').show()
 
     setTimeout(() => {
         $.ajax({
@@ -22,8 +22,8 @@ function updateCategory() {
             success: function (response) {
                 console.log(response.category); 
                 $('#updateCategorySuccess').show()
-                $('.up-category-text').show()
-                $('.up-category-load').hide()
+                $('.category-text').show()
+                $('.category-load').hide()
                 setTimeout(() => {
                     location.reload()
                 }, 2000);

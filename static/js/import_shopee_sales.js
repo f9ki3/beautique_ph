@@ -12,6 +12,7 @@ function insertStock() {
 
     // Show loading spinner
     $('.category-load').show();
+    $('.category-text').hide();
 
     $.ajax({
         url: '/upload_csv', // Flask endpoint for handling CSV upload
@@ -23,13 +24,16 @@ function insertStock() {
             alert('CSV file uploaded successfully!');
             // Hide loading spinner
             $('.category-load').hide();
+            $('.category-text').show();
             // Close the modal after success
-            $('#addStocks').modal('hide');
+            location.reload()
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            alert('Error uploading CSV file: ' + errorThrown);
+            alert('File Already uploaded!');
             // Hide loading spinner
             $('.category-load').hide();
+            $('.category-text').show();
+            location.reload()
         }
     });
 }
