@@ -298,6 +298,11 @@ def fetchShopee():
     data = ShopeeSales().fetchShopeeSales()
     return jsonify({'stocks': data})
 
+@app.route('/fetchStoreSales', methods=['GET'])
+def fetchStoreSales():
+    data = Sales().get_all_sales()
+    return jsonify({'stocks': data})
+
 @app.route('/addProducts', methods=['POST'])
 def add_product():
     # Retrieve form data

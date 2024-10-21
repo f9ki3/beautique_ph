@@ -54,6 +54,40 @@ class Sales(Database):
         order_list.reverse()
 
         return order_list  # Return the list of orders in reversed order
+    
+    def get_all_sales(self):
+        try:
+            # Select all orders from the Sales table
+            query = 'SELECT * FROM Sales'
+            self.cursor.execute(query)
+            orders = self.cursor.fetchall()  # Fetch all orders
+
+            # Format the result as a list of dictionaries
+            order_list = []
+            for order in orders:
+                order_list.append({
+                    "id": order[0],
+                    "subtotal": order[1],
+                    "vat": order[2],
+                    "total": order[3],
+                    "customer_id": order[4],
+                    "first_name": order[5],
+                    "last_name": order[6],
+                    "email": order[7],
+                    "address": order[8],
+                    "cart_items": order[9],
+                    "created_at": order[10]
+                })
+
+            # Reverse the order list
+            order_list.reverse()
+
+            return order_list  # Return the list of orders in reversed order
+
+        except Exception as e:
+            print(f"An error occurred while fetching sales: {e}")
+            return []  # Return an empty list in case of an error
+
 
 
 
