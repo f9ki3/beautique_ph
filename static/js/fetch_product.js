@@ -57,18 +57,18 @@ function renderProducts(page) {
                                 data-id="${product.id}">
                             <i class="bi bi-trash3"></i>
                         </button>
-                        <button class="edit-button" 
+                        
+                    </td>
+                </tr>`;
+        
+{/* <button class="edit-button" 
                                 style="background: transparent; border: none" 
                                 data-id="${product.id}" 
                                 data-name="${product.product_name}" 
                                 data-price="${product.price}" 
                                 data-status="${product.status}">
                             <i class="bi bi-pencil"></i>
-                        </button>
-                    </td>
-                </tr>`;
-        
-
+                        </button> */}
             $('#productTable').append(row); // Append the new row to the table
         });
     } else {
