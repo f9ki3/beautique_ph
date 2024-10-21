@@ -1,5 +1,5 @@
 from flask import Flask, redirect, render_template, request, jsonify, session, url_for, json
-import os
+import os, csv
 from werkzeug.utils import secure_filename
 from accounts import Accounts  
 from customer_account import Customer
@@ -7,6 +7,7 @@ from categories import Categories
 from products import Product
 from stocks import Stocks
 from sales import Sales
+from shopee_sales import ShopeeSales 
 import base64
 
 app = Flask(__name__)
@@ -387,7 +388,38 @@ def place_order():
     )
 
     return jsonify({"message": "Order placed successfully!"}), 201
-    
-    
+
+@app.route('/upload_csv', methods=['POST'])
+def upload_csv():
+    # Check if the request contains a file
+    if 'csv_file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+
+    file = request.files['csv_file']
+
+    # Check if a file was selected
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    # Validate if it's a CSV file
+    if file and file.filename.endswith('.csv'):
+        # Secure the filename and save it to the upload folder
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+
+        try:
+            # Create an instance of ShopeeSales and upload the CSV data to SQLite
+            shopee_sales = ShopeeSales()
+            shopee_sales.upload_csv_sql(file_path)  # Passing file_path to the method that processes CSV
+
+            return jsonify({'success': 'CSV file uploaded and processed successfully!'}), 200
+        except Exception as e:
+            # Return an error if something goes wrong during CSV processing
+            return jsonify({'error': str(e)}), 500
+    else:
+        return jsonify({'error': 'Invalid file format, please upload a CSV file.'}), 400
+
+        
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
