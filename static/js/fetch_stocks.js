@@ -35,7 +35,6 @@ function renderStocks(page) {
         stocksToDisplay.forEach((stock, index) => {
             let row = `
                 <tr>
-                    <th class="pb-3 pt-3" scope="row">${startIndex + index + 1}</th>
                     <td class="pb-3 pt-3">${stock.stock_date || 'N/A'}</td>
                     <td class="pb-3 pt-3">${stock.product_name || 'N/A'}</td>
                     <td class="pb-3 pt-3">${stock.stock_qty || 0}</td>

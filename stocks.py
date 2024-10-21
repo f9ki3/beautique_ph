@@ -81,12 +81,14 @@ class Stocks(Database):
                 p.status
             FROM stocks s
             JOIN products p ON s.stock_product_id = p.id
+            ORDER BY s.stock_date DESC  -- Change this line to order by stock_date in descending order
         ''')
         
         rows = self.cursor.fetchall()
         
         # Convert each row to a dictionary
         return [dict(row) for row in rows]
+
 
 
 
