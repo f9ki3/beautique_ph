@@ -40,7 +40,7 @@ class Stocks(Database):
         self.cursor.execute('''
             INSERT INTO stocks (stock_product_id, stock_date, stock_qty, stock_type)
             VALUES (?, ?, ?, ?)
-        ''', (stock_product_id, stock_date, -stock_qty, stock_type))
+        ''', (stock_product_id, stock_date, stock_qty, stock_type))
 
         # Update the stock quantity of the corresponding product
         self.cursor.execute('''
