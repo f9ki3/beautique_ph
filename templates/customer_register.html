@@ -1,0 +1,67 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beatique PH</title>
+    {% include 'header_links.html' %}
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-4"></div>
+            <div class="col-12 col-md-4 ">
+                    <img src="../static/img/beatique_logo.jpg" class="rounded-bottom-5" alt="" style="width: 100%; height:250px">
+                    <h5 class="fw-bolder mb-4 mt-4 text-center">Create account</h5>
+                    <div class="alert login-customer-failed alert-danger" role="alert" style="display: none;">
+                        Please enter correct username or password
+                    </div>
+                    <form id="registrationForm">
+                        <div class="row g-2 mb-2">
+                            <div class="col-12 col-md-6">
+                                <input type="text" class="form-control" id="firstname" placeholder="Firstname">
+                                <div class="invalid-feedback">Firstname is required.</div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <input type="text" class="form-control" id="lastname" placeholder="Lastname">
+                                <div class="invalid-feedback">Lastname is required.</div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <input type="email" class="form-control" id="email" placeholder="Email">
+                                <div class="invalid-feedback">Please enter a valid email address.</div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <input type="text" class="form-control" id="username" placeholder="Username">
+                                <div class="invalid-feedback">Username is required.</div>
+                            </div>
+                            <div class="col-12 col-md-12">
+                                <textarea class="form-control" id="address" placeholder="Address"></textarea>
+                                <div class="invalid-feedback">Address is required.</div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <input type="password" class="form-control" id="password" placeholder="Password">
+                                <div class="invalid-feedback">Password is required.</div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password">
+                                <div class="invalid-feedback">Passwords do not match.</div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn w-100 mb-2 btn-pink" id="registerBtn">
+                            <p class="customer-login-text m-0">Register</p>
+                            <div class="customer-login-load spinner-grow spinner-grow-sm m-1" style="display: none;" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </button>
+                        <a href="/customer_login" type="button" class="btn w-100" style="color: #CF2977; border: 1px solid #CF2977" >
+                            <p class=" m-0">Already have account</p>
+                        </a>
+                    </form>
+            </div>
+            <div class="col-12 col-md-4"></div>
+        </div>
+
+    </div>
+    {% include 'footer_links.html' %}
+</body>
+</html>

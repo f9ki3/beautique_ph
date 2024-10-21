@@ -1,0 +1,66 @@
+<div style="background-color: white;" class="sticky-top">
+    <div class="container z-index-3 mt-3  d-flex justify-content-between align-items-center">
+        <!-- <div class="">
+            <img style="object-fit: cover; width: 6rem; height: auto;" src="../static/img/SCRIPT_TYPEFACE0b5d.png" alt="Icon">
+        </div> -->
+        <div class="mt-3 mb-3">
+            <h5 class="fw-bolder"><a href="/" style="text-decoration: none; color: black">Beatique PH</a></h5>
+        </div>
+        <div class="mt-3 mb-3 d-flex align-items-center">
+            <!-- Notification button -->
+            <div class="input-group">
+                <input type="text" id="search-input-data" class="form-control" placeholder="Search..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button class="btn btn-pink" type="button" id="button-addon2"><i class="bi fs-3 bi-search"></i></button>
+            </div>
+            
+            
+            <a href="customer_login" class="text-dark ms-3">Login</a>
+            <a href="customer_register" class="text-dark ms-3">Register</a>
+            
+            <div class="burger-menu2">
+                <button class="btn" data-bs-toggle="offcanvas" data-bs-target="#pro" aria-controls="offcanvasScrolling"><i class="bi fs-3 bi-person-circle"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Notification</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <!-- <p>Try scrolling the rest of the page to see this option in action.</p> -->
+    </div>
+</div>
+
+
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="pro" aria-labelledby="offcanvasScrollingLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Menu</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="row g-3">
+            <div class="col-6">
+                <a href="/profile" class="btn w-100 border p-3">
+                    <i class="bi bi-person mb-3" style="font-size: 50px;"></i>
+                    <p>Profile</p>
+                </a>
+            </div>
+            <div class="col-6">
+                <a class="btn w-100 border p-3">
+                    <i class="bi bi-gear mb-3" style="font-size: 50px;"></i>
+                    <p>Settings</p>
+                </a>
+            </div>
+            <div class="col-6">
+                <a href="/logout" class="btn w-100 border p-3">
+                    <i class="bi bi-power" mb-3" style="font-size: 50px;"></i>
+                    <p>Logout</p>
+                </a>
+            </div>
+      </div>
+    </div>
+  </div>
