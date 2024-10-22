@@ -262,7 +262,7 @@ def delete_customer():
 def delete_admin():
     json = request.get_json()
     id = json.get('id')
-    Customer().delete_admin_account(id)
+    Accounts().delete_admin_account(id)
     return jsonify({'status': 1})
 
 @app.route('/deleteProduct', methods=['POST'])
@@ -527,7 +527,7 @@ def post_customer_register():
 @app.route('/createAdminAccount', methods=['POST'])
 def createAdminAccount():
     data = request.get_json()
-    fullname = data.get('fullname')
+    fullname = data.get('full_name')
     email = data.get('email')
     username = data.get('username')
     password = data.get('password')

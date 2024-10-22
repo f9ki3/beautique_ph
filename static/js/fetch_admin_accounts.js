@@ -32,7 +32,7 @@ function renderAdminAccounts(page) {
     const adminAccountsToDisplay = filteredAdminAccounts.slice(startIndex, endIndex); // Slice the array for the current page
 
     if (adminAccountsToDisplay.length > 0) {
-        adminAccountsToDisplay.forEach((adminAccount, index) => {
+        adminAccountsToDisplay.forEach((adminAccount) => {
             let row = `
                 <tr>
                     <td class="pb-3 pt-3">${adminAccount.admin_id || 'N/A'}</td>
@@ -116,8 +116,10 @@ function createAdminAccountPaginationControls(totalAdminAccounts) {
 function filterAdminAccounts() {
     const searchQuery = $('#searchAdminAccount').val().toLowerCase(); // Get the search query
     filteredAdminAccounts = allAdminAccounts.filter(adminAccount => 
-        adminAccount.admin_date.toLowerCase().includes(searchQuery) ||
-        adminAccount.username.toLowerCase().includes(searchQuery)
+        adminAccount.admin_id.toString().toLowerCase().includes(searchQuery) ||
+        adminAccount.username.toLowerCase().includes(searchQuery) ||
+        adminAccount.email.toLowerCase().includes(searchQuery) || // Added email to the filter
+        adminAccount.full_name.toLowerCase().includes(searchQuery) // Added full name to the filter
     ); // Filter Admin Accounts based on the search query
 
     activeAdminAccountPage = 1; // Reset to the first page
@@ -193,51 +195,3 @@ $(document).ready(function() {
         }
     });
 });
-
-function insertAdminAccount() {
-    // Collecting input values
-    const productId = $('#selected-product').text().trim(); // Get selected product name
-    const productStocks = parseInt($('#product_stocks').val().trim(), 10); // Get stock input
-
-    // Validate input fields
-    if (!productId || isNaN(productStocks) || productStocks <= 0) {
-        alert("Please select a product and enter a valid number of stocks.");
-        return;
-    }
-
-    // Prepare form data for submission
-    const formData = new FormData();
-    formData.append('id', productId);
-    formData.append('stocks', productStocks); // Append stock value
-
-    // Show loading indicator
-    $('.category-load').show();
-    $('.category-text').hide();
-
-    // Submit the form data via AJAX
-    $.ajax({
-        url: '/insertAdminAccounts', // Adjust the URL for Admin Account addition
-        method: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function(response) {
-            $('#addCategorySuccess').show(); // Show success alert
-            setTimeout(() => {
-                location.reload(); // Reload the page to see updated data
-            }, 2000);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error inserting Admin Account:', error);
-            alert("Failed to add Admin Account. Please try again.");
-        },
-        complete: function() {
-            // Hide loading indicator
-            $('.category-load').hide();
-            $('.category-text').show();
-        }
-    });
-}
-
-// Add event listener to the insert button
-$('#insert-admin-account-button').on('click', insertAdminAccount);
