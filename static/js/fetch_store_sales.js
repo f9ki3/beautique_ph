@@ -118,9 +118,8 @@ function createStoreSalesPaginationControls(totalStocks) {
 function filterStoreSales() {
     const searchQuery = $('#searchStoreSales').val().toLowerCase(); // Get the search query
     filteredStoreSales = allStoreSales.filter(stock => 
-        (stock.order_id && stock.order_id.toString().toLowerCase().includes(searchQuery)) || // Filter by order_id
-        (stock.product_name && stock.product_name.toLowerCase().includes(searchQuery)) || // Filter by product_name
-        (stock.description && stock.description.toLowerCase().includes(searchQuery)) // Also keep filtering by description
+        (stock.id && stock.id.toString().toLowerCase().includes(searchQuery)) || // Filter by order_id
+        (stock.created_at && stock.created_at.toLowerCase().includes(searchQuery)) 
     ); // Filter stocks based on the search query
 
     activeStoreSalesPage = 1; // Reset to the first page
