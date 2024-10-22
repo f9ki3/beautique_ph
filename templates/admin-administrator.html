@@ -13,12 +13,12 @@
         <div class="container body-color">
             <div class="row">
                 <h4>Administrator Accounts</h4> <!-- Updated title -->
-                <div class="row">
+                <div class="row mb-3"> <!-- Added margin-bottom for spacing -->
                     <div class="col-12 col-md-6">
-                        <input type="text" class="form-control-sm form-control" placeholder="Search" id="searchStock">
+                        <input type="text" class="form-control-sm form-control" placeholder="Search" id="searchAdminAccount">
                     </div>
                     <div class="col-12 col-md-6 d-flex flex-row justify-content-end">
-                        <button class="btn btn-sm border btn-pink" data-bs-toggle="modal" data-bs-target="#addStocks">
+                        <button class="btn btn-sm border btn-pink" data-bs-toggle="modal" data-bs-target="#addAdminAccount">
                             <i class="bi bi-bookmark-plus"></i> Create Account
                         </button>
                     </div>
@@ -27,55 +27,74 @@
                     <table class="table" style="font-size: 12px;">
                         <thead>
                             <tr>
-                                <th scope="col" width="10%">Stock Date</th>
-                                <th scope="col" width="35%">Product Name</th>
-                                <th scope="col" width="10%">Stock Qty</th>
-                                <th scope="col" width="10%">Type</th>
-                                <th scope="col" width="5%">Action</th>
+                                <th scope="col" width="10%">admin_id</th>
+                                <th scope="col" width="20%">username</th>
+                                <th scope="col" width="20%">email</th>
+                                <th scope="col" width="20%">full_name</th>
+                                <th scope="col" width="20%">created_at</th>
+                                <th scope="col" width="10%">Action</th>
                             </tr>
                         </thead>
-                        <tbody id="stockTable">
-                            <!-- Stock rows will be dynamically inserted here -->
+                        <tbody id="adminAccountTable">
+                            <!-- Example row (can be dynamically inserted) -->
+                            
+                            <!-- More rows will be dynamically inserted here -->
                         </tbody>
                     </table>
                 </div>
-                <nav aria-label="Stocks pagination"> <!-- Updated aria-label -->
-                    <ul class="pagination pagination-sm" id="paginationStockControls">
-                        <li class="page-item page-pink"><a class="page-link" href="#" id="prevStockPage">Previous</a></li>
+                <nav aria-label="Admin Accounts pagination"> <!-- Updated aria-label -->
+                    <ul class="pagination pagination-sm" id="paginationAdminAccountControls">
+                        <li class="page-item page-pink"><a class="page-link" href="#" id="prevAdminAccountPage">Previous</a></li>
                         <!-- Page numbers will be dynamically inserted here -->
-                        <li class="page-item page-pink"><a class="page-link" href="#" id="nextStockPage">Next</a></li>
+                        <li class="page-item page-pink"><a class="page-link" href="#" id="nextAdminAccountPage">Next</a></li>
                     </ul>
                 </nav>
-            </div>
+            </div>            
         </div>
     </div>
+    
     {% include 'footer_links.html' %}
 </body>
 </html>
 
 
 
-<div class="modal fade" id="addStocks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addAdminAccount" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Stocks</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Create Administrator Account</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div id="addCategorySuccess" class="alert alert-sm alert-success" style="display: none; font-size: 12px; position: fixed; left: 10px; top: 10px; z-index: 1000;" role="alert">
             Added stocks successfully!
         </div>
-        <div class="custom-select">
-            <div class="selected rounded" id="selected-product">Select a product</div>
-            <div class="search-container" id="search-container" style="display: none;">
-                <input type="text" id="search-input" placeholder="Search...">
-                <div id="product-list"></div>
+        <form id="registrationForm">
+            <div class="row g-2 mb-2">
+                <div class="col-12 col-md-6">
+                    <input type="text" class="form-control" id="adminFullname" placeholder="Fullname">
+                    <div class="invalid-feedback">Firstname is required.</div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="email" class="form-control" id="adminEmail" placeholder="Email">
+                    <div class="invalid-feedback">Lastname is required.</div>
+                </div>
+                
+                <div class="col-12 col-md-12">
+                    <input type="text" class="form-control" id="adminUsername" placeholder="Username">
+                    <div class="invalid-feedback">Username is required.</div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="password" class="form-control" id="adminPassword" placeholder="Password">
+                    <div class="invalid-feedback">Password is required.</div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input type="password" class="form-control" id="adminConfirmPassword" placeholder="Confirm Password">
+                    <div class="invalid-feedback">Passwords do not match.</div>
+                </div>
             </div>
-            <input type="hidden" id="selected-id" value=""> <!-- Hidden input for product ID -->
-            <p class="m-0 mb-2 mt-3" style="font-size: 12px;">Stocks</p>
-            <input style="font-size: 14px;" type="number" id="product_stocks" class="form-control mb-5" placeholder="Number of Stocks" min="1">
-        </div>
+        </form>
         
     </div>
     <div class="modal-footer">

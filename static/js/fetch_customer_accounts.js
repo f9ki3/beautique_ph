@@ -12,7 +12,7 @@ function fetchAllCustomerAccounts() {
         contentType: "application/json",
         dataType: "json",
         success: function(response) {
-            console.log("Response:", response); // Log the response to check its structure
+            // console.log("Response:", response); // Log the response to check its structure
             // Extract customer accounts from the response
             allCustomerAccounts = response.customers || []; // Store all customer accounts in the array
             

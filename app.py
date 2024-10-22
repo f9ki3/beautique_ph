@@ -258,6 +258,13 @@ def delete_customer():
     Customer().delete_customer_account(id)
     return jsonify({'status': 1})
 
+@app.route('/deleteAdmin', methods=['POST'])
+def delete_admin():
+    json = request.get_json()
+    id = json.get('id')
+    Customer().delete_admin_account(id)
+    return jsonify({'status': 1})
+
 @app.route('/deleteProduct', methods=['POST'])
 def delete_product():
     json = request.get_json()
@@ -317,6 +324,12 @@ def fetch_stocks():
 @app.route('/fetchCustomerAccounts', methods=['GET'])
 def fetchCustomerAccounts():
     data = Customer().fetchAllCustomers()
+    # print(data)
+    return jsonify(data)
+
+@app.route('/fetchAdminAccounts', methods=['GET'])
+def fetchAdminAccounts():
+    data = Accounts().fetchAllAdmins()
     # print(data)
     return jsonify(data)
 
@@ -508,6 +521,19 @@ def post_customer_register():
 
     # Add your logic to process the registration here (e.g., saving to database)
     Customer().create_customer_account(username, password, email, firstname, lastname, address)
+    # Example response
+    return jsonify({'message': 'User registered successfully!'})
+
+@app.route('/createAdminAccount', methods=['POST'])
+def createAdminAccount():
+    data = request.get_json()
+    fullname = data.get('fullname')
+    email = data.get('email')
+    username = data.get('username')
+    password = data.get('password')
+
+    # Add your logic to process the registration here (e.g., saving to database)
+    Accounts().create_admin_account(username, password, email, fullname)
     # Example response
     return jsonify({'message': 'User registered successfully!'})
 
