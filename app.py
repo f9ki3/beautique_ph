@@ -249,6 +249,13 @@ def delete_stock():
     json = request.get_json()
     id = json.get('id')
     Stocks().deleteStock(id)
+    return jsonify({'status': 1})\
+
+@app.route('/deleteCustomer', methods=['POST'])
+def delete_customer():
+    json = request.get_json()
+    id = json.get('id')
+    Customer().delete_customer_account(id)
     return jsonify({'status': 1})
 
 @app.route('/deleteProduct', methods=['POST'])

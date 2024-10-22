@@ -176,6 +176,14 @@ class Customer(Database):
         # Return the response data as a dictionary
         return response_data
 
+    def delete_customer_account(self, customer_id):
+        try:
+            self.cursor.execute('DELETE FROM customer_account WHERE customer_id = ?', (customer_id,))
+            self.conn.commit()  # Commit the delete operation
+            print(f"Customer with ID {customer_id} has been deleted successfully.")
+        except sqlite3.Error as e:
+            print(f"An error occurred while deleting the customer: {e}")
+
 
 if __name__ == "__main__":
     customer = Customer()
