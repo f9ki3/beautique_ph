@@ -12,7 +12,7 @@ function fetchAllStoreSales() {
         contentType: "application/json",
         dataType: "json",
         success: function(response) {
-            console.log(response);
+            // console.log(response);
             allStoreSales = response.stocks || response; // Store all Store Sales in the array
             filteredStoreSales = allStoreSales; // Initialize filtered stocks
             renderStoreSales(activeStoreSalesPage); // Render stocks for the initial page

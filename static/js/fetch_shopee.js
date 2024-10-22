@@ -12,7 +12,7 @@ function fetchAllShopeeStocks() {
         contentType: "application/json",
         dataType: "json",
         success: function(response) {
-            console.log(response);
+            // console.log(response);
             allShopeeStocks = response.stocks || response; // Store all Shopee stocks in the array
             filteredShopeeStocks = allShopeeStocks; // Initialize filtered stocks
             renderShopeeStocks(activeShopeePage); // Render stocks for the initial page

@@ -140,6 +140,42 @@ class Customer(Database):
 
         # Return the response data as a dictionary
         return response_data
+    
+    def fetchAllCustomers(self):
+        # Fetch all customer accounts from the customer_account table
+        self.cursor.execute('''
+            SELECT * FROM customer_account
+        ''')
+        
+        results = self.cursor.fetchall()
+
+        if results:
+            customers = []
+            for result in results:
+                customer_data = {
+                    'customer_id': result[0],
+                    'username': result[1],
+                    'email': result[3],
+                    'first_name': result[4],
+                    'last_name': result[5],
+                    'contact_address': result[6],
+                    'created_at': result[7]
+                }
+                customers.append(customer_data)
+            
+            response_data = {
+                'success': True,
+                'customers': customers
+            }
+        else:
+            response_data = {
+                'success': False,
+                'message': 'No customers found'
+            }
+
+        # Return the response data as a dictionary
+        return response_data
+
 
 if __name__ == "__main__":
     customer = Customer()

@@ -140,6 +140,20 @@ def admin_sales():
         return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
     return render_template('admin-sales.html')
 
+@app.route('/admin-accounts', methods=['GET'])
+def administrator():
+    # Check if the user is logged in by verifying session data
+    if 'username' not in session or session.get('user_type') != 'admin':
+        return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
+    return render_template('admin-administrator.html')
+
+@app.route('/admin-customer-accounts', methods=['GET'])
+def admin_customer_accounts():
+    # Check if the user is logged in by verifying session data
+    if 'username' not in session or session.get('user_type') != 'admin':
+        return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
+    return render_template('admin-customer.html')
+
 # API ENDPOINTS
 @app.route("/post_login", methods=['POST'])
 def post_login():
@@ -290,6 +304,12 @@ def fetch_products_search():
 @app.route('/fetchAllStocks', methods=['GET'])
 def fetch_stocks():
     data = Stocks().fetchAllStocks()
+    # print(data)
+    return jsonify(data)
+
+@app.route('/fetchCustomerAccounts', methods=['GET'])
+def fetchCustomerAccounts():
+    data = Customer().fetchAllCustomers()
     # print(data)
     return jsonify(data)
 
