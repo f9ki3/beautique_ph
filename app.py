@@ -8,6 +8,7 @@ from products import Product
 from stocks import Stocks
 from sales import Sales
 from shopee_sales import ShopeeSales 
+from dashboard import Dashboards
 import base64
 
 app = Flask(__name__)
@@ -318,6 +319,12 @@ def fetch_products_search():
 @app.route('/fetchAllStocks', methods=['GET'])
 def fetch_stocks():
     data = Stocks().fetchAllStocks()
+    # print(data)
+    return jsonify(data)
+
+@app.route('/fetchCountAccounts', methods=['GET'])
+def fetchCountAccounts():
+    data = Dashboards().get_accounts_count()
     # print(data)
     return jsonify(data)
 
