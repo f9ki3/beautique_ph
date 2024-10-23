@@ -6,7 +6,7 @@ $(document).ready(function() {
             method: 'GET',
             dataType: 'json',
             success: function(response) {
-                console.log(response); // Log the response to verify its structure
+                // console.log(response); // Log the response to verify its structure
                 // Extracting the daily sales data
                 var dailySalesData = response[0].daily_sales;
                 var dates = dailySalesData.date;
@@ -66,7 +66,7 @@ $(document).ready(function() {
             method: 'GET',
             dataType: 'json',
             success: function(response) {
-                console.log(response); // Log the response to verify its structure
+                // console.log(response); // Log the response to verify its structure
                 // Assuming the response is in the specified format
                 const monthlySales = response[1].monthly_sales; // Adjust the index if needed
                 const months = monthlySales.month; // Array of month strings (e.g., ["2024-10"])

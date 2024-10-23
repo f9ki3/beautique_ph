@@ -282,11 +282,6 @@ def update_category():
     Categories().updateCategory( id, date, name)
     return jsonify({'status': 1})
 
-# @app.route('/fetchAllProducts', methods=['GET'])
-# def fetch_products():
-#     data = Product().fetchAllProducts()
-#     return jsonify(data)
-
 @app.route('/fetchAllProducts', methods=['GET'])
 def fetch_products():
     category_id = request.args.get('category_id')

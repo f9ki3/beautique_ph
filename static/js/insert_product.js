@@ -1,36 +1,3 @@
-
-
-// Fetch all categories
-$.ajax({
-    type: "GET",
-    url: "/fetchAllCategories",
-    contentType: "application/json", // This is fine for GET requests
-    dataType: "json",
-    success: function(response) {
-        // Assuming 'response' is an array of categories
-        const categories = response; 
-        const $select = $('#selectCategories');
-        
-        // Clear existing options
-        $select.empty();
-
-        // Populate the select element with new options
-        categories.forEach(function(category) {
-            const option = $('<option></option>')
-                .attr('value', category.id)  // Set the value to category ID
-                .text(category.category_name); // Set the text to category name
-            $select.append(option);
-        });
-
-        // console.log(categories);
-    },
-    error: function(xhr, status, error) {
-        console.error('Error fetching categories:', error);
-    }
-});
-
-
-
 // Function to insert product
 function insertProduct() {
     // Get product elements
