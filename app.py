@@ -328,6 +328,12 @@ def fetchCountAccounts():
     # print(data)
     return jsonify(data)
 
+@app.route('/fetchSalesDashboards', methods=['GET'])
+def fetchSalesDashboards():
+    data = Dashboards().get_daily_sales_data()
+    # print(data)
+    return jsonify(data)
+
 @app.route('/fetchCustomerAccounts', methods=['GET'])
 def fetchCustomerAccounts():
     data = Customer().fetchAllCustomers()
