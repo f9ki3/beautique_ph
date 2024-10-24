@@ -4,3 +4,4 @@ Werkzeug==2.3.6  # Required for secure_filename (used with Flask)
 pandas==2.0.3
 # mlxtend for association rule mining (apriori and association_rules)
 mlxtend==0.21.0
+gunicorn==20.1.0  # or the latest version
