@@ -90,6 +90,31 @@ class Product(Database):
         rows = self.cursor.fetchall()
         return [dict(row) for row in rows]
     
+    def fetchAllProductsPopular(self):
+        # SQL query that joins SalesItems with the Products table
+        self.cursor.execute('''
+        SELECT 
+            p.id,
+            p.product_image,
+            p.product_name, 
+            p.price, 
+            SUM(s.qty) AS total_quantity
+        FROM SalesItems s
+        JOIN products p ON s.product_id = p.id  -- Joining based on product_id
+        WHERE p.product_name NOT LIKE '%CHECKOUT LINK (1-30 PCS%'
+        AND p.product_name NOT LIKE '%FREEBIES FOR BUYERS ONLY%'
+        GROUP BY p.product_name, p.price
+        ORDER BY total_quantity DESC
+        LIMIT 12;
+        ''')
+        
+        rows = self.cursor.fetchall()
+        
+        # Returning results as a list of dictionaries for better readability
+        return [dict(id=row[0], product_image=row[1],product_name=row[2], price=row[3]) for row in rows]
+
+
+    
     def fetchAllProductsCategory(self, categoryid=None):
         # Fetch products by categoryid if provided
         self.cursor.execute('SELECT * FROM products WHERE category_id = ?', (categoryid,))

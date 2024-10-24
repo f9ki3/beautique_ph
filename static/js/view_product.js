@@ -144,6 +144,56 @@ if (!productId) {
 
             const viewCategoryId = response.category_id
 
+            function fetchProductsPopular() {
+                $.ajax({
+                    type: "GET",
+                    url: "/get_recommendation",  // Ensure this endpoint is correct
+                    contentType: "application/json",  // Correct content type for sending JSON
+                    dataType: "json",                 // Expect JSON response from the server
+                    data: {"category_id": viewCategoryId},
+                    success: function(response) {
+                        console.log(response)
+                        var productListRecommendtation = $('#productListRecommendtation'); // Get the element where you want to add products
+                        productListRecommendtation.empty(); // Clear any existing content
+            
+                        if (response.length === 0) {
+                            $('#youMayMessage').hide()
+                            return;
+                        }
+            
+                        // Iterate through the response and create product cards
+                        response.forEach(function(product) {
+                            var productHTML = `
+                                <div class="col-6 col-md-3">
+                                    <a href="product_view?product_id=${product.id}" style="text-decoration: none; color: inherit;">
+                                        <div class="p-3">
+                                            <div style="position: relative;">
+                                                <div style="width: 100%; height: 200px;">
+                                                    <img style="object-fit: cover; width: 100%; height: 100%;" class="rounded" src="../static/uploads/${product.product_image.split(',')[0].trim()}" alt="">
+                                                    <button style="position: absolute; right: 10px; bottom: 10px;" class="btn border btn-pink rounded-5">
+                                                        <i class="bi bi-cart-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <p class="mb-0">${product.product_name.substring(0, 66)}...</p>
+                                            <h6 class="fw-bolder mt-0">₱ ${product.price.toFixed(2)} PHP</h6>
+                                        </div>
+                                    </a>
+                                </div>`;
+                            
+                            productListRecommendtation.append(productHTML); // Append each product card to the productListRecommendtation div
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);  // Handle any errors that occur during the request
+                        $('.category-text').show();
+                        $('.category-load').hide();
+                    }
+                });
+            }
+            
+            fetchProductsPopular()
+
             $.ajax({
                 type: "GET",
                 url: `/fetchAllProductsCategory?category_id=${viewCategoryId}`, // Include category_id in the URL

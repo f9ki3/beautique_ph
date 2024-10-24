@@ -9,6 +9,7 @@ from stocks import Stocks
 from sales import Sales
 from shopee_sales import ShopeeSales 
 from dashboard import Dashboards
+from association_rule import AssociationRule
 import base64
 
 app = Flask(__name__)
@@ -112,6 +113,13 @@ def admin_product():
     if 'username' not in session or session.get('user_type') != 'admin':
         return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
     return render_template('admin-product.html')
+
+@app.route('/admin-product-pairing', methods=['GET'])
+def admin_product_pairing():
+    # Check if the user is logged in by verifying session data
+    if 'username' not in session or session.get('user_type') != 'admin':
+        return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
+    return render_template('admin-product-pairing.html')
 
 @app.route('/admin-category', methods=['GET'])
 def admin_category():
@@ -293,6 +301,21 @@ def fetch_products():
     else:
         # Fetch products based on the specified category_id
         products = Product().fetchAllProductsCategory(category_id)
+
+    # Convert products to a serializable format
+    return jsonify(products)
+
+@app.route('/fetchAllProductsPopular', methods=['GET'])
+def fetch_products_popular():    
+    products = Product().fetchAllProductsPopular()
+
+    # Convert products to a serializable format
+    return jsonify(products)
+
+@app.route('/get_recommendation', methods=['GET'])
+def get_recommendation():    
+    main_category_id = request.args.get('category_id', type=int)
+    products = AssociationRule().get_recommendation(main_category_id)
 
     # Convert products to a serializable format
     return jsonify(products)
@@ -600,6 +623,41 @@ def update_profile():
 )
     # Return a JSON response to the client
     return jsonify({'message': 'Profile updated successfully!'}), 200
+
+@app.route('/addRule', methods=['POST'])
+def add_rule():
+    # Get the JSON data from the request
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "No input data provided"}), 400
+
+    # Retrieve the IDs from the request
+    main_category_id = data.get('main_category_id')
+    link_category_id = data.get('link_category_id')
+
+    # Simple validation
+    if not main_category_id or not link_category_id:
+        return jsonify({"error": "Missing required fields"}), 400
+
+    try:
+        # Try to create the association rule
+        result = AssociationRule().create_association_rule(main_category_id, link_category_id)
+
+        # Check if there was a validation error (like duplicate main_category_id)
+        if 'error' in result:
+            return jsonify({"error": result['error']}), 400
+
+        # If successful, return a success message
+        return jsonify({
+            "message": "Rule added successfully!",
+            "main_category_id": main_category_id,
+            "link_category_id": link_category_id
+        }), 200
+
+    except Exception as e:
+        # Handle any backend errors (e.g., database connection issues, unexpected errors)
+        return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
