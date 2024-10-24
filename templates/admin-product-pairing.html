@@ -15,10 +15,10 @@
                 <h4>Product Pairing</h4> <!-- Updated title -->
                 <div class="row">
                     <div class="col-12 col-md-6">
-                        <input type="text" class="form-control-sm form-control" placeholder="Search" id="searchStock">
+                        <input type="text" class="form-control-sm form-control" placeholder="Search" id="searchAssociationRule">
                     </div>
                     <div class="col-12 col-md-6 d-flex flex-row justify-content-end">
-                        <button class="btn btn-sm border btn-pink" data-bs-toggle="modal" data-bs-target="#addStocks">
+                        <button class="btn btn-sm border btn-pink" data-bs-toggle="modal" data-bs-target="#addAssociationRule">
                             <i class="bi bi-bookmark-plus"></i> Association Rule
                         </button>
                     </div>
@@ -27,23 +27,23 @@
                     <table class="table" style="font-size: 12px;">
                         <thead>
                             <tr>
-                                <th scope="col" width="10%">Stock Date</th>
-                                <th scope="col" width="35%">Product Name</th>
-                                <th scope="col" width="10%">Stock Qty</th>
-                                <th scope="col" width="10%">Type</th>
+                                <th scope="col" width="10%">ID</th>
+                                <th scope="col" width="35%">Category Name</th>
+                                <th scope="col" width="20%">Main ID</th>
+                                <th scope="col" width="20%">Link ID</th>
                                 <th scope="col" width="5%">Action</th>
                             </tr>
                         </thead>
-                        <tbody id="stockTable">
-                            <!-- Stock rows will be dynamically inserted here -->
+                        <tbody id="associationRuleTable">
+                            <!-- Association rule rows will be dynamically inserted here -->
                         </tbody>
                     </table>
                 </div>
-                <nav aria-label="Stocks pagination"> <!-- Updated aria-label -->
-                    <ul class="pagination pagination-sm" id="paginationStockControls">
-                        <li class="page-item page-pink"><a class="page-link" href="#" id="prevStockPage">Previous</a></li>
+                <nav aria-label="Association rule pagination"> <!-- Updated aria-label -->
+                    <ul class="pagination pagination-sm" id="paginationAssociationRuleControls">
+                        <li class="page-item page-pink"><a class="page-link" href="#" id="prevAssociationRulePage">Previous</a></li>
                         <!-- Page numbers will be dynamically inserted here -->
-                        <li class="page-item page-pink"><a class="page-link" href="#" id="nextStockPage">Next</a></li>
+                        <li class="page-item page-pink"><a class="page-link" href="#" id="nextAssociationRulePage">Next</a></li>
                     </ul>
                 </nav>
             </div>
@@ -55,16 +55,16 @@
 
 
 
-<div class="modal fade" id="addStocks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addAssociationRule" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Stocks</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Association Rule</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div id="addCategorySuccess" class="alert alert-sm alert-success" style="display: none; font-size: 12px; position: fixed; left: 10px; top: 10px; z-index: 1000;" role="alert">
-            Added stocks successfully!
+            Added successfully!
         </div>
         
         <label for="selectMainCategories" class="form-label" style="font-size: 12px;">Select Main Category</label>

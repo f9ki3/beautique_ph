@@ -257,8 +257,15 @@ def delete_category():
 def delete_stock():
     json = request.get_json()
     id = json.get('id')
+    AssociationRule().delete_association_rule(id)
+    return jsonify({'status': 1})
+
+@app.route('/deleteRules', methods=['POST'])
+def delete_rules():
+    json = request.get_json()
+    id = json.get('id')
     Stocks().deleteStock(id)
-    return jsonify({'status': 1})\
+    return jsonify({'status': 1})
 
 @app.route('/deleteCustomer', methods=['POST'])
 def delete_customer():
@@ -379,6 +386,11 @@ def fetchShopee():
 def fetchStoreSales():
     data = Sales().get_all_sales()
     return jsonify({'stocks': data})
+
+@app.route('/fetchAllAssociationRules', methods=['GET'])
+def fetchAllAssociationRules():
+    data = AssociationRule().read_association_rules()
+    return jsonify({'rules': data})
 
 @app.route('/addProducts', methods=['POST'])
 def add_product():

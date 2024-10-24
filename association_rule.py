@@ -37,8 +37,22 @@ class AssociationRule(Database):
 
 
     def read_association_rules(self):
-        self.cursor.execute('SELECT * FROM association_rule')
-        return self.cursor.fetchall()  # Fetch all rows
+        # Prepare the SQL query to fetch association rules with category names
+        self.cursor.execute('''
+            SELECT ar.*, c.category_name
+            FROM association_rule ar
+            JOIN categories c ON ar.main_category_id = c.id
+        ''')
+
+        # Fetch all rows from the executed query
+        rows = self.cursor.fetchall()  
+        # Get the names of the columns from the cursor description
+        column_names = [desc[0] for desc in self.cursor.description]  
+
+        # Convert the rows into a list of dictionaries, mapping column names to their corresponding values
+        return [dict(zip(column_names, row)) for row in rows]
+
+
 
     def read_association_rule(self, rule_id):
         self.cursor.execute('SELECT * FROM association_rule WHERE id = ?', (rule_id,))
