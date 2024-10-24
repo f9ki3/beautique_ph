@@ -21,25 +21,32 @@ $(document).ready(function() {
                 var storeChartData = [];
                 var shopeeChartData = [];
 
-                // Process Store daily sales data
+                // Get the current year
+                var currentYear = new Date().getFullYear();
+
+                // Process Store daily sales data for the current year
                 for (var i = 0; i < storeDates.length; i++) {
                     if (storeDates[i]) {
                         var date = new Date(storeDates[i]);
-                        var formattedDate = date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });  // Format dates
-                        chartCategories.push(formattedDate);  // Add formatted dates
-                        storeChartData.push(storeSums[i]);  // Add store sales sums
+                        if (date.getFullYear() === currentYear) {  // Filter for the current year
+                            var formattedDate = date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+                            chartCategories.push(formattedDate);
+                            storeChartData.push(storeSums[i]);
+                        }
                     }
                 }
 
-                // Process Shopee daily sales data (ignore null dates)
+                // Process Shopee daily sales data for the current year
                 for (var i = 0; i < shopeeDates.length; i++) {
                     if (shopeeDates[i]) {
                         var date = new Date(shopeeDates[i]);
-                        var formattedDate = date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });  // Format dates
-                        if (!chartCategories.includes(formattedDate)) {
-                            chartCategories.push(formattedDate);  // Only add if not already present
+                        if (date.getFullYear() === currentYear) {  // Filter for the current year
+                            var formattedDate = date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+                            if (!chartCategories.includes(formattedDate)) {
+                                chartCategories.push(formattedDate);
+                            }
+                            shopeeChartData.push(shopeeSums[i]);
                         }
-                        shopeeChartData.push(shopeeSums[i]);  // Add shopee sales sums
                     }
                 }
 
@@ -53,7 +60,7 @@ $(document).ready(function() {
                         data: shopeeChartData // Shopee daily sales data
                     }],
                     chart: {
-                        height: 350,
+                        height: 300,
                         type: 'bar'
                     },
                     colors: ['#21eb1a', '#f98c14'], // Store and Shopee colors
@@ -106,27 +113,34 @@ $(document).ready(function() {
                 var storeChartData = [];
                 var shopeeChartData = [];
 
-                // Process Store monthly sales data
+                // Get the current year
+                var currentYear = new Date().getFullYear();
+
+                // Process Store monthly sales data for the current year
                 for (var i = 0; i < storeMonths.length; i++) {
                     if (storeMonths[i]) {
                         var date = new Date(storeMonths[i] + '-01'); // Append a day to create a valid date
-                        var monthYear = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });  // Format to include year
-                        if (!chartCategories.includes(monthYear)) {
-                            chartCategories.push(monthYear);  // Avoid duplicate months
+                        if (date.getFullYear() === currentYear) {  // Filter for the current year
+                            var monthYear = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+                            if (!chartCategories.includes(monthYear)) {
+                                chartCategories.push(monthYear);  // Avoid duplicate months
+                            }
+                            storeChartData.push(storeSums[i]);  // Add store sales sums
                         }
-                        storeChartData.push(storeSums[i]);  // Add store sales sums
                     }
                 }
 
-                // Process Shopee monthly sales data
+                // Process Shopee monthly sales data for the current year
                 for (var i = 0; i < shopeeMonths.length; i++) {
                     if (shopeeMonths[i]) {
                         var date = new Date(shopeeMonths[i] + '-01'); // Append a day to create a valid date
-                        var monthYear = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });  // Format to include year
-                        if (!chartCategories.includes(monthYear)) {
-                            chartCategories.push(monthYear);  // Avoid duplicate months
+                        if (date.getFullYear() === currentYear) {  // Filter for the current year
+                            var monthYear = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+                            if (!chartCategories.includes(monthYear)) {
+                                chartCategories.push(monthYear);  // Avoid duplicate months
+                            }
+                            shopeeChartData.push(shopeeSums[i]);  // Add shopee sales sums
                         }
-                        shopeeChartData.push(shopeeSums[i]);  // Add shopee sales sums
                     }
                 }
 
@@ -140,7 +154,7 @@ $(document).ready(function() {
                         data: shopeeChartData // Shopee monthly sales data
                     }],
                     chart: {
-                        height: 350,
+                        height: 300,
                         type: 'area'
                     },
                     colors: ['#21eb1a', '#f98c14'], // Store and Shopee colors

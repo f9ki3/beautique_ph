@@ -329,6 +329,12 @@ def fetchSalesDashboards():
     # print(data)
     return jsonify(data)
 
+@app.route('/fetchTopProducts', methods=['GET'])
+def fetchTopProducts():
+    data = Dashboards().get_products_sales()
+    # print(data)
+    return jsonify(data)
+
 @app.route('/fetchCustomerAccounts', methods=['GET'])
 def fetchCustomerAccounts():
     data = Customer().fetchAllCustomers()

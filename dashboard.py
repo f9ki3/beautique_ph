@@ -141,6 +141,42 @@ class Dashboards(Database):
                 }
             }
         ]
+    
+    def get_products_sales(self):
+        # Execute the SQL query to get the top 10 popular products
+        self.cursor.execute('''
+        SELECT product_name, SUM(quantity) AS total_quantity
+        FROM shopee_sales
+        WHERE product_name NOT LIKE '%CHECKOUT LINK (1-30 PCS%'
+        AND product_name NOT LIKE '%FREEBIES FOR BUYERS ONLY%'
+        GROUP BY product_name
+        ORDER BY total_quantity DESC
+        LIMIT 10;
+        ''')
+        top_results = self.cursor.fetchall()  # Fetch all results for top products
+
+        # Convert results into a list of dictionaries for better readability
+        top_products = [{"product_name": row[0], "total_quantity": row[1]} for row in top_results]
+
+        # Execute the SQL query to get the bottom 10 products
+        self.cursor.execute('''
+        SELECT product_name, SUM(quantity) AS total_quantity
+        FROM shopee_sales
+        WHERE product_name NOT LIKE '%CHECKOUT LINK (1-30 PCS%'
+        GROUP BY product_name
+        ORDER BY total_quantity ASC
+        LIMIT 10;
+        ''')
+        bottom_results = self.cursor.fetchall()  # Fetch all results for bottom products
+
+        # Convert results into a list of dictionaries for better readability
+        bottom_products = [{"product_name": row[0], "total_quantity": row[1]} for row in bottom_results]
+
+        return {
+            'top_products': top_products,
+            'bottoms_products': bottom_products
+        }
+
 
 
 
