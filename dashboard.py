@@ -143,7 +143,7 @@ class Dashboards(Database):
         ]
     
     def get_products_sales(self):
-        # Execute the SQL query to get the top 10 popular products
+        # Execute the SQL query to get the top 10 Shopee products
         self.cursor.execute('''
         SELECT product_name, SUM(quantity) AS total_quantity
         FROM shopee_sales
@@ -153,29 +153,64 @@ class Dashboards(Database):
         ORDER BY total_quantity DESC
         LIMIT 10;
         ''')
-        top_results = self.cursor.fetchall()  # Fetch all results for top products
+        shopee_top_results = self.cursor.fetchall()  # Fetch all results for top Shopee products
 
         # Convert results into a list of dictionaries for better readability
-        top_products = [{"product_name": row[0], "total_quantity": row[1]} for row in top_results]
+        shopee_top_products = [{"product_name": row[0], "total_quantity": row[1]} for row in shopee_top_results]
 
-        # Execute the SQL query to get the bottom 10 products
+        # Execute the SQL query to get the bottom 10 Shopee products
         self.cursor.execute('''
         SELECT product_name, SUM(quantity) AS total_quantity
         FROM shopee_sales
         WHERE product_name NOT LIKE '%CHECKOUT LINK (1-30 PCS%'
+        AND product_name NOT LIKE '%FREEBIES FOR BUYERS ONLY%'
         GROUP BY product_name
         ORDER BY total_quantity ASC
         LIMIT 10;
         ''')
-        bottom_results = self.cursor.fetchall()  # Fetch all results for bottom products
+        shopee_bottom_results = self.cursor.fetchall()  # Fetch all results for bottom Shopee products
 
         # Convert results into a list of dictionaries for better readability
-        bottom_products = [{"product_name": row[0], "total_quantity": row[1]} for row in bottom_results]
+        shopee_bottom_products = [{"product_name": row[0], "total_quantity": row[1]} for row in shopee_bottom_results]
 
+        # Execute the SQL query to get the top 10 store products
+        self.cursor.execute('''
+        SELECT product_name, SUM(qty) AS total_quantity
+        FROM SalesItems
+        WHERE product_name NOT LIKE '%CHECKOUT LINK (1-30 PCS%'
+        AND product_name NOT LIKE '%FREEBIES FOR BUYERS ONLY%'
+        GROUP BY product_name
+        ORDER BY total_quantity DESC
+        LIMIT 5;
+        ''')
+        store_top_results = self.cursor.fetchall()  # Fetch all results for top store products
+
+        # Convert results into a list of dictionaries for better readability
+        store_top_products = [{"product_name": row[0], "total_quantity": row[1]} for row in store_top_results]
+
+        # Execute the SQL query to get the bottom 10 store products
+        self.cursor.execute('''
+        SELECT product_name, SUM(qty) AS total_quantity
+        FROM SalesItems
+        WHERE product_name NOT LIKE '%CHECKOUT LINK (1-30 PCS%'
+        AND product_name NOT LIKE '%FREEBIES FOR BUYERS ONLY%'
+        GROUP BY product_name
+        ORDER BY total_quantity ASC
+        LIMIT 5;
+        ''')
+        store_bottom_results = self.cursor.fetchall()  # Fetch all results for bottom store products
+
+        # Convert results into a list of dictionaries for better readability
+        store_bottom_products = [{"product_name": row[0], "total_quantity": row[1]} for row in store_bottom_results]
+
+        # Return a dictionary with all 4 sets of products
         return {
-            'top_products': top_products,
-            'bottoms_products': bottom_products
+            'shopee_top_products': shopee_top_products,
+            'shopee_bottom_products': shopee_bottom_products,
+            'store_top_products': store_top_products,
+            'store_bottom_products': store_bottom_products
         }
+
 
 
 

@@ -69,8 +69,6 @@
 //         }
 //     });
 // });
-
-
 $(document).ready(function() {
     $.ajax({
         url: '/fetchTopProducts',  // Replace with your API endpoint
@@ -81,16 +79,20 @@ $(document).ready(function() {
             console.log(response);
             
             // Access the data arrays from the response
-            var dataTop = response.top_products;
-            var dataBottom = response.bottoms_products;
+            var shopeeTop = response.shopee_top_products;
+            var shopeeBottom = response.shopee_bottom_products;
+            var storeTop = response.store_top_products;
+            var storeBottom = response.store_bottom_products;
 
-            // Function to generate star icons based on rating
-            function generateStars(rating, isTopRank) {
+            // Function to generate star icons based on rating and popularity
+            function generateStars(totalSales) {
                 let stars = '';
+                let adjustedRating = Math.max(0, Math.min(Math.floor(totalSales / 10), 5)); // Adjusted rating based on sales
+
                 for (let i = 0; i < 5; i++) {
-                    if (i < rating) {
-                        // Filled star icon with color based on top rank status
-                        stars += `<i class="bi bi-star-fill" style="color: ${isTopRank ? '#FFD700' : '#3498DB'};"></i>`;
+                    if (i < adjustedRating) {
+                        // Filled star icon in orange
+                        stars += `<i class="bi bi-star-fill" style="color: orange;"></i>`;
                     } else {
                         // Empty star icon
                         stars += `<i class="bi bi-star" style="color: #ccc;"></i>`;
@@ -99,44 +101,84 @@ $(document).ready(function() {
                 return stars;
             }
 
-            // Append top products to the topProductsShopee table
-            if (Array.isArray(dataTop)) {
-                var topTableBody = $('#topProductsShopee');
+            // Append Shopee top products to the topProductsShopee table
+            if (Array.isArray(shopeeTop)) {
+                var topTableShopee = $('#topProductsShopee');
+                topTableShopee.empty(); // Clear the table before appending new data
                 
-                dataTop.forEach(function(item, index) {
-                    var isTopRank = index === 0;  // Check if it's the top-ranked product
-                    
-                    var topProductRow = `
+                shopeeTop.forEach(function(item, index) {
+                    var row = `
                         <tr>
                             <td>${index + 1}</td>  <!-- Rank (1-based index) -->
                             <td>${item.product_name}</td>  <!-- Product Name -->
                             <td>${item.total_quantity}</td>  <!-- Number of Sales -->
-                            <td>${generateStars(item.rating, isTopRank)}</td>  <!-- Star Rating with color -->
+                            <td>${generateStars(item.total_quantity)}</td>  <!-- Star Rating -->
                         </tr>
                     `;
-                    topTableBody.append(topProductRow);
+                    topTableShopee.append(row);
                 });
             } else {
-                console.error('Top Products data is not an array:', dataTop);
+                console.error('Shopee Top Products data is not an array:', shopeeTop);
             }
 
-            // Append bottom products to the bottomsProductsShopee table
-            if (Array.isArray(dataBottom)) {
-                var bottomTableBody = $('#bottomsProductsShopee');
+            // Append Shopee bottom products to the bottomsProductsShopee table
+            if (Array.isArray(shopeeBottom)) {
+                var bottomTableShopee = $('#bottomsProductsShopee');
+                bottomTableShopee.empty(); // Clear the table before appending new data
                 
-                dataBottom.forEach(function(item, index) {
-                    var bottomProductRow = `
+                shopeeBottom.forEach(function(item, index) {
+                    var row = `
                         <tr>
                             <td>${index + 1}</td>  <!-- Rank (1-based index) -->
                             <td>${item.product_name}</td>  <!-- Product Name -->
                             <td>${item.total_quantity}</td>  <!-- Number of Sales -->
-                            <td>${generateStars(item.rating, false)}</td>  <!-- Star Rating without top-rank coloring -->
+                            <td>${generateStars(item.total_quantity)}</td>  <!-- Star Rating -->
                         </tr>
                     `;
-                    bottomTableBody.append(bottomProductRow);
+                    bottomTableShopee.append(row);
                 });
             } else {
-                console.error('Bottom Products data is not an array:', dataBottom);
+                console.error('Shopee Bottom Products data is not an array:', shopeeBottom);
+            }
+
+            // Append Store top products to the topProductsStore table
+            if (Array.isArray(storeTop)) {
+                var topTableStore = $('#topProductsStore');
+                topTableStore.empty(); // Clear the table before appending new data
+                
+                storeTop.forEach(function(item, index) {
+                    var row = `
+                        <tr>
+                            <td>${index + 1}</td>  <!-- Rank (1-based index) -->
+                            <td>${item.product_name}</td>  <!-- Product Name -->
+                            <td>${item.total_quantity}</td>  <!-- Number of Sales -->
+                            <td>${generateStars(item.total_quantity)}</td>  <!-- Star Rating -->
+                        </tr>
+                    `;
+                    topTableStore.append(row);
+                });
+            } else {
+                console.error('Store Top Products data is not an array:', storeTop);
+            }
+
+            // Append Store bottom products to the bottomsProductsStore table
+            if (Array.isArray(storeBottom)) {
+                var bottomTableStore = $('#bottomsProductsStore');
+                bottomTableStore.empty(); // Clear the table before appending new data
+                
+                storeBottom.forEach(function(item, index) {
+                    var row = `
+                        <tr>
+                            <td>${index + 1}</td>  <!-- Rank (1-based index) -->
+                            <td>${item.product_name}</td>  <!-- Product Name -->
+                            <td>${item.total_quantity}</td>  <!-- Number of Sales -->
+                            <td>${generateStars(item.total_quantity)}</td>  <!-- Star Rating -->
+                        </tr>
+                    `;
+                    bottomTableStore.append(row);
+                });
+            } else {
+                console.error('Store Bottom Products data is not an array:', storeBottom);
             }
         },
         error: function(xhr, status, error) {
