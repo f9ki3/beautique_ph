@@ -453,18 +453,38 @@ def customer_information():
 @app.route('/sales', methods=['POST'])
 def place_order():
     data = request.get_json()  # Get the JSON data sent from the client
-    # You can validate the data here if needed
+    # Validate the data here if needed
 
-    # Now update the product stock based on cart items
+    # Extract the cart items
     cart_items = data['cart_items']
+
+    # Update product stock based on cart items
     for item in cart_items:
         product_id = item['product_id']
         qty = item['qty']
-
+        
         # Update stock in the products table
-        Stocks().stockout(product_id, qty)
-    # Assuming you have an instance of Sales
+        Stocks().stockout(product_id, qty)  # Deduct the stock quantity
+
+    # Prepare items for inserting into the SalesItems table
+    items = []
+    for item in cart_items:
+        items.append({
+            "category_name": item['category_name'],
+            "imageSrc": item['imageSrc'],
+            "max_stock": item['max_stock'],
+            "price": item['price'],
+            "product_id": item['product_id'],
+            "product_name": item['product_name'],
+            "qty": item['qty'],
+            "selectedColor": item['selectedColor'],
+            "selectedSize": item['selectedSize']
+        })
+
+    # Assuming you have an instance of Sales class
     sales = Sales()
+    
+    # Insert the sale into the Sales and SalesItems tables
     sales.insertSale(
         data['subtotal'],
         data['vat'],
@@ -474,9 +494,8 @@ def place_order():
         data['last_name'],
         data['email'],
         data['address'],
-        json.dumps(data['cart_items'])  # Convert cart items to JSON string
+        items  # Pass the list of items (not as a JSON string)
     )
-    print(data)
 
     return jsonify({"message": "Order placed successfully!"}), 201
 
