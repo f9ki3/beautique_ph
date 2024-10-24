@@ -156,7 +156,7 @@ $(document).ready(function() {
     });
 
     // Toggle the search container
-    $('#selected-product').on('click', function() {
+    $('#selected-product-2').on('click', function() {
         $('#search-container').toggle();
         $('#search-input').val('').focus(); // Clear and focus the input
         filterProducts(''); // Show all products
@@ -173,7 +173,7 @@ $(document).ready(function() {
         const productName = $(this).text();
         const productId = $(this).data('value');
 
-        $('#selected-product').text(productName);
+        $('#selected-product-2').text(productName);
         $('#selected-id').val(productId);
         $('#search-container').hide();
     });
@@ -196,7 +196,7 @@ $(document).ready(function() {
 
 function insertStock() {
     // Collecting input values
-    const productId = $('#selected-product').text().trim(); // Get selected product name
+    const productId = $('#selected-product-2').text().trim(); // Get selected product name
     const productStocks = parseInt($('#product_stocks').val().trim(), 10); // Get stock input
 
     // Validate input fields

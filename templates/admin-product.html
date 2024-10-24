@@ -90,7 +90,37 @@
         
                         <label for="selectCategories" class="form-label mt-2" style="font-size: 12px;">Select Category</label>
                         <select name="" id="selectCategories" class="form-select form-select-sm mt-2"></select>
-        
+                        <script>
+                            // Fetch all categories
+                            $.ajax({
+                                type: "GET",
+                                url: "/fetchAllCategories",
+                                contentType: "application/json", // This is fine for GET requests
+                                dataType: "json",
+                                success: function(response) {
+                                    // Assuming 'response' is an array of categories
+                                    const categories = response; 
+                                    const $select = $('#selectCategories');
+                                    
+                                    // Clear existing options
+                                    $select.empty();
+
+                                    // Populate the select element with new options
+                                    categories.forEach(function(category) {
+                                        const option = $('<option></option>')
+                                            .attr('value', category.id)  // Set the value to category ID
+                                            .text(category.category_name); // Set the text to category name
+                                        $select.append(option);
+                                    });
+
+                                    // console.log(categories);
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error fetching categories:', error);
+                                }
+                            });
+
+                        </script>
                         <label for="addProductDescription" class="form-label mt-2" style="font-size: 12px;">Product Description</label>
                         <textarea id="addProductDescription" class="form-control-sm form-control mt-2" rows="5" placeholder="Enter the product description" required></textarea>
         

@@ -16,8 +16,69 @@
             <div class="row">
                 <h4 >Dashboards</h4>
                 <div class="row g-3 m-0">
+                    <div class="col-12 col-md-6">
+                        <div class="border rounded-4 p-3" style="background: linear-gradient(135deg, #d0f2f6, #b9e1fc, #358dcf)">
+                            <div class="row">
+                                <div class="col-2">
+                                    <div style="width: 90px;">
+                                        <img style="object-fit: cover; width: 100%; height: 100%" src="../static/img/rocket.png" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-10">
+                                    <h1 class="fw-bolder">
+                                        <span id="mainTime">12:50:00</span>
+                                        <span id="ampm" style="font-size: 1.5rem;">PM</span>
+                                    </h1>
+                                    <h5 id="currentMonth"></h5>
+                                    <script>
+                                        function updateCurrentMonth() {
+                                            const currentDate = new Date(); // Get the current date
+                                            const options = { month: 'long', day: 'numeric', year: 'numeric' }; // Define the format
+                                            const formattedDate = currentDate.toLocaleDateString('en-US', options); // Format the date
+                                            document.getElementById('currentMonth').innerText = formattedDate; // Update the <h5> element
+                                        }
+
+                                        updateCurrentMonth(); // Call the function to update the month on page load
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <script>
+                            function updateTimeAndDate() {
+                                const now = new Date();
+                        
+                                // Format time as 12-hour AM/PM with seconds
+                                let hours = now.getHours();
+                                const minutes = now.getMinutes();
+                                const seconds = now.getSeconds();
+                                const ampm = hours >= 12 ? 'PM' : 'AM';
+                                hours = hours % 12;
+                                hours = hours ? hours : 12; // The hour '0' should be '12'
+                                
+                                // Format the time (hours, minutes, seconds)
+                                const formattedTime = `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                        
+                                // Format date as Month Day, Year
+                                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                                const formattedDate = now.toLocaleDateString('en-US', options);
+                        
+                                // Update the elements
+                                document.getElementById('mainTime').textContent = formattedTime; // Update time without AM/PM
+                                document.getElementById('ampm').textContent = ampm; // Update AM/PM
+                                document.getElementById('currentDate').textContent = formattedDate; // Update date
+                            }
+                        
+                            // Call updateTimeAndDate every second
+                            setInterval(updateTimeAndDate, 1000);
+                        
+                            // Call it immediately to set the current time and date on load
+                            updateTimeAndDate();
+                        </script>
+                        
+                    </div>
                     <div class="col-6 col-md-3">
-                        <div class="border rounded-4 p-3"  style="background: linear-gradient(135deg, #f6d0e3, #f9c4e1, #ce3d8c)">
+                        <div class="border rounded-4 p-3" >
                             <div class="row">
                                 <div class="col-4">
                                     <div style="width: 70px;">
@@ -32,7 +93,7 @@
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="border rounded-4 p-3"  style="background: linear-gradient(135deg, #f6d0e3, #dfc1f5, #9530c8)">
+                        <div class="border rounded-4 p-3" >
                             <div class="row">
                                 <div class="col-4">
                                     <div style="width: 70px;">
@@ -40,43 +101,188 @@
                                     </div>
                                 </div>
                                 <div class="col-8">
-                                    <h1 class="fw-bolder" id="student_count">0</h1>
+                                    <h1 class="fw-bolder" id="customer_count">0</h1>
                                     <h5>Customers</h5>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 col-md-3">
-                        <div class="border rounded-4 p-3"  style="background: linear-gradient(135deg, #f6d0d0, #fccbcb, #c73434)">
+                    
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="row g-3 m-0">
+                    <div class="col-12 col-md-6">
+                        <div class="border rounded-4 p-3">
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col-2">
                                     <div style="width: 70px;">
-                                        <img style="object-fit: cover; width: 100%; height: 100%" src="../static/img/trash.png" alt="">
+                                        <img style="object-fit: cover; width: 100%; height: 100%" src="../static/img/store.png" alt="">
                                     </div>
                                 </div>
-                                <div class="col-8">
-                                    <h1 class="fw-bolder" id="today_dispose">0</h1>
-                                    <h5>Today Sales</h5>
+                                <div class="col-10">
+                                    <h1 class="fw-bolder">
+                                        <span id="sales_today">₱0.00</span>
+                                    </h1>
+                                    <h5 id="currentDate">Today Store Sales</h5>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
-                    <div class="col-6 col-md-3">
-                        <div class="border rounded-4 p-3"  style="background: linear-gradient(135deg, #d0f2f6, #b9e1fc, #358dcf)">
+                    <div class="col-12 col-md-6">
+                        <div class="border rounded-4 p-3" >
                             <div class="row">
-                                <div class="col-4">
-                                    <div style="width: 90px;">
-                                        <img style="object-fit: cover; width: 100%; height: 100%" src="../static/img/rocket.png" alt="">
+                                <div class="col-2">
+                                    <div style="width: 70px;">
+                                        <img style="object-fit: cover; width: 100%; height: 100%" src="../static/img/calendar.png" alt="">
                                     </div>
                                 </div>
-                                <div class="col-8">
-                                    <h1 class="fw-bolder" id="total_dispose_count">0</h1>
-                                    <h5>Monthly Sales</h5>
+                                <div class="col-10">
+                                    <h1 class="fw-bolder">
+                                        <span id="sales_month">₱0.00</span>
+                                    </h1>
+                                    <h5 id="currentDate">October Store Sales</h5>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                     
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="row g-3 m-0">
+                    <div class="col-12 col-md-12">
+                        <div class="border rounded-4 p-3">
+                            <div class="d-flex justify-content-between align-items-end">
+                                <h4 class="ms-3 mt-3">Daily Sales Forecast</h4>
+                                <select name="chartType" class="form-select text-muted mb-3 w-25" id="chartTypeSelect">
+                                    <option value="bar">Show Bar Graph</option>
+                                    <option value="area">Show Area</option>
+                                </select>
+                            </div>
+                            <div id="dailySalesChart"></div>
+                        </div>
+                    </div>                
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="row g-3 m-0">
+                    <div class="col-12 col-md-12">
+                        <div class="border rounded-4 p-3">
+                            <div class="d-flex justify-content-between align-items-end">
+                                <h4 class="ms-3 mt-3">Monthly Sales Forecast</h4>
+                                <select name="chartType" class="form-select text-muted mb-3 w-25" id="chartTypeSelectMonthly">
+                                    <option value="area">Show Area</option>
+                                    <option value="bar">Show Bar Graph</option>
+                                </select>
+                            </div>
+                            <div id="monthlySalesChart"></div>                        
+                        </div>                        
+                    </div>                
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="row g-3 m-0">
+                    <div class="col-12 col-md-12">
+                        <div class="border rounded-4 p-3">
+                            <div class="d-flex justify-content-between align-items-end">
+                                <h4 class="ms-3 mt-3">Sales Product Forecast</h4>
+                                <select name="" class="form-select text-muted w-25" id="productSelect">
+                                    <option value="store">Store Products</option>
+                                    <option value="shopee">Shopee Products</option>
+                                </select>                                
+                            </div>
+                            <div id="showShopeeProductPage" style="display: none;">
+                                <div class="p-3">
+                                    <h6>Popular Products</h6>
+                                    <table class="table text-muted" style="font-size: 12px; " >
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 10%;">Rank</th>
+                                                <th style="width: 50%;">Product Name</th>
+                                                <th style="width: 10%;">Number of Sales</th>
+                                                <th style="width: 10%;">Stars</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="topProductsShopee">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="p-3 pt-0">
+                                    <h6>Unpopular Products</h6>
+                                    <table class="table text-muted" style="font-size: 12px; " >
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 10%;">Rank</th>
+                                                <th style="width: 50%;">Product Name</th>
+                                                <th style="width: 10%;">Number of Sales</th>
+                                                <th style="width: 10%;">Stars</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bottomsProductsShopee">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="showStoreProductPage">
+                                <div class="p-3">
+                                    <h6>Popular Products</h6>
+                                    <table class="table text-muted" style="font-size: 12px; " >
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 10%;">Rank</th>
+                                                <th style="width: 50%;">Product Name</th>
+                                                <th style="width: 10%;">Number of Sales</th>
+                                                <th style="width: 10%;">Stars</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="topProductsStore">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="p-3 pt-0">
+                                    <h6>Unpopular Products</h6>
+                                    <table class="table text-muted" style="font-size: 12px; " >
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 10%;">Rank</th>
+                                                <th style="width: 50%;">Product Name</th>
+                                                <th style="width: 10%;">Number of Sales</th>
+                                                <th style="width: 10%;">Stars</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bottomsProductsStore">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            $(document).ready(function() {
+                                // Hide Shopee page by default
+                                $('#showShopeeProductPage').hide();
+                                $('#showStoreProductPage').show();
+                            
+                                // Toggle the view based on the selected option
+                                $('#productSelect').change(function() {
+                                    var selectedValue = $(this).val();
+                            
+                                    if (selectedValue === 'store') {
+                                        // Show the Store page and hide the Shopee page
+                                        $('#showStoreProductPage').show();
+                                        $('#showShopeeProductPage').hide();
+                                    } else if (selectedValue === 'shopee') {
+                                        // Show the Shopee page and hide the Store page
+                                        $('#showStoreProductPage').hide();
+                                        $('#showShopeeProductPage').show();
+                                    }
+                                });
+                            });
+                            
+                        </script>
+                    </div>                
                 </div>
             </div>
         </div>

@@ -60,15 +60,6 @@ function renderProducts(page) {
                         
                     </td>
                 </tr>`;
-        
-{/* <button class="edit-button" 
-                                style="background: transparent; border: none" 
-                                data-id="${product.id}" 
-                                data-name="${product.product_name}" 
-                                data-price="${product.price}" 
-                                data-status="${product.status}">
-                            <i class="bi bi-pencil"></i>
-                        </button> */}
             $('#productTable').append(row); // Append the new row to the table
         });
     } else {
