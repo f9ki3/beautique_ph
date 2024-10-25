@@ -8,7 +8,10 @@
 <body>
 
     {% include 'nav.html' %}
-    <div class="container">
+    <div id="loadering" class="container" style="height: 90vh">
+        <div class="loader"></div>
+    </div>
+    <div id="div-loader" class="container" style="display: none;">
         <div class="d-flex flex-column justify-content-center mt-3">
             <div class="col-12 col-md-12">
                 <input id="customer_id" type="hidden" value="{{ session['customer_id'] }}">
