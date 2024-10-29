@@ -4,7 +4,7 @@ from mlxtend.preprocessing import TransactionEncoder
 from mlxtend.frequent_patterns import apriori, association_rules
 
 # Connect to SQLite database and fetch transaction data
-conn = sqlite3.connect('apriori_dataset.db')
+conn = sqlite3.connect('beautique.db')
 cursor = conn.cursor()
 cursor.execute("SELECT items FROM association")
 transactions = cursor.fetchall()
