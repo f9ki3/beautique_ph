@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, jsonify, session, url_for, json
+from flask import Flask, redirect, render_template, request, jsonify, session, url_for, json, send_file
 import os, csv
 from werkzeug.utils import secure_filename
 from accounts import Accounts  
@@ -353,6 +353,19 @@ def fetchCountAccounts():
     # print(data)
     return jsonify(data)
 
+@app.route('/exportShopeeCSV', methods=['GET'])
+def exportShopeeCSV():
+    filename = "shopee_sales_export.csv"
+
+    # Export the data to CSV
+    ShopeeSales().exportShopeeSales(filename=filename)
+
+    # Send the file as a downloadable response
+    try:
+        return send_file(filename, as_attachment=True)
+    except FileNotFoundError:
+        return jsonify({"error": "File not found"}), 404
+    
 @app.route('/fetchSalesDashboards', methods=['GET'])
 def fetchSalesDashboards():
     data = Dashboards().get_daily_sales_data()

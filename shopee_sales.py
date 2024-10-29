@@ -65,6 +65,22 @@ class ShopeeSales(Database):
             sales_data.append(dict(zip(columns, row)))  # Create a dict for each row
 
         return sales_data  # Return the list of dictionaries
+    
+    def exportShopeeSales(self, filename="shopee_sales_export.csv"):
+        # Query to fetch all sales data
+        self.cursor.execute("SELECT * FROM shopee_sales")
+        rows = self.cursor.fetchall()
+
+        # Get column names from cursor description
+        columns = [column[0] for column in self.cursor.description]
+
+        # Write to CSV
+        with open(filename, mode='w', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerow(columns)  # Write the column headers
+            writer.writerows(rows)    # Write the rows
+
+        print(f"Data exported to {filename}")
 
 if __name__ == "__main__":
     db = ShopeeSales()
