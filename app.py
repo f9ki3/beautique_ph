@@ -381,7 +381,7 @@ def exportStoreCSV():
     
 @app.route('/fetchSalesDashboards', methods=['GET'])
 def fetchSalesDashboards():
-    data = Dashboards().get_daily_sales_data()
+    data = Dashboards().get_sales_data()
     # print(data)
     return jsonify(data)
 

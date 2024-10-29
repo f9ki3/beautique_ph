@@ -45,7 +45,7 @@ class Dashboards(Database):
             'total_sales_month': total_sales_month
         }
 
-    def get_daily_sales_data(self):
+    def get_sales_data(self):
         # Execute the SQL query to get daily sales data from 'Sales' table
         self.cursor.execute('''
         SELECT DATE(created_at) AS date, SUM(total) AS sum
@@ -79,6 +79,23 @@ class Dashboards(Database):
         for row in monthly_sales:
             monthly_months.append(row[0])  # Add the month
             monthly_sums.append(row[1] if row[1] is not None else 0.0)  # Add the sum, defaulting to 0.0 if None
+
+        # Execute the SQL query to get yearly sales data from 'Sales' table
+        self.cursor.execute('''
+        SELECT strftime('%Y', created_at) AS year, SUM(total) AS sum
+        FROM Sales
+        GROUP BY strftime('%Y', created_at);
+        ''')
+        yearly_sales = self.cursor.fetchall()  # Fetch all rows
+
+        # Initialize lists for yearly years and sums (Sales)
+        yearly_years = []
+        yearly_sums = []
+
+        # Populate the yearly lists (Sales)
+        for row in yearly_sales:
+            yearly_years.append(row[0])  # Add the year
+            yearly_sums.append(row[1] if row[1] is not None else 0.0)  # Add the sum, defaulting to 0.0 if None
 
         # Query daily sales data from 'shopee_sales' table
         self.cursor.execute('''
@@ -114,6 +131,23 @@ class Dashboards(Database):
             shopee_monthly_months.append(row[0])  # Add the month
             shopee_monthly_sums.append(row[1] if row[1] is not None else 0.0)  # Add the sum, defaulting to 0.0 if None
 
+        # Query yearly sales data from 'shopee_sales' table
+        self.cursor.execute('''
+        SELECT strftime('%Y', order_creation_date) AS year, SUM(deal_price * quantity) AS sum
+        FROM shopee_sales
+        GROUP BY strftime('%Y', order_creation_date);
+        ''')
+        shopee_yearly_sales = self.cursor.fetchall()  # Fetch all rows
+
+        # Initialize lists for yearly years and sums (Shopee Sales)
+        shopee_yearly_years = []
+        shopee_yearly_sums = []
+
+        # Populate the yearly lists (Shopee Sales)
+        for row in shopee_yearly_sales:
+            shopee_yearly_years.append(row[0])  # Add the year
+            shopee_yearly_sums.append(row[1] if row[1] is not None else 0.0)  # Add the sum, defaulting to 0.0 if None
+
         # Return the result in the specified format
         return [
             {
@@ -129,6 +163,12 @@ class Dashboards(Database):
                 }
             },
             {
+                "store_yearly_sales": {
+                    "year": yearly_years,
+                    "sum": yearly_sums
+                }
+            },
+            {
                 "shopee_daily_sales": {
                     "date": shopee_daily_dates,
                     "sum": shopee_daily_sums
@@ -139,8 +179,15 @@ class Dashboards(Database):
                     "month": shopee_monthly_months,
                     "sum": shopee_monthly_sums
                 }
+            },
+            {
+                "shopee_yearly_sales": {
+                    "year": shopee_yearly_years,
+                    "sum": shopee_yearly_sums
+                }
             }
         ]
+
     
     def get_products_sales(self):
         # Execute the SQL query to get the top 10 Shopee products
@@ -210,10 +257,3 @@ class Dashboards(Database):
             'store_top_products': store_top_products,
             'store_bottom_products': store_bottom_products
         }
-
-
-
-
-
-
-
