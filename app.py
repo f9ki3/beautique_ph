@@ -365,6 +365,19 @@ def exportShopeeCSV():
         return send_file(filename, as_attachment=True)
     except FileNotFoundError:
         return jsonify({"error": "File not found"}), 404
+
+@app.route('/exportSalesCSV', methods=['GET'])
+def exportStoreCSV():
+    filename = "store_sales_export.csv"
+
+    # Export the data to CSV
+    Sales().exportStoreSales(filename=filename)
+
+    # Send the file as a downloadable response
+    try:
+        return send_file(filename, as_attachment=True)
+    except FileNotFoundError:
+        return jsonify({"error": "File not found"}), 404
     
 @app.route('/fetchSalesDashboards', methods=['GET'])
 def fetchSalesDashboards():
