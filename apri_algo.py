@@ -42,7 +42,7 @@ else:
         print(frequent_itemsets)
 
         # Generate association rules with confidence and lift
-        rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.5)
+        rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.1)
 
         # Check if any association rules were generated
         if rules.empty:
