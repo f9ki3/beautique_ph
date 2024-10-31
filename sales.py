@@ -38,6 +38,14 @@ class Sales(Database):
         ''')
         self.commit()
 
+    def insert_association_store(self, items):
+        """Insert a new item into the association_store table."""
+        self.cursor.execute('''
+        INSERT INTO association_store (items)
+        VALUES (?);
+        ''', (items,))
+        self.commit()
+
     def insertSale(self, subtotal, vat, total, customer_id, first_name, last_name, email, address, items):
         # Insert the sale into the Sales table
         self.cursor.execute('''

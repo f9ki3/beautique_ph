@@ -300,6 +300,168 @@
                     </div>                
                 </div>
             </div>
+            <div class="row mt-3">
+                <div class="row g-3 m-0">
+                    <div class="col-12 col-md-12">
+                        <div class="border rounded-4 p-3">
+                            <div class="d-flex justify-content-between align-items-end">
+                                <h4 class="ms-3 mt-3">Association Rule</h4>
+                                <select name="" class="form-select text-muted w-25" id="associationSelect">
+                                    <option value="store">Store Products</option>
+                                    <option value="shopee">Shopee Products</option>
+                                </select>                                
+                            </div>
+                            <div id="showAssociationRulesShopee" style="display: none;">
+                                <div class="p-3">
+                                    <h6>Shopee Results</h6>
+                                    <table class="table text-muted" style="font-size: 12px; " >
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 5%;">No.</th>
+                                                <th style="width: 20%;">Consequents</th>
+                                                <th style="width: 20%;">Antecedents</th>
+                                                <th style="width: 5%;">Support</th>
+                                                <th style="width: 5%;">Confidence</th>
+                                                <th style="width: 5%;">Lift</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="associationRuleShopee">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                            </div>
+                            <div id="showAssociationRulesStore">
+                                <div class="p-3">
+                                    <h6>Store Results</h6>
+                                    <table class="table text-muted" style="font-size: 12px; " >
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 5%;">No.</th>
+                                                <th style="width: 20%;">Consequents</th>
+                                                <th style="width: 20%;">Antecedents</th>
+                                                <th style="width: 5%;">Support</th>
+                                                <th style="width: 5%;">Confidence</th>
+                                                <th style="width: 5%;">Lift</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="associationRuleStore">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <script>
+                        $(document).ready(function() {
+                            $('#associationSelect').change(function() {
+                                var selectedValue = $(this).val(); // Get selected value
+                                
+                                // Hide both sections initially
+                                $('#showAssociationRulesStore').hide();
+                                $('#showAssociationRulesShopee').hide();
+                                
+                                // Show the corresponding section based on the selected value
+                                if (selectedValue === 'store') {
+                                    $('#showAssociationRulesStore').show();
+                                } else if (selectedValue === 'shopee') {
+                                    $('#showAssociationRulesShopee').show();
+                                }
+                            });
+                        });
+                        </script>
+                        <script>
+                            // Function to fetch and update association rules
+                            function fetchAssociationRules() {
+                                $.getJSON('/getAprioShopee', function(response) {
+                                    // Process Shopee data
+                                    let newRulesShopee = response.association_rules;
+                                    let currentRowsShopee = $("#associationRuleShopee tr").length;
+                        
+                                    // Clear existing rows only if there are new rules
+                                    if (newRulesShopee.length !== currentRowsShopee) {
+                                        $("#associationRuleShopee").empty(); // Clear the table body
+                                        $.each(newRulesShopee, function(index, rule) {
+                                            const antecedents = rule.antecedents.join(", ");
+                                            const consequents = rule.consequents.join(", ");
+                                            const support = rule.support.toFixed(2);
+                                            const confidence = rule.confidence.toFixed(2);
+                                            const lift = rule.lift.toFixed(2);
+                                            // Append the row with rule data to the tbody
+                                            $("#associationRuleShopee").append(`
+                                                <tr>
+                                                    <td>${index + 1}</td>
+                                                    <td>${antecedents}</td>
+                                                    <td>${consequents}</td>
+                                                    <td>${support}</td>
+                                                    <td>${confidence}</td>
+                                                    <td>${lift}</td>
+                                                </tr>
+                                            `);
+                                        });
+                                    }
+                                });
+                        
+                                $.getJSON('/getAprioStore', function(response) {
+                                    // Process Store data
+                                    let newRulesStore = response.association_rules;
+                                    let currentRowsStore = $("#associationRuleStore tr").length;
+                        
+                                    // Clear existing rows only if there are new rules
+                                    if (newRulesStore.length !== currentRowsStore) {
+                                        $("#associationRuleStore").empty(); // Clear the table body
+                                        $.each(newRulesStore, function(index, rule) {
+                                            const antecedents = rule.antecedents.join(", ");
+                                            const consequents = rule.consequents.join(", ");
+                                            const support = rule.support.toFixed(2);
+                                            const confidence = rule.confidence.toFixed(2);
+                                            const lift = rule.lift.toFixed(2);
+                                            // Append the row with rule data to the tbody
+                                            $("#associationRuleStore").append(`
+                                                <tr>
+                                                    <td>${index + 1}</td>
+                                                    <td>${antecedents}</td>
+                                                    <td>${consequents}</td>
+                                                    <td>${support}</td>
+                                                    <td>${confidence}</td>
+                                                    <td>${lift}</td>
+                                                </tr>
+                                            `);
+                                        });
+                                    }
+                                });
+                            }
+                        
+                            // Set interval for polling every 5 seconds (5000 milliseconds)
+                            setInterval(fetchAssociationRules, 5000);
+                        </script>
+                        
+                        <script>
+                            $(document).ready(function() {
+                                // Hide Shopee page by default
+                                $('#showShopeeProductPage').hide();
+                                $('#showStoreProductPage').show();
+                            
+                                // Toggle the view based on the selected option
+                                $('#productSelect').change(function() {
+                                    var selectedValue = $(this).val();
+                            
+                                    if (selectedValue === 'store') {
+                                        // Show the Store page and hide the Shopee page
+                                        $('#showStoreProductPage').show();
+                                        $('#showShopeeProductPage').hide();
+                                    } else if (selectedValue === 'shopee') {
+                                        // Show the Shopee page and hide the Store page
+                                        $('#showStoreProductPage').hide();
+                                        $('#showShopeeProductPage').show();
+                                    }
+                                });
+                            });
+                            
+                        </script>
+                    </div>                
+                </div>
+            </div>
         </div>
         
     </div>
