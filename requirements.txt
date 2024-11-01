@@ -1,7 +1,5 @@
-Flask==2.3.2  # Flask for your web application framework
-Werkzeug==2.3.6  # Required for secure_filename (used with Flask)
-# Pandas (for handling data)
-pandas==2.0.3
-# mlxtend for association rule mining (apriori and association_rules)
-mlxtend==0.21.0
-gunicorn==20.1.0  # or the latest version
+Flask==2.3.3            # Flask for your web application framework
+Werkzeug==2.3.7         # Required for secure_filename (used with Flask)
+pandas==2.2.3           # Pandas for handling data
+mlxtend==0.22.0         # mlxtend for association rule mining (apriori and association_rules)
+gunicorn==20.1.0        # Gunicorn for deploying Flask (latest compatible)
