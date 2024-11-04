@@ -104,4 +104,3 @@ class AssociationRule(Database):
 
 if __name__ == "__main__":
     AssociationRule().createAssociationRuleTable()
-    AssociationRule().create_association_rule(28, 29)

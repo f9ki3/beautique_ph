@@ -1,3 +1,4 @@
+#Libraries ng Python para makapag compute ng Apriori Algorith and I analyze it to tables.
 import sqlite3
 import pandas as pd
 from mlxtend.preprocessing import TransactionEncoder
@@ -5,6 +6,7 @@ from mlxtend.frequent_patterns import apriori, association_rules
 import json
 from sklearn.model_selection import train_test_split
 
+#functions to get data from sqlite database
 def fetch_transactions(query):
     # Connect to SQLite database and fetch transaction data
     conn = sqlite3.connect('beautique.db')
@@ -14,6 +16,7 @@ def fetch_transactions(query):
     conn.close()
     return [transaction[0].split(', ') for transaction in transactions]
 
+#function to generate association rule 
 def generate_association_rules(transaction_list):
     if not transaction_list:
         return pd.DataFrame({"message": ["No transactions found in the dataset. Ensure the database contains transaction data."]})
@@ -45,6 +48,7 @@ def generate_association_rules(transaction_list):
     # Return a DataFrame with the relevant columns
     return rules_df[['antecedents', 'consequents', 'support', 'confidence', 'lift']]
 
+#function to get association data from shopee
 def get_aprio_shope():
     transactions = fetch_transactions("SELECT items FROM association")
     train_transactions, test_transactions = train_test_split(transactions, test_size=0.2, random_state=42)
@@ -57,6 +61,7 @@ def get_aprio_shope():
 
     return train_rules, test_rules
 
+#function to get association data from store
 def get_aprio_store():
     transactions = fetch_transactions("SELECT items FROM association_store")
     train_transactions, test_transactions = train_test_split(transactions, test_size=0.2, random_state=42)
@@ -69,6 +74,7 @@ def get_aprio_store():
 
     return train_rules, test_rules
 
+#Calling all function to run it and display results
 if __name__ == "__main__":
     # Example usage
     shope_train_rules, shope_test_rules = get_aprio_shope()
