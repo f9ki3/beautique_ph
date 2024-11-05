@@ -18,6 +18,36 @@
                         <input type="text" class="form-control-sm form-control" id="searchShopeeStock" placeholder="Search stocks...">
                     </div>
                     <div class="col-12 col-md-6 text-end">
+                        <button class="btn btn-sm border btn-pink" onclick="exportShopeeCSV()">
+                            <i class="bi bi-bookmark-plus"></i> Export Shopee CSV
+                        </button>
+                        <script>
+                            function exportShopeeCSV() {
+                                fetch('/exportShopeeCSV')
+                                    .then(response => {
+                                        if (response.ok) {
+                                            return response.blob(); // Convert response to a blob
+                                        } else {
+                                            throw new Error("Failed to export CSV");
+                                        }
+                                    })
+                                    .then(blob => {
+                                        const url = window.URL.createObjectURL(blob);
+                                        const a = document.createElement('a');
+                                        a.style.display = 'none';
+                                        a.href = url;
+                                        a.download = 'shopee_sales_export.csv';  // Name of the file to download
+                                        document.body.appendChild(a);
+                                        a.click();
+                                        window.URL.revokeObjectURL(url);  // Free up memory
+                                    })
+                                    .catch(error => {
+                                        console.error("Error exporting CSV:", error);
+                                        alert("An error occurred while exporting the CSV.");
+                                    });
+                            }
+                            </script>
+                                                    
                         <button class="btn btn-sm border btn-pink" data-bs-toggle="modal" data-bs-target="#addShopeeCSV">
                             <i class="bi bi-bookmark-plus"></i> Import Shopee CSV
                         </button>

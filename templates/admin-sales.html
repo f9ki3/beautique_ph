@@ -17,6 +17,37 @@
                     <div class="col-12 col-md-6">
                         <input type="text" class="form-control-sm form-control" id="searchStoreSales" placeholder="Search sales...">
                     </div>
+                    <div class="col-12 col-md-6 text-end">
+                        <button class="btn btn-sm border btn-pink" onclick="exportStoreCSV()">
+                            <i class="bi bi-bookmark-plus"></i> Export Store Sales
+                        </button>
+                        <script>
+                            function exportStoreCSV() {
+                                fetch('/exportSalesCSV')
+                                    .then(response => {
+                                        if (response.ok) {
+                                            return response.blob(); // Convert response to a blob
+                                        } else {
+                                            throw new Error("Failed to export CSV");
+                                        }
+                                    })
+                                    .then(blob => {
+                                        const url = window.URL.createObjectURL(blob);
+                                        const a = document.createElement('a');
+                                        a.style.display = 'none';
+                                        a.href = url;
+                                        a.download = 'store_sales_export.csv';  // Name of the file to download
+                                        document.body.appendChild(a);
+                                        a.click();
+                                        window.URL.revokeObjectURL(url);  // Free up memory
+                                    })
+                                    .catch(error => {
+                                        console.error("Error exporting CSV:", error);
+                                        alert("An error occurred while exporting the CSV.");
+                                    });
+                            }
+                            </script>
+                    </div>
                 </div>
                 <div class="row mt-3">
                     <div style="overflow-x: auto; width: 100%">

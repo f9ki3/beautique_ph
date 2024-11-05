@@ -14,7 +14,7 @@ $(document).ready(function() {
                 var storeSums = dailyStoreSales.sum;
 
                 // Extracting the shopee daily sales data
-                var dailyShopeeSales = response[2].shopee_daily_sales;
+                var dailyShopeeSales = response[3].shopee_daily_sales;
                 var shopeeDates = dailyShopeeSales.date;
                 var shopeeSums = dailyShopeeSales.sum;
 
@@ -119,7 +119,7 @@ $(document).ready(function() {
                 const storeMonths = monthlyStoreSales.month || [];
                 const storeSums = monthlyStoreSales.sum || [];
     
-                const monthlyShopeeSales = response[3]?.shopee_monthly_sales || {};
+                const monthlyShopeeSales = response[4]?.shopee_monthly_sales || {};
                 const shopeeMonths = monthlyShopeeSales.month || [];
                 const shopeeSums = monthlyShopeeSales.sum || [];
     
@@ -226,6 +226,116 @@ $(document).ready(function() {
             });
         }
     });
+
+    let storeYearlySalesChart; // Store chart variable
+    let shopeeYearlySalesChart; // Shopee chart variable
+    
+    function fetchyearlySalesData() {
+        $.ajax({
+            url: '/fetchSalesDashboards', // Change this to your actual endpoint
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                // Extracting the Store and Shopee yearly sales data
+                const yearlyStoreSales = response[2]?.store_yearly_sales || {};
+                const storeYears = yearlyStoreSales.year || [];
+                const storeSums = yearlyStoreSales.sum || [];
+    
+                const yearlyShopeeSales = response[5]?.shopee_yearly_sales || {};
+                const shopeeYears = yearlyShopeeSales.year || [];
+                const shopeeSums = yearlyShopeeSales.sum || [];
+    
+                // Process yearly sales data for both Store and Shopee
+                const storeChartData = [];
+                const storeLabels = [];
+                storeYears.forEach((year, index) => {
+                    if (year) {
+                        storeLabels.push(year);
+                        storeChartData.push(storeSums[index] || 0);
+                    }
+                });
+    
+                const shopeeChartData = [];
+                const shopeeLabels = [];
+                shopeeYears.forEach((year, index) => {
+                    if (year) {
+                        shopeeLabels.push(year);
+                        shopeeChartData.push(shopeeSums[index] || 0);
+                    }
+                });
+    
+                // Function to render a donut chart for Store yearly sales
+                function renderStoreChart() {
+                    const storeSalesOptions = {
+                        series: storeChartData,
+                        chart: {
+                            height: 300,
+                            type: 'donut'
+                        },
+                        labels: storeLabels,
+                        colors: ['#21eb1a', '#28a745'],
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            text: "Store Yearly Sales",
+                            align: 'center'
+                        }
+                    };
+    
+                    // Destroy the existing chart if it exists
+                    if (storeYearlySalesChart) {
+                        storeYearlySalesChart.destroy();
+                    }
+    
+                    // Initialize the store chart
+                    storeYearlySalesChart = new ApexCharts(document.querySelector("#storeSalesChartYear"), storeSalesOptions);
+                    storeYearlySalesChart.render();
+                }
+    
+                // Function to render a donut chart for Shopee yearly sales
+                function renderShopeeChart() {
+                    const shopeeSalesOptions = {
+                        series: shopeeChartData,
+                        chart: {
+                            height: 300,
+                            type: 'donut'
+                        },
+                        labels: shopeeLabels,
+                        colors: ['#f98c14', '#ffc107'],
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            text: "Shopee Yearly Sales",
+                            align: 'center'
+                        }
+                    };
+    
+                    // Destroy the existing chart if it exists
+                    if (shopeeYearlySalesChart) {
+                        shopeeYearlySalesChart.destroy();
+                    }
+    
+                    // Initialize the Shopee chart
+                    shopeeYearlySalesChart = new ApexCharts(document.querySelector("#shopeeSalesChartYear"), shopeeSalesOptions);
+                    shopeeYearlySalesChart.render();
+                }
+    
+                // Render both charts
+                renderStoreChart();
+                renderShopeeChart();
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching yearly sales data:', error);
+                alert('Failed to fetch yearly sales data. Please try again later.');
+            }
+        });
+    }
+    
+    // Call the function to fetch data and render the charts
+    fetchyearlySalesData();
+    
 
     // Call the functions to fetch data and render the charts
     fetchDailySalesData();

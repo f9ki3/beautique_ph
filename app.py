@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, jsonify, session, url_for, json
+from flask import Flask, redirect, render_template, request, jsonify, session, url_for, json, send_file
 import os, csv
 from werkzeug.utils import secure_filename
 from accounts import Accounts  
@@ -353,9 +353,47 @@ def fetchCountAccounts():
     # print(data)
     return jsonify(data)
 
+@app.route('/getAprioShopee', methods=['GET'])
+def getAprioShopee():
+    data = Dashboards().get_aprio()
+    # print(data)
+    return jsonify(data)
+
+@app.route('/getAprioStore', methods=['GET'])
+def getAprioStore():
+    data = Dashboards().get_aprio_store()
+    # print(data)
+    return jsonify(data)
+
+@app.route('/exportShopeeCSV', methods=['GET'])
+def exportShopeeCSV():
+    filename = "shopee_sales_export.csv"
+
+    # Export the data to CSV
+    ShopeeSales().exportShopeeSales(filename=filename)
+
+    # Send the file as a downloadable response
+    try:
+        return send_file(filename, as_attachment=True)
+    except FileNotFoundError:
+        return jsonify({"error": "File not found"}), 404
+
+@app.route('/exportSalesCSV', methods=['GET'])
+def exportStoreCSV():
+    filename = "store_sales_export.csv"
+
+    # Export the data to CSV
+    Sales().exportStoreSales(filename=filename)
+
+    # Send the file as a downloadable response
+    try:
+        return send_file(filename, as_attachment=True)
+    except FileNotFoundError:
+        return jsonify({"error": "File not found"}), 404
+    
 @app.route('/fetchSalesDashboards', methods=['GET'])
 def fetchSalesDashboards():
-    data = Dashboards().get_daily_sales_data()
+    data = Dashboards().get_sales_data()
     # print(data)
     return jsonify(data)
 
@@ -499,6 +537,7 @@ def place_order():
     # Extract the cart items
     cart_items = data['cart_items']
 
+
     # Update product stock based on cart items
     for item in cart_items:
         product_id = item['product_id']
@@ -537,6 +576,11 @@ def place_order():
         data['address'],
         items  # Pass the list of items (not as a JSON string)
     )
+
+    product_names = [item['product_name'] for item in cart_items]
+    # Convert the list of product names to a string (join by comma or another delimiter)
+    product_names_str = ', '.join(product_names)
+    sales.insert_association_store(str(product_names_str))
 
     return jsonify({"message": "Order placed successfully!"}), 201
 
