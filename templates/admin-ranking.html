@@ -1,0 +1,115 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautique PH</title>
+    {% include 'header_links.html' %}
+</head>
+<body>
+    {% include 'nav-admin.html' %}
+    <div class="container d-flex flex-row">
+        {% include 'header.html' %}
+        <div class="container body-color">
+            <div>
+                <div class="d-flex justify-content-between align-items-end">
+                    <h4 class="ms-3 mt-3">Sales Product </h4>
+                    <select name="" class="form-select text-muted w-25" id="productSelect">
+                        <option value="store">Store Products</option>
+                        <option value="shopee">Shopee Products</option>
+                    </select>                                
+                </div>
+                <div id="showShopeeProductPage" style="display: none;">
+                    <div class="p-3">
+                        <h6>Popular Products</h6>
+                        <table class="table text-muted" style="font-size: 12px; " >
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;">Rank</th>
+                                    <th style="width: 50%;">Product Name</th>
+                                    <th style="width: 10%;">Number of Sales</th>
+                                    <th style="width: 10%;">Stars</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topProductsShopee">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="p-3 pt-0">
+                        <h6>Unpopular Products</h6>
+                        <table class="table text-muted" style="font-size: 12px; " >
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;">Rank</th>
+                                    <th style="width: 50%;">Product Name</th>
+                                    <th style="width: 10%;">Number of Sales</th>
+                                    <th style="width: 10%;">Stars</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bottomsProductsShopee">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="showStoreProductPage">
+                    <div class="p-3">
+                        <h6>Popular Products</h6>
+                        <table class="table text-muted" style="font-size: 12px; " >
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;">Rank</th>
+                                    <th style="width: 50%;">Product Name</th>
+                                    <th style="width: 10%;">Number of Sales</th>
+                                    <th style="width: 10%;">Stars</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topProductsStore">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="p-3 pt-0">
+                        <h6>Unpopular Products</h6>
+                        <table class="table text-muted" style="font-size: 12px; " >
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;">Rank</th>
+                                    <th style="width: 50%;">Product Name</th>
+                                    <th style="width: 10%;">Number of Sales</th>
+                                    <th style="width: 10%;">Stars</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bottomsProductsStore">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <script>
+                $(document).ready(function() {
+                    // Hide Shopee page by default
+                    $('#showShopeeProductPage').hide();
+                    $('#showStoreProductPage').show();
+                
+                    // Toggle the view based on the selected option
+                    $('#productSelect').change(function() {
+                        var selectedValue = $(this).val();
+                
+                        if (selectedValue === 'store') {
+                            // Show the Store page and hide the Shopee page
+                            $('#showStoreProductPage').show();
+                            $('#showShopeeProductPage').hide();
+                        } else if (selectedValue === 'shopee') {
+                            // Show the Shopee page and hide the Store page
+                            $('#showStoreProductPage').hide();
+                            $('#showShopeeProductPage').show();
+                        }
+                    });
+                });
+                
+            </script>
+            
+        </div>
+        
+    </div>
+    {% include 'footer_links.html' %}
+</body>
+</html>

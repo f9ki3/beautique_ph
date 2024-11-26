@@ -107,6 +107,20 @@ def admin_dashboard():
         return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
     return render_template('admin_dashboard.html')
 
+@app.route('/admin-rule', methods=['GET'])
+def admin_association():
+    # Check if the user is logged in by verifying session data
+    if 'username' not in session or session.get('user_type') != 'admin':
+        return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
+    return render_template('admin-association.html')
+
+@app.route('/admin-product_sales', methods=['GET'])
+def admin_ranking():
+    # Check if the user is logged in by verifying session data
+    if 'username' not in session or session.get('user_type') != 'admin':
+        return redirect(url_for('admin_login'))  # Redirect to the admin login page if not logged in
+    return render_template('admin-ranking.html')
+
 @app.route('/admin-product', methods=['GET'])
 def admin_product():
     # Check if the user is logged in by verifying session data

@@ -53,7 +53,7 @@ $(document).ready(function() {
                 }
 
                 // Store and Shopee Daily Sales Chart Configuration
-                function renderChart(chartType) {
+                function renderChart() {
                     var dailySalesOptions = {
                         series: [{
                             name: 'Store Daily Sales',
@@ -64,23 +64,36 @@ $(document).ready(function() {
                         }],
                         chart: {
                             height: 300,
-                            type: chartType // Set the chart type dynamically
+                            type: 'bar', // Stacked bar chart
+                            stacked: true // Enable stacking
                         },
                         colors: ['#21eb1a', '#f98c14'], // Store and Shopee colors
                         dataLabels: {
                             enabled: false
-                        },
-                        stroke: {
-                            curve: 'smooth'
                         },
                         xaxis: {
                             type: 'datetime',
                             categories: chartCategories // Formatted dates
                         },
                         tooltip: {
-                            x: {
-                                format: 'dd MMM yyyy' // Adjust tooltip format for daily sales
+                            y: {
+                                formatter: function(val) {
+                                    return val + " USD"; // Customize tooltip value display
+                                }
                             }
+                        },
+                        plotOptions: {
+                            bar: {
+                                horizontal: false, // Vertical bars
+                                columnWidth: '50%' // Adjust column width
+                            }
+                        },
+                        fill: {
+                            opacity: 1
+                        },
+                        legend: {
+                            position: 'top',
+                            horizontalAlign: 'center'
                         }
                     };
 
@@ -91,20 +104,15 @@ $(document).ready(function() {
                     dailySalesChart.render();
                 }
 
-                // Initialize Daily Sales Chart with default bar type
-                renderChart('bar');
-
-                // Add event listener to the select dropdown
-                $('#chartTypeSelect').on('change', function() {
-                    const selectedType = $(this).val(); // Get selected chart type
-                    renderChart(selectedType); // Re-render chart with the selected type
-                });
+                // Initialize Daily Sales Chart as a stacked bar chart
+                renderChart();
             },
             error: function(xhr, status, error) {
                 console.error("Error fetching daily sales data:", error);
             }
         });
     }
+
 
     let monthlySalesChart; // Declare the chart variable outside of the function
     
