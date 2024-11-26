@@ -13,8 +13,17 @@
             <div id="viewStudentRecord">
             </div>
             <div class="row">
-                <h4 >Dashboards</h4>
-                <div class="row g-3 m-0">
+                <div class="d-flex justify-content-between">
+                    <h4 >Dashboards</h4>
+                    <div>
+                        <select name="" class="form-control" id="showSalesDiv">
+                            <option value="daily">Show Daily</option>
+                            <option value="monthly">Show Monthly</option>
+                            <option value="yearly">Show Yearly</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row g-2 m-0">
                     <div class="col-12 col-md-6">
                         <div class="border rounded-4 p-3" style="background: linear-gradient(135deg, #d0f2f6, #b9e1fc, #358dcf)">
                             <div class="row">
@@ -24,17 +33,17 @@
                                     </div>
                                 </div>
                                 <div class="col-10">
-                                    <h1 class="fw-bolder">
+                                    <h3 class="fw-bolder">
                                         <span id="mainTime">12:50:00</span>
                                         <span id="ampm" style="font-size: 1.5rem;">PM</span>
-                                    </h1>
-                                    <h5 id="currentMonth"></h5>
+                                    </h3>
+                                    <p id="currentMonth"></p>
                                     <script>
                                         function updateCurrentMonth() {
                                             const currentDate = new Date(); // Get the current date
                                             const options = { month: 'long', day: 'numeric', year: 'numeric' }; // Define the format
                                             const formattedDate = currentDate.toLocaleDateString('en-US', options); // Format the date
-                                            document.getElementById('currentMonth').innerText = formattedDate; // Update the <h5> element
+                                            document.getElementById('currentMonth').innerText = formattedDate; // Update the <h3> element
                                         }
 
                                         updateCurrentMonth(); // Call the function to update the month on page load
@@ -85,8 +94,8 @@
                                     </div>
                                 </div>
                                 <div class="col-8">
-                                    <h1 class="fw-bolder" id="admin_count">0</h1>
-                                    <h5>Admin</h5>
+                                    <h3 class="fw-bolder" id="admin_count">0</h3>
+                                    <p>Admin</p>
                                 </div>
                             </div>
                         </div>
@@ -100,8 +109,8 @@
                                     </div>
                                 </div>
                                 <div class="col-8">
-                                    <h1 class="fw-bolder" id="customer_count">0</h1>
-                                    <h5>Customers</h5>
+                                    <h3 class="fw-bolder" id="customer_count">0</h3>
+                                    <p>Customers</p>
                                 </div>
                             </div>
                         </div>
@@ -120,14 +129,13 @@
                                     </div>
                                 </div>
                                 <div class="col-10">
-                                    <h1 class="fw-bolder">
+                                    <h3 class="fw-bolder">
                                         <span id="sales_today">₱0.00</span>
-                                    </h1>
-                                    <h5 id="currentDate">Today Store Sales</h5>
+                                    </h3>
+                                    <p>Today Store Sales</p>
                                 </div>
                             </div>
                         </div>
-                        
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="border rounded-4 p-3" >
@@ -138,10 +146,10 @@
                                     </div>
                                 </div>
                                 <div class="col-10">
-                                    <h1 class="fw-bolder">
+                                    <h3 class="fw-bolder">
                                         <span id="sales_month">₱0.00</span>
-                                    </h1>
-                                    <h5 id="currentDate">October Store Sales</h5>
+                                    </h3>
+                                    <p>October Store Sales</p>
                                 </div>
                             </div>
                         </div>
@@ -150,7 +158,7 @@
                     
                 </div>
             </div>
-            <div class="row mt-3">
+            <div class="row mt-3 sales-div" id="dailyDiv">
                 <div class="row g-3 m-0">
                     <div class="col-12 col-md-12">
                         <div class="border rounded-4 p-3">
@@ -166,7 +174,7 @@
                     </div>                
                 </div>
             </div>
-            <div class="row mt-3">
+            <div class="row mt-3 sales-div" id="monthlyDiv"  style="display: none;">
                 <div class="row g-3 m-0">
                     <div class="col-12 col-md-12">
                         <div class="border rounded-4 p-3">
@@ -182,7 +190,7 @@
                     </div>                
                 </div>
             </div>
-            <div class="row mt-3 mb-5">
+            <div class="row mt-3 mb-5 sales-div" id="yearlyDiv"  style="display: none;">
                 <div class="row g-3 m-0">
                     <div class="col-12 col-md-12">
                         <div class="border rounded-4 p-3">
@@ -199,7 +207,33 @@
                 </div>
             </div>
         </div>
-        
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const selectElement = document.getElementById('showSalesDiv');
+                const salesDivs = document.querySelectorAll('.sales-div');
+            
+                // Function to show the selected div and hide others
+                function updateVisibility() {
+                    const selectedValue = selectElement.value;
+            
+                    // Hide all sales divs
+                    salesDivs.forEach(div => div.style.display = 'none');
+            
+                    // Show the div matching the selected value
+                    const selectedDiv = document.getElementById(`${selectedValue}Div`);
+                    if (selectedDiv) {
+                        selectedDiv.style.display = 'block';
+                    }
+                }
+            
+                // Attach event listener to dropdown
+                selectElement.addEventListener('change', updateVisibility);
+            
+                // Initialize the visibility on page load
+                updateVisibility();
+            });
+            
+        </script>
     </div>
     {% include 'footer_links.html' %}
 </body>
