@@ -24,7 +24,6 @@
                         <table class="table text-muted" style="font-size: 12px; " >
                             <thead>
                                 <tr>
-                                    <th style="width: 5%;">No.</th>
                                     <th style="width: 20%;">Item</th>
                                     <th style="width: 20%;">Item pair</th>
                                     <th style="width: 5%;">Support</th>
@@ -44,7 +43,6 @@
                         <table class="table text-muted" style="font-size: 12px; " >
                             <thead>
                                 <tr>
-                                    <th style="width: 5%;">No.</th>
                                     <th style="width: 20%;">Item</th>
                                     <th style="width: 20%;">Item pair</th>
                                     <th style="width: 5%;">Support</th>
@@ -89,22 +87,23 @@
                         if (newRulesShopee.length !== currentRowsShopee) {
                             $("#associationRuleShopee").empty(); // Clear the table body
                             $.each(newRulesShopee, function(index, rule) {
-                                const antecedents = rule.antecedents.join(", ");
-                                const consequents = rule.consequents.join(", ");
-                                const support = rule.support.toFixed(2);
-                                const confidence = rule.confidence.toFixed(2);
-                                const lift = rule.lift.toFixed(2);
-                                // Append the row with rule data to the tbody
-                                $("#associationRuleShopee").append(`
-                                    <tr>
-                                        <td>${index + 1}</td>
-                                        <td>${antecedents}</td>
-                                        <td>${consequents}</td>
-                                        <td>${support}</td>
-                                        <td>${confidence}</td>
-                                        <td>${lift}</td>
-                                    </tr>
-                                `);
+                                if (index % 2 === 0) { // Display only even-indexed rules
+                                    const antecedents = rule.antecedents.join(", ");
+                                    const consequents = rule.consequents.join(", ");
+                                    const support = rule.support.toFixed(2);
+                                    const confidence = rule.confidence.toFixed(2);
+                                    const lift = rule.lift.toFixed(2);
+                                    // Append the row with rule data to the tbody
+                                    $("#associationRuleShopee").append(`
+                                        <tr>
+                                            <td>${antecedents}</td>
+                                            <td>${consequents}</td>
+                                            <td>${support}</td>
+                                            <td>${confidence}</td>
+                                            <td>${lift}</td>
+                                        </tr>
+                                    `);
+                                }
                             });
                         }
                     });
@@ -118,22 +117,23 @@
                         if (newRulesStore.length !== currentRowsStore) {
                             $("#associationRuleStore").empty(); // Clear the table body
                             $.each(newRulesStore, function(index, rule) {
-                                const antecedents = rule.antecedents.join(", ");
-                                const consequents = rule.consequents.join(", ");
-                                const support = rule.support.toFixed(2);
-                                const confidence = rule.confidence.toFixed(2);
-                                const lift = rule.lift.toFixed(2);
-                                // Append the row with rule data to the tbody
-                                $("#associationRuleStore").append(`
-                                    <tr>
-                                        <td>${index + 1}</td>
-                                        <td>${antecedents}</td>
-                                        <td>${consequents}</td>
-                                        <td>${support}</td>
-                                        <td>${confidence}</td>
-                                        <td>${lift}</td>
-                                    </tr>
-                                `);
+                                if (index % 2 === 0) { // Display only even-indexed rules
+                                    const antecedents = rule.antecedents.join(", ");
+                                    const consequents = rule.consequents.join(", ");
+                                    const support = rule.support.toFixed(2);
+                                    const confidence = rule.confidence.toFixed(2);
+                                    const lift = rule.lift.toFixed(2);
+                                    // Append the row with rule data to the tbody
+                                    $("#associationRuleStore").append(`
+                                        <tr>
+                                            <td>${antecedents}</td>
+                                            <td>${consequents}</td>
+                                            <td>${support}</td>
+                                            <td>${confidence}</td>
+                                            <td>${lift}</td>
+                                        </tr>
+                                    `);
+                                }
                             });
                         }
                     });
@@ -142,6 +142,7 @@
                 // Set interval for polling every 5 seconds (5000 milliseconds)
                 setInterval(fetchAssociationRules, 5000);
             </script>
+            
             
             <script>
                 $(document).ready(function() {
