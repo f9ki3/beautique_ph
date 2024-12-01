@@ -10,6 +10,7 @@ from sales import Sales
 from shopee_sales import ShopeeSales 
 from dashboard import Dashboards
 from association_rule import AssociationRule
+from generate_dataset import *
 import base64
 
 app = Flask(__name__)
@@ -627,7 +628,7 @@ def upload_csv():
             # Create an instance of ShopeeSales and upload the CSV data to SQLite
             shopee_sales = ShopeeSales()
             shopee_sales.upload_csv_sql(file_path)  # Passing file_path to the method that processes CSV
-
+            gen_aprio()
             return jsonify({'success': 'CSV file uploaded and processed successfully!'}), 200
         except Exception as e:
             # Return an error if something goes wrong during CSV processing
